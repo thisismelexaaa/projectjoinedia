@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\Event;
 use App\Models\Transaksi;
 use App\Models\Pendaftaran;
@@ -12,12 +13,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\PendaftaranFormRequest;
 use App\Models\BuatEvent;
+=======
+use App\Models\User;
+use App\Models\Event;
+use App\Models\Pendaftaran;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PendaftaranFormRequest;
+>>>>>>> f89a811 (First Commit : Progress 80%)
 
 class PendaftaranController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+<<<<<<< HEAD
     public function index(Pendaftaran $pendaftaran, Transaksi $transaksi)
     {
         $data = $pendaftaran->all();
@@ -33,12 +44,24 @@ class PendaftaranController extends Controller
 
         return view('page.pendaftaran.index', compact('data', 'dataTransaksi'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
+=======
+    public function index()
+    {
+        $data = Pendaftaran::all()->where('user_id', Auth::user()->id);
+        return view('page.pendaftaran.index', compact('data'))->with('i', (request()->input('page', 1) - 1) * 20);
+    }
+
+>>>>>>> f89a811 (First Commit : Progress 80%)
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+<<<<<<< HEAD
         //
+=======
+        // return view('page.pendaftaran.show');
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 
     /**
@@ -46,6 +69,7 @@ class PendaftaranController extends Controller
      */
     public function store(PendaftaranFormRequest $request)
     {
+<<<<<<< HEAD
         $data =  $request->validated();
         $data['user_id'] = auth()->user()->id;
         $tiket = $data['nama'] . '#' . rand(1, 9999);
@@ -137,17 +161,39 @@ class PendaftaranController extends Controller
         $event->save();
 
         return redirect()->route('riwayat.index')->with('success', 'Pendaftaran berhasil');
+=======
+        // Memvalidasi data yang diinputkan
+        try {
+            $data = $request->validated();
+            $random = rand(1, 1000);
+            $data['nomertiket'] = $random;
+            Pendaftaran::create($data);
+
+
+            return redirect()->route('pendaftaran.index')->with('message', 'Yes! Data Berhasil Disimpan');
+        } catch (\Exception $ex) {
+            return redirect()->route('pendaftaran.index')->with('message', 'Waduh! Data Gagal Disimpan' . $ex->getMessage());
+        }
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 
     /**
      * Display the specified resource.
      */
+<<<<<<< HEAD
     public function show($id)
     {
         $data = BuatEvent::where('id', $id)->first();
         $data->start_date = date('d F Y H:H', strtotime($data->start_date));
         $data->end_date = date('d F Y H:H', strtotime($data->end_date));
         return view('page.user.pendaftaran', compact('data'));
+=======
+    public function show(string $id)
+    {
+        $event = Event::find($id);
+        $user = auth()->user();
+        return view('page.pendaftaran.show', compact('event', 'user'));
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 
     /**
@@ -169,6 +215,7 @@ class PendaftaranController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+<<<<<<< HEAD
     public function destroy(Pendaftaran $pendaftaran, Transaksi $transaksi, string $id)
     {
         // delete
@@ -225,5 +272,38 @@ class PendaftaranController extends Controller
         return $pdf->download($fileName);
         // dd($event, $totalTransaksi);
         // return view('page.pendaftaran.laporan', compact('data', 'totalTransaksi', 'countRiwayat'));
+=======
+    public function destroy(string $id)
+    {
+        //
+    }
+
+    public function detail(string $id)
+    {
+        $item = Pendaftaran::where('id', $id)->first();
+        $snapToken = $item->token;
+
+        return view('page.pendaftaran.detail', compact('item', 'snapToken'))->with('i', (request()->input('page', 1) - 1) * 20);
+    }
+
+    public function exportpdf()
+    {
+        // Export PDF
+        $data = Pendaftaran::all()->where('user_id', Auth::user()->id);
+        foreach ($data as $item) {
+            // $item->user = User::find($item->user_id);
+            $item->event = Event::find($item->event_id);
+            // dd($item->event->eventname);
+            $pdf = Pdf::loadView('page.pendaftaran.detail-pdf', compact('item'))->setPaper('a4', 'portrait')->setOptions(['defaultFont' => 'sans-serif']);
+
+            return $pdf->download('Eticket - ' . $item->event->eventname . ' - ' . $item->nomertiket . '.pdf');
+            // return view('page.pendaftaran.detail-pdf', compact('item'))->with('i', (request()->input('page', 1) - 1) * 20);
+        }
+    }
+
+    public function callback(Request $request)
+    {
+
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 }

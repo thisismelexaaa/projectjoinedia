@@ -2,6 +2,10 @@
 
 namespace App\Http\Requests;
 
+<<<<<<< HEAD
+=======
+use Illuminate\Support\Carbon;
+>>>>>>> f89a811 (First Commit : Progress 80%)
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;

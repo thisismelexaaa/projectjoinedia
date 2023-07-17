@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+<<<<<<< HEAD
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\ValidationException;
+=======
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+>>>>>>> f89a811 (First Commit : Progress 80%)
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -39,6 +44,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+<<<<<<< HEAD
 
     protected function sendFailedLoginResponse(Request $request)
     {
@@ -53,4 +59,6 @@ class LoginController extends Controller
         request()->merge([$field => $login]);
         return $field;
     }
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\BuatEvent;
 use App\Models\User;
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -14,6 +17,7 @@ class LandingPageController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         if ($event = BuatEvent::first()) {
             $event = BuatEvent::first()->paginate(6);
         } else {
@@ -31,6 +35,10 @@ class LandingPageController extends Controller
         $countUser = User::count();
 
         return view('page.landingpage.landingpage', compact('event', 'countEvent', 'countEventFinish', 'countEventNotFinish', 'countUser'));
+=======
+        $event = Event::latest()->paginate(6);
+        return view('page.landingpage.welcome', compact('event'));
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 
     /**

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<<<<<<< HEAD
+=======
+    <div class="pagetitle">
+        <h1>Home</h1>
+    </div>
+>>>>>>> f89a811 (First Commit : Progress 80%)
     <section class="py-3 card info-card sales-card">
         <div class="card-body">
             <div class="text-center mb-4">
@@ -43,6 +49,7 @@
             </div>
             @if (Auth::user()->role == 'user')
                 {{-- Tampilan User --}}
+<<<<<<< HEAD
                 <h5 class="card-title">List Event</h5>
                 <div class="row row-cols-md-5">
                     {{-- <div class="col"> --}}
@@ -60,6 +67,9 @@
                     @endforeach
                     {{-- </div> --}}
                 </div>
+=======
+                <p>Tampilan user</p>
+>>>>>>> f89a811 (First Commit : Progress 80%)
             @else
                 <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false">
@@ -155,6 +165,7 @@
                 </section>
 
                 <section>
+<<<<<<< HEAD
                     <div class="card overflow-hidden" style="height:460px">
                         <div class="card-body pb-1">
                             <div class="row gap-4">
@@ -241,4 +252,41 @@
         loop: false
     });
 </script>
+=======
+                    <div class="card">
+                        <div class="card-body pb-1">
+                            <h5 class="card-title">List Event</h5>
+                            <div class="row row-cols-md-5">
+                                {{-- <div class="col"> --}}
+                                @foreach ($event as $itemevent)
+                                    <div class="news p-1 my-1">
+                                        <div class="post-item clearfix border rounded hover-overlay p-2">
+                                            <img src="storage/eventimage/{{ $itemevent->eventimage }}" alt="">
+                                            <h4><a href="event/{{ $itemevent->id }}">{{ $itemevent->eventname }}</a></h4>
+                                            <p class="text-truncate">{{ $itemevent->eventorganizer }}</p>
+                                            <p><a href="event/{{ $itemevent->id }}">Selengkapnya</a></p>
+                                        </div>
+                                    </div><!-- End sidebar recent posts-->
+                                @endforeach
+                                {{-- </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endif
+        </div>
+    </section>
+@endsection
+
+@section('scripts')
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed('.typed', {
+            strings: ['to Joinedia', '{{ $user->name }}'],
+            typeSpeed: 50,
+            backSpeed: 50,
+            loop: false
+        });
+    </script>
+>>>>>>> f89a811 (First Commit : Progress 80%)
 @endsection

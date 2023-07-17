@@ -70,9 +70,12 @@ class RegisterController extends Controller
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+<<<<<<< HEAD
             'bio' => 'Belum Mengisi Bio',
             'jurusan' => 'Belum Mengisi Jurusan',
 
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
         ]);
     }
 }

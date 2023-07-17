@@ -1,6 +1,10 @@
 <?php
 
 namespace Database\Seeders;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f89a811 (First Commit : Progress 80%)
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,8 +24,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserWithRoleSeeder::class,
+<<<<<<< HEAD
             BuatEventSeeder::class,
             // PenjadwalanSeeder::class,
+=======
+            EventsSeeder::class,
+>>>>>>> f89a811 (First Commit : Progress 80%)
         ]);
     }
 }

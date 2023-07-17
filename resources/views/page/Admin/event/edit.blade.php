@@ -17,14 +17,19 @@
                     </ul>
                 </div>
             @endif
+<<<<<<< HEAD
             <form class="row g-3" id="editForm" method="POST" action="{{ route('be.update', $event->id) }}"
                 enctype="multipart/form-data">
+=======
+            <form class="row g-3" method="POST" action="{{ route('event.update', $event->id) }}" enctype="multipart/form-data">
+>>>>>>> f89a811 (First Commit : Progress 80%)
                 @csrf
                 @method('PUT')
                 <input type="text" name="user_id" id="" value="{{ $event->user_id }}" hidden>
                 <input type="text" value="{{ $event->id }}" hidden>
                 <div class="col-md-6 m-auto">
                     <div class="my-3">
+<<<<<<< HEAD
                         <label for="nama" class="form-label">Nama Event</label>
                         <input value="{{ $event->nama }}" name="nama" type="text" class="form-control"
                             id="nama">
@@ -41,25 +46,51 @@
                             <input value="{{ $event->end_date }}" name="end_date" type="datetime-local"
                                 class="form-control col" id="end_date">
                         </div>
+=======
+                        <label for="eventname" class="form-label">Nama Event</label>
+                        <input value="{{ $event->eventname }}" name="eventname" type="text" class="form-control"
+                            id="eventname">
+                    </div>
+                    <div class="my-3">
+                        <label for="eventdate" class="form-label">Tanggal</label>
+                        <input value="{{ $event->eventdate }}" name="eventdate" type="datetime-local" class="form-control"
+                            id="eventdate">
+>>>>>>> f89a811 (First Commit : Progress 80%)
                     </div>
 
                     <div class="my-3">
                         <label for="tempat" class="form-label">Tempat</label>
+<<<<<<< HEAD
                         <input placeholder="Masukkan Tempat Event" name="location" type="text" class="form-control"
                             id="tempat" value="{{ $event->location }}">
+=======
+                        <input placeholder="Masukkan Tempat Event" name="eventlocation" type="text" class="form-control"
+                            id="tempat" value="{{ $event->eventlocation }}">
+>>>>>>> f89a811 (First Commit : Progress 80%)
                     </div>
                     <div class="my-3 row">
                         <div class="col">
                             <label for="type" class="form-label">Type</label>
+<<<<<<< HEAD
                             <select class="form-select" id="type" name="type" onchange="handleTypeChange(this)">
                                 <option value="gratis" {{ $event->type == 'gratis' ? 'selected' : '' }}>Gratis</option>
                                 <option value="berbayar" {{ $event->type == 'berbayar' ? 'selected' : '' }}>Berbayar
                                 </option>
                                 <!-- tambahkan opsi lain jika diperlukan -->
+=======
+                            <select class="form-select text-capitalize" name="eventtype" id="type">
+                                <option value="{{ $event->eventtype }}" selected>{{ $event->eventtype }}</option>
+                                @if ($event->eventtype == 'gratis')
+                                    <option value="berbayar">Berbayar</option>
+                                @else
+                                    <option value="gratis">Gratis</option>
+                                @endif
+>>>>>>> f89a811 (First Commit : Progress 80%)
                             </select>
                         </div>
 
                         <div class="col">
+<<<<<<< HEAD
                             <label for="price" class="form-label d-flex justify-content-between">
                                 <span class="">Harga Event</span>
                                 <span id="formattedPrice" class="form-text">@currency($event->price)</span>
@@ -69,11 +100,20 @@
 
                             <input readonly placeholder="Masukkan Type Event Dahulu" name="price" type="number"
                                 class="form-control" id="price" value="{{ $event->price }}">
+=======
+                            <label for="eventprice" class="form-label">Harga Event</label>
+                            <input readonly placeholder="Masukkan Type Event Dahulu" type="number" class="form-control"
+                                id="eventprice1" hidden>
+
+                            <input readonly placeholder="Masukkan Type Event Dahulu" name="eventprice" type="number"
+                                class="form-control" id="eventprice" value="{{ $event->eventprice }}">
+>>>>>>> f89a811 (First Commit : Progress 80%)
                         </div>
                     </div>
 
                     <div class="my-3">
                         <label for="penyelenggara" class="form-label">Penyelenggara</label>
+<<<<<<< HEAD
                         <input placeholder="Masukkan Penyelenggara Event" name="organizer" type="text"
                             class="form-control price" id="penyelenggara" value="{{ $event->organizer }}">
                         <div class="d-flex gap-2 mt-2">
@@ -109,31 +149,52 @@
                                 <label for="levelukm" class="form-check-label">Ukm</label>
                             </div>
                         </div>
+=======
+                        <input placeholder="Masukkan Penyelenggara Event" name="eventorganizer" type="text"
+                            class="form-control eventprice" id="penyelenggara" value="{{ $event->eventorganizer }}">
+>>>>>>> f89a811 (First Commit : Progress 80%)
                     </div>
                     <div class="my-3 row">
                         <div class="col">
                             <label for="status" class="form-label">Status</label>
+<<<<<<< HEAD
                             <select class="form-select text-capitalize" name="status" id="status">
                                 <option value="{{ $event->status }}" selected>{{ $event->status }}
                                 </option>
                                 @if ($event->status == 'aktif')
                                     <option value="selesai">Selesai</option>
                                 @elseif($event->status == 'selesai')
+=======
+                            <select class="form-select text-capitalize" name="eventstatus" id="status">
+                                <option value="{{ $event->eventstatus }}" selected>{{ $event->eventstatus }}
+                                </option>
+                                @if ($event->eventstatus == 'aktif')
+                                    <option value="selesai">Selesai</option>
+                                @elseif($event->eventstatus == 'selesai')
+>>>>>>> f89a811 (First Commit : Progress 80%)
                                     <option value="aktif">Aktif</option>
                                 @endif
                             </select>
                         </div>
                         <div class="col">
+<<<<<<< HEAD
                             <label for="kategori" class="form-label">Kategori Event</label>
                             <select class="form-select text-capitalize" name="kategori" id="kategori">
                                 <option selected value="{{ $event->kategori }}">{{ $event->kategori }}</option>
                                 @if ($event->kategori == 'akademik')
+=======
+                            <label for="eventkategori" class="form-label">Kategori Event</label>
+                            <select class="form-select text-capitalize" name="eventkategori" id="eventkategori">
+                                <option selected value="{{ $event->eventkategori }}">{{ $event->eventkategori }}</option>
+                                @if ($event->eventkategori == 'akademik')
+>>>>>>> f89a811 (First Commit : Progress 80%)
                                     <option value="non-akademik">Non-Akademik</option>
                                 @else
                                     <option value="akademik">Akademik</option>
                                 @endif
                             </select>
                         </div>
+<<<<<<< HEAD
                         <div class="col">
                             <label class="form-label" for="kuota">Kuota</label>
                             <input type="number" name="kuota" class="form-control" placeholder="Masukkan Kuota 1-150"
@@ -196,6 +257,22 @@
                             Tambah Sponsor
                         </button>
                     </div>
+=======
+                    </div>
+
+                    <div>
+                        <input type="hidden" name="eventdescription" value="{{ $event->eventdescription }}">
+                        <div id="editor">{!! $event->eventdescription !!}</div>
+                    </div>
+
+                    <div class="my-3">
+                        <label for="poster" class="form-label">Poster</label>
+                        <input name="eventimage" type="file" class="form-control" id="poster">
+                        <span class="text-danger fs-6 fst-italic">"Ukuran Poster minimal 500x500"
+                        </span>
+                    </div>
+
+>>>>>>> f89a811 (First Commit : Progress 80%)
                     <div class="form-check my-3">
                         <input class="form-check-input gridCheck" name="gridCheck" type="checkbox" id="gridCheck">
                         <label class="form-check-label" for="gridCheck">
@@ -233,6 +310,7 @@
             });
         });
 
+<<<<<<< HEAD
         // check checklist
         var elems = document.querySelectorAll('.sponsorCheck');
 
@@ -243,10 +321,43 @@
                     document.getElementById("sponsors").hidden = false;
                 } else {
                     document.getElementById("sponsors").hidden = true;
+=======
+        // Check option select type event price
+        var elems = document.querySelectorAll('#type');
+        [].forEach.call(elems, function(el) {
+            el.addEventListener('change', function() {
+                var checked = document.querySelectorAll('#type option:checked');
+                if (checked.length) {
+                    if (checked[0].value == 'gratis') {
+                        document.getElementById("eventprice1").hidden = false;
+                        document.getElementById("eventprice1").placeholder = "Gratis";
+
+                        document.getElementById("eventprice").hidden = true;
+                        document.getElementById("eventprice").value = 0;
+
+                    } else if (checked[0].value == 'berbayar') {
+                        document.getElementById("eventprice1").hidden = true;
+                        document.getElementById("eventprice1").placeholder = "Gratis";
+
+                        document.getElementById("eventprice").hidden = false;
+                        document.getElementById("eventprice").readOnly = false;
+                        document.getElementById("eventprice").value = "{{ $event->eventprice }}";
+
+                    } else {
+                        document.getElementById("eventprice1").hidden = false;
+                        document.getElementById("eventprice1").placeholder = "Pilih Type Event";
+                        document.getElementById("eventprice1").value = "gratis";
+
+                        document.getElementById("eventprice").hidden = true;
+                        document.getElementById("eventprice").readOnly = true;
+                        document.getElementById("eventprice").value = 0;
+                    }
+>>>>>>> f89a811 (First Commit : Progress 80%)
                 }
             });
         });
 
+<<<<<<< HEAD
         document.addEventListener("DOMContentLoaded", function() {
             const addSponsorButton = document.getElementById("addSponsor");
             const addedSponsorsContainer = document.getElementById("added_sponsor");
@@ -345,6 +456,13 @@
         });
         quill2.on('text-change', function(delta, oldDelta, source) {
             document.querySelector("input[name='deskripsiSponsor']").value = quill2.root.innerHTML;
+=======
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+        quill.on('text-change', function(delta, oldDelta, source) {
+            document.querySelector("input[name='eventdescription']").value = quill.root.innerHTML;
+>>>>>>> f89a811 (First Commit : Progress 80%)
         });
     </script>
 @endsection

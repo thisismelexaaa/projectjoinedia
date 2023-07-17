@@ -14,9 +14,13 @@
     },
     "dependencies": {
         "aos": "^2.3.4",
+<<<<<<< HEAD
         "bootstrap-icons": "^1.10.5",
         "datatables.net-dt": "^1.13.6",
         "fullcalendar": "^6.1.8",
         "sweetalert2": "^11.11.1"
+=======
+        "bootstrap-icons": "^1.10.5"
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 }

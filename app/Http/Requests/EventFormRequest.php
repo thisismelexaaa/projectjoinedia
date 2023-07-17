@@ -5,7 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
 class EventFormRequest extends FormRequest
 {
     /**
@@ -25,6 +28,7 @@ class EventFormRequest extends FormRequest
     {
         // Rules
         $rules = [
+<<<<<<< HEAD
             'nama' => [
                 'required', 'string', 'max:255'
             ],
@@ -50,11 +54,36 @@ class EventFormRequest extends FormRequest
                 'required', 'string', 'max:255',
             ],
             'kategori' => [
+=======
+            'eventname' => [
+                'required', 'string', 'max:255'
+            ],
+            'eventdate' => [
+                'required', 'string', 'max:255',
+            ],
+            'eventtype' => [
+                'required', 'string', 'max:255',
+            ],
+            'eventorganizer' => [
+                'required', 'string', 'max:255',
+            ],
+            'eventstatus' => [
+                'required', 'string', 'max:255',
+            ],
+            'eventdescription' => [
+                'required', 'string',
+            ],
+            'eventlocation' => [
+                'required', 'string', 'max:255',
+            ],
+            'eventkategori' => [
+>>>>>>> f89a811 (First Commit : Progress 80%)
                 'required', 'string', 'max:255',
             ],
             'user_id' => [
                 'required', 'string', 'max:255',
             ],
+<<<<<<< HEAD
             'price' => [
                 'numeric',
             ],
@@ -68,6 +97,84 @@ class EventFormRequest extends FormRequest
                 'required', 'string', 'max:255',
             ],
         ];
+=======
+            'eventprice' => 'numeric',
+        ];
+
+        // Create Event
+        // if ($this->getMethod() == "POST") {
+        //     $rules += [
+        //         'eventname' => [
+        //             'required', 'string', 'max:255'
+        //         ],
+        //         'eventdate' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventtype' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventorganizer' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventstatus' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventimage' => [
+        //             'image',
+        //         ],
+        //         'eventkategori' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventlocation' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventdescription' => [
+        //             'required', 'string',
+        //         ],
+        //         'user_id' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventprice' => 'numeric'
+        //     ];
+        // }
+
+        // Edit Event
+        // if ($this->getMethod() == "PUT") {
+        //     $rules += [
+        //         'eventname' => [
+        //             'required', 'string', 'max:255'
+        //         ],
+        //         'eventdate' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventtype' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventorganizer' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventstatus' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventimage' => [
+        //             'image',
+        //         ],
+        //         'eventdescription' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventlocation' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventkategori' => [
+        //             'required', 'string',
+        //         ],
+        //         'user_id' => [
+        //             'required', 'string', 'max:255',
+        //         ],
+        //         'eventprice' => 'numeric'
+        //     ];
+        // }
+>>>>>>> f89a811 (First Commit : Progress 80%)
         return $rules;
     }
 

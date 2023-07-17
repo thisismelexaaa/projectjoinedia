@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<<<<<<< HEAD
+=======
+    <div class="pagetitle">
+        <h1>List Pendaftar</h1>
+    </div>
+>>>>>>> f89a811 (First Commit : Progress 80%)
     <section class="card info-card sales-card ">
         {{-- List Event --}}
         <div class="card-body">
@@ -15,7 +21,11 @@
                             <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
                                 data-bs-target="{{ '#accordionTentangEvent' . $item->id }}" aria-expanded="true"
                                 aria-controls="accordionTentangEvent">
+<<<<<<< HEAD
                                 {{ $item->nama }}
+=======
+                                {{ $item->eventname }}
+>>>>>>> f89a811 (First Commit : Progress 80%)
                             </button>
                         </h2>
                         <div id="{{ 'accordionTentangEvent' . $item->id }}" class="accordion-collapse collapse"
@@ -26,12 +36,20 @@
                                         class="table table-borderless datatable table-hover table-responsive table-responsive-md table-responsive-lg table-responsive-sm d-block">
                                         <thead>
                                             <tr>
+<<<<<<< HEAD
                                                 <th>#</th>
                                                 {{-- <th>Nama Event</th> --}}
                                                 <th>Nama Peserta</th>
                                                 <th>Mendaftar Sebagai</th>
                                                 <th>Nomor Tiket</th>
                                                 <th>Status</th>
+=======
+                                                <th scope="col">#</th>
+                                                {{-- <th scope="col">Nama Event</th> --}}
+                                                <th scope="col">Nama Peserta</th>
+                                                <th scope="col">Mendaftar Sebagai</th>
+                                                <th scope="col">Nomor Tiket</th>
+>>>>>>> f89a811 (First Commit : Progress 80%)
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -44,7 +62,10 @@
                                                     <td class="align-baseline">{{ $items->nama }}</td>
                                                     <td class="align-baseline text-capitalize">{{ $items->type }}</td>
                                                     <td class="align-baseline">{{ $items->nomertiket }}</td>
+<<<<<<< HEAD
                                                     <td class="align-baseline">{{ $items->status }}</td>
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
                                                 </tr>
                                             @endforeach
                                         </tbody>

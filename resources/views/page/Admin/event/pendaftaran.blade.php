@@ -35,6 +35,7 @@
                         <tr>
                             <th class="align-baseline" scope="row">{{ ++$i }}</th>
                             <td class="align-baseline">
+<<<<<<< HEAD
                                 <img src="storage/eventimage/{{ $event->image }}" height="125" alt="">
                             </td>
                             <td class="align-baseline">
@@ -81,6 +82,52 @@
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <form action="{{ route('be.destroy', $event->id) }}" method="post">
+=======
+                                <img src="storage/eventimage/{{ $event->eventimage }}" height="125" alt="">
+                            </td>
+                            <td class="align-baseline">
+                                <a href="event/{{ $event->id }}"
+                                    class="text-decoration-none text-dark fw-bold">{{ Str::limit($event->eventname, 25) }}</a>
+                            </td>
+                            <td class="align-baseline">
+                                {{ \Carbon\Carbon::parse($event->eventdate)->formatLocalized('%A, %d %B %Y') }}
+                            </td>
+                            <td class="text-capitalize align-baseline">{{ $event->eventtype }}</td>
+                            <td class="text-capitalize align-baseline">
+                                {{ $event->eventkategori }}</td>
+                            <td class="align-baseline">{{ $event->eventorganizer }}</td>
+                            <td class="align-baseline">{{ $event->eventlocation }}</td>
+                            <td class="align-baseline">@currency($event->eventprice)</td>
+                            <td class="align-baseline text-capitalize">{{ $event->user->name }}</td>
+                            <td class="align-baseline">
+                                <span class="">{!! Str::limit($event->eventdescription, 25) !!}</span>
+                            </td>
+
+                            @if ($event->eventstatus == 'aktif' || $event->eventstatus == 'Aktif')
+                                <td class="align-baseline"><span
+                                        class="text-capitalize badge w-100 bg-success">{{ $event->eventstatus }}</span>
+                                </td>
+                            @elseif ($event->eventstatus == 'berjalan' || $event->eventstatus == 'Berjalan')
+                                <td class="align-baseline"><span
+                                        class="text-capitalize badge w-100 bg-primary">{{ $event->eventstatus }}</span>
+                                </td>
+                            @else
+                                <td class="align-baseline"><span
+                                        class="text-capitalize badge w-100 bg-danger">{{ $event->eventstatus }}</span>
+                                </td>
+                            @endif
+                            <td class="align-baseline">
+                                <div class="gap-3 d-flex">
+                                    <a href="event/{{ $event->id }}" class="btn btn-sm btn-primary"
+                                        data-bs-toggle="tooltip" data-bs-title="Show">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="/event/{{ $event->id }}/edit"
+                                        class="btn btn-sm btn-warning"data-bs-toggle="tooltip" data-bs-title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form action="{{ route('event.destroy', $event->id) }}" method="post">
+>>>>>>> f89a811 (First Commit : Progress 80%)
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger"
@@ -91,7 +138,10 @@
                                     </form>
                                 </div>
                             </td>
+<<<<<<< HEAD
                             @endif
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
                         </tr>
                     @endforeach
                 </tbody>

@@ -1,12 +1,17 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\AlgoritmaGeneticController;
 use App\Http\Controllers\BuatEventController;
+=======
+
+>>>>>>> f89a811 (First Commit : Progress 80%)
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+<<<<<<< HEAD
 use App\Http\Controllers\GeneticAlgorithmController;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\SponsorController;
@@ -14,6 +19,11 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PenjadwalanController;
 use App\Http\Controllers\ScheduleController;
+=======
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\Api\TransaksiController;
+>>>>>>> f89a811 (First Commit : Progress 80%)
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +42,7 @@ use App\Http\Controllers\ScheduleController;
 //         return view('welcome', LandingPageController::class);
 //     }
 // );
+<<<<<<< HEAD
 
 Route::get('/', [LandingPageController::class, 'index']);
 
@@ -44,12 +55,19 @@ Auth::routes();
 // callback xendit
 Route::post('/callback', [PendaftaranController::class, 'callback']);
 
+=======
+Route::get('/', [LandingPageController::class, 'index']);
+
+Auth::routes();
+
+>>>>>>> f89a811 (First Commit : Progress 80%)
 Route::group(['middleware' => 'auth'], function () {
     // event
     Route::resource('home', HomeController::class);
     Route::resource('event', EventController::class);
     Route::get('/listpendaftar', [EventController::class, 'listpendaftar'])->name('listpendaftar');
     Route::get('/exportpdf/{id}', [EventController::class, 'exportpdfuser'])->name('exportpdfuser');
+<<<<<<< HEAD
     Route::get('/laporan', [EventController::class, 'laporan'])->name('event.laporan');
 
     // Make Schedule
@@ -95,3 +113,15 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get("/algoritma-genetika", [AlgoritmaGeneticController::class, "index"]);
+=======
+    // user
+    Route::resource('user', UserController::class);
+    // Pendaftaran
+    Route::resource('pendaftaran', PendaftaranController::class);
+    Route::get('/detail/{id}', [PendaftaranController::class, 'detail'])->name('detail');
+    Route::get('/exportpdf', [PendaftaranController::class, 'exportpdf'])->name('exportpdf');
+    Route::get('/callback', [PendaftaranController::class, 'callback'])->name('callback');
+});
+
+
+>>>>>>> f89a811 (First Commit : Progress 80%)

@@ -12,10 +12,17 @@
                             @csrf
 
                             <div class="row mb-3">
+<<<<<<< HEAD
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email or Username') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="username" value="{{ old('email') }}" required autocomplete="email" autofocus>
+=======
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+>>>>>>> f89a811 (First Commit : Progress 80%)
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">

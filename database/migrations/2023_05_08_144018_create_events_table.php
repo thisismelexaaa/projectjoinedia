@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+<<<<<<< HEAD
             $table->string('nama');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
@@ -27,6 +28,18 @@ return new class extends Migration
             $table->string('level');
             $table->double('price')->default(0);
             $table->integer('kuota')->default(150);
+=======
+            $table->string('eventname');
+            $table->datetime('eventdate');
+            $table->string('eventtype')->default('gratis');
+            $table->string('eventorganizer');
+            $table->string('eventstatus');
+            $table->string('eventimage');
+            $table->string('eventkategori');
+            $table->string('eventlocation');
+            $table->text('eventdescription');
+            $table->double('eventprice')->default(0);
+>>>>>>> f89a811 (First Commit : Progress 80%)
             $table->timestamps();
         });
     }

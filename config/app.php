@@ -16,7 +16,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'name' => env('APP_NAME', 'Joinedia'),
+=======
+    'name' => env('APP_NAME', 'Laravel'),
+>>>>>>> f89a811 (First Commit : Progress 80%)
 
     /*
     |--------------------------------------------------------------------------
@@ -170,7 +174,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+<<<<<<< HEAD
         Yajra\DataTables\DataTablesServiceProvider::class,
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
     ])->toArray(),
 
     /*
@@ -187,7 +194,10 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+<<<<<<< HEAD
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
     ])->toArray(),
 
 ];

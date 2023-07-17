@@ -13,6 +13,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+<<<<<<< HEAD
         '/callback'
+=======
+>>>>>>> f89a811 (First Commit : Progress 80%)
     ];
 }

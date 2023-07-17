@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+<<<<<<< HEAD
 use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserFormRequest;
 use GuzzleHttp\Psr7\Request;
+=======
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserFormRequest;
+use Illuminate\Support\Facades\Storage;
+>>>>>>> f89a811 (First Commit : Progress 80%)
 
 class UserController extends Controller
 {
@@ -17,9 +24,21 @@ class UserController extends Controller
     public function index()
     {
         // tampilkan semua user
+<<<<<<< HEAD
         $user = User::latest()->paginate(20);
 
         return view('page.admin.user.index', compact('user'))->with('i', (request()->input('page', 1) - 1) * 20);
+=======
+        $dataUser = User::latest()->paginate(20);
+
+        // tampilkan role user saja
+        $user = User::where('role', 'user')->latest()->paginate(20);
+
+        // deteksi role user
+        $role = auth()->user()->role;
+
+        return view('page.admin.user.index', compact('user', 'dataUser'))->with('i', (request()->input('page', 1) - 1) * 20);
+>>>>>>> f89a811 (First Commit : Progress 80%)
     }
 
     /**
@@ -73,6 +92,7 @@ class UserController extends Controller
      */
     public function update(UserFormRequest $request, User $user)
     {
+<<<<<<< HEAD
         if ($request->hasFile('userimage')) {
             // delete old image
             $public_path = public_path('assets/images/userimage/');
@@ -92,6 +112,26 @@ class UserController extends Controller
 
         $user->fill($data);
         $user->save();
+=======
+        if ($request->file('userimage') == "") {
+            // update without image
+            $data = $request->validated();
+            $user->fill($data);
+            $user->update();
+        } else {
+            // delete old image
+            Storage::disk('local')->delete('public/userimage/' . $user->userimage);
+
+            // upload new image
+            $data = $request->validated();
+            $image = $request->file('userimage');
+            $image->storeAs('public/userimage', $image->hashName());
+            $data['userimage'] = $image->hashName();
+
+            $user->fill($data);
+            $user->save();
+        }
+>>>>>>> f89a811 (First Commit : Progress 80%)
 
         // cek role user
         if (auth()->user()->role == 'admin' || auth()->user()->role == 'superadmin') {
@@ -107,6 +147,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //destroy data
+<<<<<<< HEAD
         // delete old image
         if ($user->userimage && file_exists(public_path('assets/images/userimage/' . $user->userimage))) {
             unlink(public_path('assets/images/userimage/' . $user->userimage));
@@ -132,4 +173,10 @@ class UserController extends Controller
 
         // return view('page.admin.user.laporan', compact('user', 'countUser'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
+=======
+        Storage::disk('local')->delete('public/userimage/' . $user->userimage);
+        $user->delete();
+        return redirect()->route('user.index')->with('message', 'Data Berhasil Dihapus');
+    }
+>>>>>>> f89a811 (First Commit : Progress 80%)
 }
