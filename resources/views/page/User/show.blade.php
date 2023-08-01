@@ -13,7 +13,7 @@
                         @if ($user->userimage == null)
                             <img src="{{ Avatar::create($user->name)->toBase64() }}" alt="Profile" class="rounded-circle">
                         @else
-                            <img src="{{ asset('storage/userimage/' . $user->userimage) }}" alt="Profile"
+                            <img src="{{ asset('assets/images/userimage/'. $user->userimage) }}" alt="Profile"
                                 class="rounded-circle">
                         @endif
                         <h2>{{ $user->name }}</h2>
@@ -101,7 +101,7 @@
                                                 <img id="output" src="{{ Avatar::create($user->name)->toBase64() }}"
                                                     alt="Profile">
                                             @else
-                                                <img src="{{ asset('storage/userimage/' . $user->userimage) }}"
+                                                <img src="{{ asset('assets/images/userimage/' . $user->userimage) }}"
                                                     alt="Profile" id="output" class="rounded-circle">
                                             @endif
 

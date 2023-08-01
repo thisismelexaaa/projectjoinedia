@@ -14,16 +14,17 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->string('eventname');
-            $table->datetime('eventdate');
-            $table->string('eventtype')->default('gratis');
-            $table->string('eventorganizer');
-            $table->string('eventstatus');
-            $table->string('eventimage');
-            $table->string('eventkategori');
-            $table->string('eventlocation');
-            $table->text('eventdescription');
-            $table->double('eventprice')->default(0);
+            $table->string('nama');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->string('type')->default('gratis');
+            $table->string('organizer');
+            $table->string('status');
+            $table->string('image')->nullable();
+            $table->string('kategori');
+            $table->string('location');
+            $table->text('description');
+            $table->double('price')->default(0);
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class EventFormRequest extends FormRequest
 {
     /**
@@ -24,109 +25,43 @@ class EventFormRequest extends FormRequest
     {
         // Rules
         $rules = [
-            'eventname' => [
+            'nama' => [
                 'required', 'string', 'max:255'
             ],
-            'eventdate' => [
+            'start_date' => [
+                'required', 'date',
+            ],
+            'end_date' => [
+                'required', 'date',
+            ],
+            'type' => [
                 'required', 'string', 'max:255',
             ],
-            'eventtype' => [
+            'organizer' => [
                 'required', 'string', 'max:255',
             ],
-            'eventorganizer' => [
+            'status' => [
                 'required', 'string', 'max:255',
             ],
-            'eventstatus' => [
-                'required', 'string', 'max:255',
-            ],
-            'eventdescription' => [
+            'description' => [
                 'required', 'string',
             ],
-            'eventlocation' => [
+            'location' => [
                 'required', 'string', 'max:255',
             ],
-            'eventkategori' => [
+            'kategori' => [
                 'required', 'string', 'max:255',
             ],
             'user_id' => [
                 'required', 'string', 'max:255',
             ],
-            'eventprice' => 'numeric',
+            'price' => [
+                'numeric',
+            ],
+            'image' => [
+                'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048',
+            ],
         ];
-
-        // Create Event
-        // if ($this->getMethod() == "POST") {
-        //     $rules += [
-        //         'eventname' => [
-        //             'required', 'string', 'max:255'
-        //         ],
-        //         'eventdate' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventtype' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventorganizer' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventstatus' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventimage' => [
-        //             'image',
-        //         ],
-        //         'eventkategori' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventlocation' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventdescription' => [
-        //             'required', 'string',
-        //         ],
-        //         'user_id' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventprice' => 'numeric'
-        //     ];
-        // }
-
-        // Edit Event
-        // if ($this->getMethod() == "PUT") {
-        //     $rules += [
-        //         'eventname' => [
-        //             'required', 'string', 'max:255'
-        //         ],
-        //         'eventdate' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventtype' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventorganizer' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventstatus' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventimage' => [
-        //             'image',
-        //         ],
-        //         'eventdescription' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventlocation' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventkategori' => [
-        //             'required', 'string',
-        //         ],
-        //         'user_id' => [
-        //             'required', 'string', 'max:255',
-        //         ],
-        //         'eventprice' => 'numeric'
-        //     ];
-        // }
         return $rules;
     }
 

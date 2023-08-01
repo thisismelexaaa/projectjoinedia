@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Penjadwalan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'eventname',
-        'eventdate',
-        'eventtype',
-        'eventorganizer',
-        'eventstatus',
-        'eventimage',
-        'eventdescription',
-        'eventkategori',
-        'eventlocation',
-        'eventprice',
+        'nama',
+        'start_date',
+        'end_date',
+        'type',
+        'organizer',
+        'status',
+        'image',
+        'description',
+        'kategori',
+        'location',
+        'price',
         'user_id',
         'event_id',
     ];
@@ -29,7 +31,16 @@ class Event extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Relationship event dengan pendaftaran
+    public function penjadwalan()
+    {
+        return $this->hasOne(Penjadwalan::class, 'event_id');
+    }
+
+    public function sponsor()
+    {
+        return $this->hasOne(Sponsor::class, 'event_id');
+    }
+
     public function pendaftaran()
     {
         return $this->hasMany(Pendaftaran::class, 'event_id');

@@ -53,10 +53,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
-
-    // Relationship user dengan pendaftaran
-    public function pendaftaran()
-    {
-        return $this->hasMany(Pendaftaran::class, 'user_id');
-    }
 }

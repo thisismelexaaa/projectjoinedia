@@ -9,29 +9,17 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'pendaftarans';
+    protected $guarded = ['id'];
 
-    protected $fillable = [
-        'nomertiket',
-        'nama',
-        'email',
-        'username',
-        'type',
-        'event_id',
-        'user_id',
-        'price',
-        'status',
-    ];
-
-    // Relationship pendaftaran dengan event
+    // relasi ke tabel event
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Event::class);
     }
 
-    // Relationship pendaftaran dengan user
-    public function user()
+    // relasi ke table transaksi
+    public function transaksi()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(Transaksi::class, 'pendaftarans_id');
     }
 }

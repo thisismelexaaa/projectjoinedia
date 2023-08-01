@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserFormRequest;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -16,15 +14,9 @@ class UserController extends Controller
     public function index()
     {
         // tampilkan semua user
-        $dataUser = User::latest()->paginate(20);
+        $user = User::latest()->paginate(20);
 
-        // tampilkan role user saja
-        $user = User::where('role', 'user')->latest()->paginate(20);
-
-        // deteksi role user
-        $role = auth()->user()->role;
-
-        return view('page.admin.user.index', compact('user', 'dataUser'))->with('i', (request()->input('page', 1) - 1) * 20);
+        return view('page.admin.user.index', compact('user'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
     /**
@@ -78,24 +70,25 @@ class UserController extends Controller
      */
     public function update(UserFormRequest $request, User $user)
     {
-        if ($request->file('userimage') == "") {
-            // update without image
-            $data = $request->validated();
-            $user->fill($data);
-            $user->update();
-        } else {
+        if ($request->hasFile('userimage')) {
             // delete old image
-            Storage::disk('local')->delete('public/userimage/' . $user->userimage);
+            $public_path = public_path('assets/images/userimage/');
+            if (file_exists(public_path('assets/images/userimage/' . $user->userimage))) {
+                unlink($public_path . $user->userimage);
+            }
 
             // upload new image
-            $data = $request->validated();
             $image = $request->file('userimage');
-            $image->storeAs('public/userimage', $image->hashName());
-            $data['userimage'] = $image->hashName();
-
-            $user->fill($data);
-            $user->save();
+            $imagePath = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/userimage'), $imagePath);
+            $data = $request->validated();
+            $data['userimage'] = $imagePath;
+        } else {
+            $data = $request->validated();
         }
+
+        $user->fill($data);
+        $user->save();
 
         // cek role user
         if (auth()->user()->role == 'admin' || auth()->user()->role == 'superadmin') {
@@ -105,14 +98,20 @@ class UserController extends Controller
         }
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
         //destroy data
-        Storage::disk('local')->delete('public/userimage/' . $user->userimage);
+        // delete old image
+        if ($user->userimage && file_exists(public_path('assets/images/userimage/' . $user->userimage))) {
+            unlink(public_path('assets/images/userimage/' . $user->userimage));
+        }
+
         $user->delete();
+
         return redirect()->route('user.index')->with('message', 'Data Berhasil Dihapus');
     }
 }

@@ -201,11 +201,11 @@ body {
 
             .card-img-overlay {
                 transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-                background: rgb(255, 186, 33);
+                background: rgb(33, 81, 255);
                 background: linear-gradient(
                     0deg,
-                    rgba(255, 186, 33, 0.5) 0%,
-                    rgba(255, 186, 33, 1) 100%
+                    rgba(33, 81, 255, 0.5) 0%,
+                    rgba(33, 81, 255, 1) 100%
                 );
             }
         }
@@ -241,11 +241,11 @@ body {
     }
     .card-img-overlay {
         transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
-        background: rgb(255, 186, 33);
+        background: rgb(33, 81, 255);
         background: linear-gradient(
             0deg,
-            rgba(255, 186, 33, 0.3785889355742297) 0%,
-            rgba(255, 186, 33, 1) 100%
+            rgba(33, 81, 255, 0.3785889355742297) 0%,
+            rgba(33, 81, 255, 1) 100%
         );
     }
 }

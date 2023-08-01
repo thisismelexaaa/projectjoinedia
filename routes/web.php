@@ -1,14 +1,16 @@
 <?php
 
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\Api\TransaksiController;
+use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\TransaksiController;
+use App\Models\Pendaftaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,19 +33,26 @@ Route::get('/', [LandingPageController::class, 'index']);
 
 Auth::routes();
 
+// callback xendit
+Route::post('/callback', [PendaftaranController::class, 'callback']);
+
 Route::group(['middleware' => 'auth'], function () {
     // event
     Route::resource('home', HomeController::class);
     Route::resource('event', EventController::class);
     Route::get('/listpendaftar', [EventController::class, 'listpendaftar'])->name('listpendaftar');
     Route::get('/exportpdf/{id}', [EventController::class, 'exportpdfuser'])->name('exportpdfuser');
+
+    // Pendaftaran
+    Route::resource('riwayat', PendaftaranController::class);
+
     // user
     Route::resource('user', UserController::class);
-    // Pendaftaran
-    Route::resource('pendaftaran', PendaftaranController::class);
-    Route::get('/detail/{id}', [PendaftaranController::class, 'detail'])->name('detail');
-    Route::get('/exportpdf', [PendaftaranController::class, 'exportpdf'])->name('exportpdf');
-    Route::get('/callback', [PendaftaranController::class, 'callback'])->name('callback');
+
+    // Kalender
+    Route::resource('penjadwalan', PenjadwalanController::class);
+
+    // Sponsor
+    Route::resource('sponsor', SponsorController::class);
+
 });
-
-

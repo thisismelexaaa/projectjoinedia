@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="pagetitle">
-        <h1>List User</h1>
-    </div>
     {{-- List User --}}
     <div class="card info-card sales-card">
         <div class="card-body">
@@ -29,7 +26,8 @@
                     <tbody>
                         {{-- Cek role user --}}
                         @if (Auth::user()->role == 'superadmin')
-                            @foreach ($dataUser as $users)
+                            @foreach ($user as $users)
+                                {{-- @dd($users) --}}
                                 <tr>
                                     <th class="align-baseline" scope="row">{{ ++$i }}</th>
                                     <td class="align-baseline">
@@ -37,8 +35,7 @@
                                             <img style="width: 40px" src="{{ Avatar::create($users->name)->toBase64() }}"
                                                 alt="Profile" class="rounded-circle">
                                         @else
-                                            <img style="width: 40px"
-                                                src="{{ asset('storage/userimage/' . $users->userimage) }}" alt="Profile"
+                                            <img style="width: 40px" src="{{ asset($users->userimage) }}" alt="Profile"
                                                 class="rounded-circle">
                                         @endif
                                         <span class="text-capitalize mx-3">
@@ -65,38 +62,49 @@
                                     @endif
                                     <td class="align-baseline">
                                         <div class="d-flex gap-3">
-                                            <a href="user/{{ $users->id }}" class="btn btn-sm btn-primary"
+                                            <a href="{{ route('user.show', $users->id) }}" class="btn btn-sm btn-primary"
                                                 data-bs-toggle="tooltip" data-bs-title="Show">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="/user/{{ $users->id }}/edit" class="btn btn-sm btn-warning"
+                                            <a href="{{ route('user.edit', $users->id) }}" class="btn btn-sm btn-warning"
                                                 data-bs-toggle="tooltip" data-bs-title="Edit">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
-                                                data-bs-title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
+                                            <form action="{{ route('user.destroy', $users->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    onclick="Javascript: return confirm('Apakah anda ingin menghapus data ini?')"
+                                                    data-bs-toggle="tooltip" data-bs-title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             {{-- Cek asal kampus user apakah sama dengan asal kampus admin maka tampilkan asalkampus yang sama --}}
-
                             @foreach ($user as $users)
                                 @if (Auth::user()->jurusan == $users->jurusan)
                                     <tr>
                                         <th class="align-baseline" scope="row">{{ ++$i }}</th>
                                         <td class="align-baseline">
-                                            <img style="width: 40px"
-                                                src="{{ Avatar::create($users->name)->toBase64() }}" />
-                                            <a href="{{ route('user.show', $user->id) }}" class="text-dark fw-bold">
+                                            @if ($users->userimage == null)
+                                                <img style="width: 40px"
+                                                    src="{{ Avatar::create($users->name)->toBase64() }}" alt="Profile"
+                                                    class="rounded-circle">
+                                            @else
+                                                <img style="width: 40px" src="{{ asset($users->userimage) }}"
+                                                    alt="Profile" class="rounded-circle">
+                                            @endif
+                                            <a href="{{ route('user.show', $users->id) }}" class="text-dark fw-bold">
                                                 <span class="text-capitalize mx-3">{{ $users->name }}</span>
                                             </a>
                                         </td>
                                         <td class="align-baseline">{{ $users->username }}</td>
                                         <td class="align-baseline">{{ $users->email }}</td>
+                                        <td class="align-baseline">{!! $users->bio !!}</td>
                                         <td class="align-baseline">{{ $users->jurusan }}</td>
                                         @if ($users->role == 'admin')
                                             <td class="align-baseline"><span
@@ -113,17 +121,17 @@
                                         @endif
                                         <td class="align-baseline">
                                             <div class="d-flex gap-3">
-                                                <a href="{{ route('user.show', $user->id) }}"
+                                                <a href="{{ route('user.show', $users->id) }}"
                                                     class="btn btn-sm btn-primary" data-bs-toggle="tooltip"
                                                     data-bs-title="Show">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ route('user.edit', $user->id) }}"
+                                                <a href="{{ route('user.edit', $users->id) }}"
                                                     class="btn btn-sm btn-warning" data-bs-toggle="tooltip"
                                                     data-bs-title="Edit">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
-                                                <form action="{{ route('user.destroy', $user->id) }}" method="post">
+                                                <form action="{{ route('user.destroy', $users->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger"
