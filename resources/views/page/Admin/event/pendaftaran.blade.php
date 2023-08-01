@@ -36,6 +36,7 @@
                             <th class="align-baseline" scope="row">{{ ++$i }}</th>
                             <td class="align-baseline">
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 <img src="storage/eventimage/{{ $event->image }}" height="125" alt="">
                             </td>
                             <td class="align-baseline">
@@ -84,36 +85,39 @@
                                     <form action="{{ route('be.destroy', $event->id) }}" method="post">
 =======
                                 <img src="storage/eventimage/{{ $event->eventimage }}" height="125" alt="">
+=======
+                                <img src="storage/eventimage/{{ $event->image }}" height="125" alt="">
+>>>>>>> 8019b8b (70% Progress)
                             </td>
                             <td class="align-baseline">
                                 <a href="event/{{ $event->id }}"
-                                    class="text-decoration-none text-dark fw-bold">{{ Str::limit($event->eventname, 25) }}</a>
+                                    class="text-decoration-none text-dark fw-bold">{{ Str::limit($event->name, 25) }}</a>
                             </td>
                             <td class="align-baseline">
-                                {{ \Carbon\Carbon::parse($event->eventdate)->formatLocalized('%A, %d %B %Y') }}
+                                {{ \Carbon\Carbon::parse($event->date)->formatLocalized('%A, %d %B %Y') }}
                             </td>
-                            <td class="text-capitalize align-baseline">{{ $event->eventtype }}</td>
+                            <td class="text-capitalize align-baseline">{{ $event->type }}</td>
                             <td class="text-capitalize align-baseline">
-                                {{ $event->eventkategori }}</td>
-                            <td class="align-baseline">{{ $event->eventorganizer }}</td>
-                            <td class="align-baseline">{{ $event->eventlocation }}</td>
-                            <td class="align-baseline">@currency($event->eventprice)</td>
+                                {{ $event->kategori }}</td>
+                            <td class="align-baseline">{{ $event->organizer }}</td>
+                            <td class="align-baseline">{{ $event->location }}</td>
+                            <td class="align-baseline">@currency($event->price)</td>
                             <td class="align-baseline text-capitalize">{{ $event->user->name }}</td>
                             <td class="align-baseline">
-                                <span class="">{!! Str::limit($event->eventdescription, 25) !!}</span>
+                                <span class="">{!! Str::limit($event->description, 25) !!}</span>
                             </td>
 
-                            @if ($event->eventstatus == 'aktif' || $event->eventstatus == 'Aktif')
+                            @if ($event->status == 'aktif' || $event->status == 'Aktif')
                                 <td class="align-baseline"><span
-                                        class="text-capitalize badge w-100 bg-success">{{ $event->eventstatus }}</span>
+                                        class="text-capitalize badge w-100 bg-success">{{ $event->status }}</span>
                                 </td>
-                            @elseif ($event->eventstatus == 'berjalan' || $event->eventstatus == 'Berjalan')
+                            @elseif ($event->status == 'berjalan' || $event->status == 'Berjalan')
                                 <td class="align-baseline"><span
-                                        class="text-capitalize badge w-100 bg-primary">{{ $event->eventstatus }}</span>
+                                        class="text-capitalize badge w-100 bg-primary">{{ $event->status }}</span>
                                 </td>
                             @else
                                 <td class="align-baseline"><span
-                                        class="text-capitalize badge w-100 bg-danger">{{ $event->eventstatus }}</span>
+                                        class="text-capitalize badge w-100 bg-danger">{{ $event->status }}</span>
                                 </td>
                             @endif
                             <td class="align-baseline">

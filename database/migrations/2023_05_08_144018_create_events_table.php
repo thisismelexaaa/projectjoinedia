@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8019b8b (70% Progress)
             $table->string('nama');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
@@ -25,6 +28,7 @@ return new class extends Migration
             $table->string('kategori');
             $table->string('location');
             $table->text('description');
+<<<<<<< HEAD
             $table->string('level');
             $table->double('price')->default(0);
             $table->integer('kuota')->default(150);
@@ -40,6 +44,9 @@ return new class extends Migration
             $table->text('eventdescription');
             $table->double('eventprice')->default(0);
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+            $table->double('price')->default(0);
+>>>>>>> 8019b8b (70% Progress)
             $table->timestamps();
         });
     }

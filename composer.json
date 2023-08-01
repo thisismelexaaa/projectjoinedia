@@ -19,6 +19,7 @@
         "laravolt/avatar": "^5.0",
         "midtrans/midtrans-php": "^2.5",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "nesbot/carbon": "^2.67",
         "spatie/laravel-google-calendar": "^3.8",
         "xendit/xendit-php": "^2.19",
@@ -26,6 +27,10 @@
 =======
         "nesbot/carbon": "^2.67"
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+        "nesbot/carbon": "^2.67",
+        "xendit/xendit-php": "^2.19"
+>>>>>>> 8019b8b (70% Progress)
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

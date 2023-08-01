@@ -6,9 +6,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+
+>>>>>>> 8019b8b (70% Progress)
 class EventFormRequest extends FormRequest
 {
     /**
@@ -28,6 +32,7 @@ class EventFormRequest extends FormRequest
     {
         // Rules
         $rules = [
+<<<<<<< HEAD
 <<<<<<< HEAD
             'nama' => [
                 'required', 'string', 'max:255'
@@ -56,40 +61,54 @@ class EventFormRequest extends FormRequest
             'kategori' => [
 =======
             'eventname' => [
+=======
+            'nama' => [
+>>>>>>> 8019b8b (70% Progress)
                 'required', 'string', 'max:255'
             ],
-            'eventdate' => [
+            'start_date' => [
+                'required', 'date',
+            ],
+            'end_date' => [
+                'required', 'date',
+            ],
+            'type' => [
                 'required', 'string', 'max:255',
             ],
-            'eventtype' => [
+            'organizer' => [
                 'required', 'string', 'max:255',
             ],
-            'eventorganizer' => [
+            'status' => [
                 'required', 'string', 'max:255',
             ],
-            'eventstatus' => [
-                'required', 'string', 'max:255',
-            ],
-            'eventdescription' => [
+            'description' => [
                 'required', 'string',
             ],
-            'eventlocation' => [
+            'location' => [
                 'required', 'string', 'max:255',
             ],
+<<<<<<< HEAD
             'eventkategori' => [
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+            'kategori' => [
+>>>>>>> 8019b8b (70% Progress)
                 'required', 'string', 'max:255',
             ],
             'user_id' => [
                 'required', 'string', 'max:255',
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8019b8b (70% Progress)
             'price' => [
                 'numeric',
             ],
             'image' => [
                 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048',
             ],
+<<<<<<< HEAD
             'kuota' => [
                 'numeric', 'required',
             ],
@@ -175,6 +194,9 @@ class EventFormRequest extends FormRequest
         //     ];
         // }
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+        ];
+>>>>>>> 8019b8b (70% Progress)
         return $rules;
     }
 

@@ -2,10 +2,13 @@
 
 @section('content')
     <style>
+<<<<<<< HEAD
         body {
             overflow: auto;
         }
 
+=======
+>>>>>>> 8019b8b (70% Progress)
         #calendar {
             background-color: #fff;
             border: 1px solid #ccc;
@@ -31,6 +34,7 @@
         .fc-event:hover {
             opacity: 0.8;
         }
+<<<<<<< HEAD
 
         .keterangan {
             font-size: 14px;
@@ -80,10 +84,18 @@
         @csrf
         <input type="hidden" name="jadwal" id="jadwalInput">
     </form>
+=======
+    </style>
+
+    <div class="calendar-container">
+        <div id="calendar"></div>
+    </div>
+>>>>>>> 8019b8b (70% Progress)
 @endsection
 
 @push('scripts')
     <script>
+<<<<<<< HEAD
         $(document).ready(() => {
             let data = @json($jadwal);
             $('#calendar').fullCalendar({
@@ -133,12 +145,27 @@
                             });
                         }
                     }
+=======
+        $(document).ready(function() {
+            var data = @json($jadwal);
+            console.log(data);
+            $('#calendar').fullCalendar({
+
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+>>>>>>> 8019b8b (70% Progress)
                 },
                 events: data,
                 themeSystem: 'bootstrap',
                 selectable: true,
                 selectHelper: true,
+<<<<<<< HEAD
                 height: 750,
+=======
+                height: 825,
+>>>>>>> 8019b8b (70% Progress)
                 locale: 'id',
             });
         });

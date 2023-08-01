@@ -10,6 +10,7 @@ class Pendaftaran extends Model
     use HasFactory;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     protected $guarded = ['id'];
 
     // relasi ke tabel event
@@ -30,11 +31,17 @@ class Pendaftaran extends Model
 
     // Relationship pendaftaran dengan event
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+    protected $guarded = ['id'];
+
+    // relasi ke tabel event
+>>>>>>> 8019b8b (70% Progress)
     public function event()
     {
-        return $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Event::class);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     // relasi ke table transaksi
     public function transaksi()
@@ -47,7 +54,11 @@ class Pendaftaran extends Model
     // Relationship pendaftaran dengan user
 >>>>>>> f89a811 (First Commit : Progress 80%)
     public function user()
+=======
+    // relasi ke table transaksi
+    public function transaksi()
+>>>>>>> 8019b8b (70% Progress)
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasOne(Transaksi::class, 'pendaftarans_id');
     }
 }

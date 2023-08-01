@@ -2,6 +2,7 @@
 
 @section('content')
 <<<<<<< HEAD
+<<<<<<< HEAD
     <style>
         th,
         td {
@@ -57,6 +58,8 @@
     <div class="pagetitle">
         <h1>List Event</h1>
     </div>
+=======
+>>>>>>> 8019b8b (70% Progress)
     <section class="card info-card sales-card overflow-auto">
         {{-- List Event --}}
         <div class="card-body">
@@ -64,67 +67,76 @@
                 <p class="col-md">List Events</p>
                 <a href="{{ route('event.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add Event</a>
             </div>
-            <div class="overflow-auto">
-                <table
-                    class="table table-borderless datatable datatable table-hover table-responsive table-responsive-md table-responsive-lg table-responsive-sm d-block">
+            <div class="table-responsive">
+                <table id="data-table" class="table table-borderless datatable table-hover stripe row-border order-column">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Poster</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Kategori</th>
-                            <th scope="col">Penyelenggara</th>
-                            <th scope="col">Tempat</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Uploaded By</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
+                            <th>#</th>
+                            <th>Poster</th>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Kategori</th>
+                            <th>Penyelenggara</th>
+                            <th>Tempat</th>
+                            <th>Harga</th>
+                            <th>Uploaded By</th>
+                            <th>Description</th>
+                            <th>Sponsor</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($dataEvent as $event)
                             <tr>
-                                <th class="align-baseline" scope="row">{{ ++$i }}</th>
+                                <th class="align-baseline">{{ ++$i }}</th>
                                 <td class="align-baseline">
-                                    <a href="{{ route('event.show', $event->id) }}" class="text-decoration-none text-dark fw-bold">
-                                        <img src="storage/eventimage/{{ $event->eventimage }}" height="125"
+                                    <a href="{{ route('event.show', $event->id) }}"
+                                        class="text-decoration-none text-dark fw-bold">
+                                        <img src="{{ asset('assets/images/eventimage/' . $event->image) }}" height="125"
                                             alt="">
                                     </a>
                                 </td>
                                 <td class="align-baseline">
-                                    <a href="{{ route('event.show', $event->id) }}" class="text-decoration-none text-dark fw-bold">
+                                    <a href="{{ route('event.show', $event->id) }}"
+                                        class="text-decoration-none text-dark fw-bold">
 
-                                        {{ Str::limit($event->eventname, 25) }}
+                                        {{ Str::limit($event->nama, 25) }}
                                     </a>
                                 </td>
                                 <td class="align-baseline">
-                                    {{ \Carbon\Carbon::parse($event->eventdate)->formatLocalized('%A, %d %B %Y') }}
+                                    {{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%A, %d %B %Y') }}
+                                    -
+                                    {{ \Carbon\Carbon::parse($event->end_date)->formatLocalized('%A, %d %B %Y') }}
                                 </td>
-                                <td class="text-capitalize align-baseline">{{ $event->eventtype }}</td>
+                                <td class="text-capitalize align-baseline">{{ $event->type }}</td>
                                 <td class="text-capitalize align-baseline">
-                                    {{ $event->eventkategori }}</td>
-                                <td class="align-baseline">{{ $event->eventorganizer }}</td>
-                                <td class="align-baseline">{{ $event->eventlocation }}</td>
-                                <td class="align-baseline">@currency($event->eventprice)</td>
+                                    {{ $event->kategori }}</td>
+                                <td class="align-baseline">{{ $event->organizer }}</td>
+                                <td class="align-baseline">{{ $event->location }}</td>
+                                <td class="align-baseline">@currency($event->price)</td>
                                 <td class="align-baseline text-capitalize">{{ $event->user->name }}</td>
                                 <td class="align-baseline">
-                                    <span class="">{!! Str::limit($event->eventdescription, 75) !!}</span>
+                                    <span class="">{!! Str::limit($event->description, 75) !!}</span>
                                 </td>
-
-                                @if ($event->eventstatus == 'aktif' || $event->eventstatus == 'Aktif')
+                                {{-- Null safety --}}
+                                @if ($event->sponsor == null)
+                                    <td class="align-baseline">Tidak Ada Sponsor</td>
+                                @else
+                                    <td class="align-baseline text-capitalize">{{ $event->sponsor->name }}</td>
+                                @endif
+                                @if ($event->status == 'aktif' || $event->status == 'Aktif')
                                     <td class="align-baseline"><span
-                                            class="text-capitalize badge w-100 bg-success">{{ $event->eventstatus }}</span>
+                                            class="text-capitalize badge w-100 bg-success">{{ $event->status }}</span>
                                     </td>
-                                @elseif ($event->eventstatus == 'berjalan' || $event->eventstatus == 'Berjalan')
+                                @elseif ($event->status == 'berjalan' || $event->status == 'Berjalan')
                                     <td class="align-baseline"><span
-                                            class="text-capitalize badge w-100 bg-primary">{{ $event->eventstatus }}</span>
+                                            class="text-capitalize badge w-100 bg-primary">{{ $event->status }}</span>
                                     </td>
                                 @else
                                     <td class="align-baseline"><span
-                                            class="text-capitalize badge w-100 bg-danger">{{ $event->eventstatus }}</span>
+                                            class="text-capitalize badge w-100 bg-danger">{{ $event->status }}</span>
                                     </td>
                                 @endif
                                 <td class="align-baseline">
@@ -133,7 +145,7 @@
                                             data-bs-toggle="tooltip" data-bs-title="Show">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('event.update', $event->id) }}"
+                                        <a href="{{ route('event.edit', $event->id, '/edit') }}"
                                             class="btn btn-sm btn-warning"data-bs-toggle="tooltip" data-bs-title="Edit">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
@@ -153,16 +165,21 @@
                     </tbody>
                 </table>
             </div>
+<<<<<<< HEAD
 
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+>>>>>>> 8019b8b (70% Progress)
         </div>
     </section>
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/datatables.js') }}"></script>
     <script>
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+<<<<<<< HEAD
 <<<<<<< HEAD
 
         $(function() {
@@ -351,5 +368,12 @@
         });
 =======
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                scrollX: true // Menambahkan opsi scrollX
+            });
+        });
+>>>>>>> 8019b8b (70% Progress)
     </script>
 @endsection

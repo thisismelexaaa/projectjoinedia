@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -15,6 +16,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserFormRequest;
 use Illuminate\Support\Facades\Storage;
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserFormRequest;
+>>>>>>> 8019b8b (70% Progress)
 
 class UserController extends Controller
 {
@@ -24,6 +29,7 @@ class UserController extends Controller
     public function index()
     {
         // tampilkan semua user
+<<<<<<< HEAD
 <<<<<<< HEAD
         $user = User::latest()->paginate(20);
 
@@ -39,6 +45,11 @@ class UserController extends Controller
 
         return view('page.admin.user.index', compact('user', 'dataUser'))->with('i', (request()->input('page', 1) - 1) * 20);
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+        $user = User::latest()->paginate(20);
+
+        return view('page.admin.user.index', compact('user'))->with('i', (request()->input('page', 1) - 1) * 20);
+>>>>>>> 8019b8b (70% Progress)
     }
 
     /**
@@ -93,6 +104,7 @@ class UserController extends Controller
     public function update(UserFormRequest $request, User $user)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if ($request->hasFile('userimage')) {
             // delete old image
             $public_path = public_path('assets/images/userimage/');
@@ -119,19 +131,28 @@ class UserController extends Controller
             $user->fill($data);
             $user->update();
         } else {
+=======
+        if ($request->hasFile('userimage')) {
+>>>>>>> 8019b8b (70% Progress)
             // delete old image
-            Storage::disk('local')->delete('public/userimage/' . $user->userimage);
+            $public_path = public_path('assets/images/userimage/');
+            if (file_exists(public_path('assets/images/userimage/' . $user->userimage))) {
+                unlink($public_path . $user->userimage);
+            }
 
             // upload new image
-            $data = $request->validated();
             $image = $request->file('userimage');
-            $image->storeAs('public/userimage', $image->hashName());
-            $data['userimage'] = $image->hashName();
-
-            $user->fill($data);
-            $user->save();
+            $imagePath = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/userimage'), $imagePath);
+            $data = $request->validated();
+            $data['userimage'] = $imagePath;
+        } else {
+            $data = $request->validated();
         }
 >>>>>>> f89a811 (First Commit : Progress 80%)
+
+        $user->fill($data);
+        $user->save();
 
         // cek role user
         if (auth()->user()->role == 'admin' || auth()->user()->role == 'superadmin') {
@@ -141,6 +162,7 @@ class UserController extends Controller
         }
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -148,11 +170,15 @@ class UserController extends Controller
     {
         //destroy data
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8019b8b (70% Progress)
         // delete old image
         if ($user->userimage && file_exists(public_path('assets/images/userimage/' . $user->userimage))) {
             unlink(public_path('assets/images/userimage/' . $user->userimage));
         }
 
+<<<<<<< HEAD
         $user->delete();
 
         return redirect()->route('user.index')->with('message', 'Data Berhasil Dihapus');
@@ -175,7 +201,10 @@ class UserController extends Controller
     }
 =======
         Storage::disk('local')->delete('public/userimage/' . $user->userimage);
+=======
+>>>>>>> 8019b8b (70% Progress)
         $user->delete();
+
         return redirect()->route('user.index')->with('message', 'Data Berhasil Dihapus');
     }
 >>>>>>> f89a811 (First Commit : Progress 80%)

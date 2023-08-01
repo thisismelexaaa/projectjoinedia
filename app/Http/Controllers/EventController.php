@@ -3,81 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-<<<<<<< HEAD
-use App\Models\Sponsor;
 use Illuminate\Support\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EventFormRequest;
-use App\Models\BuatEvent;
-use App\Models\Penjadwalan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Request;
-use Yajra\DataTables\Facades\DataTables;
-
-class EventController extends Controller
-{
-    public function index()
-    {
-        $dataEvent = BuatEvent::latest()
-            ->get();
-
-        if (Auth::user()->role == 'user') {
-            return view('page.user.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
-        } else {
-            if (request()->ajax()) {
-                return DataTables::of($dataEvent)
-                    ->addColumn('date', function ($event) {
-                        return [
-                            'start_date' => $event->start_date,
-                            'end_date' => $event->end_date
-                        ];
-                    })
-                    ->addColumn(
-                        'user',
-                        function ($event) {
-                            return $event->user->name;
-                        }
-                    )
-                    ->addColumn('action', function ($event) {
-                        $editUrl = url('/event/' . $event->id . '/edit');
-                        $showUrl = url('/event/' . $event->id);
-                        $deleteUrl = url('/event/' . $event->id);
-
-                        $deleteButton = '';
-                        if (is_null($event->start_date) || is_null($event->end_date)) {
-                            $deleteButton = '
-                    <form class="delete-form" action="' . $deleteUrl . '" method="post">
-                        ' . csrf_field() . '
-                        ' . method_field('DELETE') . '
-                        <button type="submit" class="btn btn-sm btn-danger delete-event" data-bs-toggle="tooltip" title="Delete">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
-                ';
-                        }
-
-                        return '
-                        <div class="d-flex gap-2">
-                            <a class="btn btn-sm btn-warning" href="' . $editUrl . '" data-bs-toggle="tooltip" title="Edit">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a class="btn btn-sm btn-primary" href="' . $showUrl . '" data-bs-toggle="tooltip" title="Show">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            ' . $deleteButton . '
-                        </div>
-                        ';
-                    })
-                    ->tojson();
-            }
-=======
-use App\Models\Pendaftaran;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\EventFormRequest;
-use Illuminate\Support\Facades\Storage;
-
+use App\Http\Requests\SponsorFormRequest;
+use App\Models\Sponsor;
 
 class EventController extends Controller
 {
@@ -88,8 +18,7 @@ class EventController extends Controller
     {
         // get data user
 
-
-        $dataEvent = Event::latest()->paginate(20);
+        $dataEvent = Event::all();
         if (Auth::user()->role == 'user') {
             return view('page.user.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
         } else {
@@ -259,20 +188,61 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(EventFormRequest $request)
+    public function store(EventFormRequest $request, Event $event, Sponsor $sponsor)
     {
-        try {
-            $data = $request->validated();
+        $data = $request->validated();
 
-            $image = $request->file('eventimage');
-            $image->storeAs('public/eventimage', $image->hashName());
-            $data['eventimage'] = $image->hashName();
+        $start_date = Carbon::parse($data['start_date']);
+        $end_date = Carbon::parse($data['end_date']);
 
-            Event::create($data);
-            return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
-        } catch (\Exception $ex) {
-            return redirect()->route('event.index')->with('message', 'Waduh! Data Gagal Disimpan!' . $ex->getMessage());
+        if ($event->whereDate('start_date', [$start_date->toDateString(), $end_date->toDateString()])->exists()) {
+            return redirect()->back()->withInput()->with('message', 'Maaf, Tanggal Sudah Terdaftar');
         }
+
+        if ($request->hasFile('image')) {
+            $imagePath = public_path('assets/images/eventimage');
+            if (!file_exists($imagePath)) {
+                // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
+                mkdir($imagePath, 0755, true);
+            }
+
+            $image = $request->file('image');
+            $imagePath = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/eventimage'), $imagePath);
+            $data = $request->validated();
+            $data['image'] = $imagePath;
+        }
+
+        $event = Event::create($data);
+
+        if ($request->sponsor_name != null) {
+            if ($request->hasFile('sponsor_logo')) {
+                $sponsorImagePath = public_path('assets/images/sponsors');
+                if (!file_exists($sponsorImagePath)) {
+                    // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
+                    mkdir($sponsorImagePath, 0755, true);
+                }
+
+                $image = $request->file('sponsor_logo');
+                $sponsorImagePath = time() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('assets/images/sponsors'), $sponsorImagePath);
+            }
+            $sponsor->create(
+                [
+                    'event_id' => $event->id,
+                    'name' => $request->sponsor_name,
+                    'logo' => $sponsorImagePath,
+                    'start_date' => $data['start_date'],
+                    'end_date' => $data['end_date'],
+                    'description' => $request->deskripsiSponsor,
+                ]
+            );
+        }
+
+        $event->penjadwalan()->create(['event_id' => $event->id]);
+
+        // dd($imagePath);
+        return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
     }
 
     /**
@@ -294,33 +264,120 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         //edit data
-        return view('page.admin.event.edit', compact('event'));
+        $event->where('id', $event->id)->first();
+        if ($event->sponsor()->exists() == false) {
+            $sponsor = [
+                'name' => null,
+                'logo' => null,
+                'start_date' => null,
+                'end_date' => null,
+                'description' => null,
+            ];
+        } else {
+            $sponsor = $event->sponsor()->first();
+        }
+        return view('page.admin.event.edit', compact('event', 'sponsor'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(EventFormRequest $request, Event $event)
+    public function update(EventFormRequest $request, Event $event, Sponsor $sponsor)
     {
-        if ($request->file('eventimage') == "") {
-            // update without image
-            $data = $request->validated();
-            $event->fill($data);
-            $event->update();
-        } else {
-            // delete old image
-            Storage::disk('local')->delete('public/eventimage/' . $event->eventimage);
+        $data = $request->validated();
+        $sponsor->where('event_id', $event->id)->delete();
 
-            // upload new image
-            $data = $request->validated();
-            $image = $request->file('eventimage');
-            $image->storeAs('public/eventimage', $image->hashName());
-            $data['eventimage'] = $image->hashName();
+        // Validasi Gambar
+        if ($request->hasFile('image')) {
+            $imagePath = public_path('assets/images/eventimage/');
+            if (!file_exists($imagePath)) {
+                // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
+                mkdir($imagePath, 0755, true);
+            }
 
-            $event->fill($data);
-            $event->update();
->>>>>>> f89a811 (First Commit : Progress 80%)
+            // Hapus gambar lama jika ada
+            if (file_exists(public_path('assets/images/eventimage/' . $event->image))) {
+                unlink($imagePath . $event->image);
+            }
+
+            // Unggah gambar baru
+            $image = $request->file('image');
+            $imagePath = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/eventimage'), $imagePath);
+            $data = $request->validated();
+            $data['image'] = $imagePath;
         }
+
+        if ($request->hasFile('sponsor_logo')) {
+            $sponsorImagePath = public_path('assets/images/sponsors');
+            if (!file_exists($sponsorImagePath)) {
+                // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
+                mkdir($sponsorImagePath, 0755, true);
+            }
+
+            // Hapus gambar lama jika ada
+            if (file_exists(public_path($sponsorImagePath))) {
+                unlink($imagePath . $event->image);
+            }
+
+            $image = $request->file('sponsor_logo');
+            $sponsorImagePath = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/sponsors'), $sponsorImagePath);
+            $logo = $sponsorImagePath;
+            // cek data sponsor sudah ada atau belum
+            if ($event->sponsor()->exists() == false) {
+                $sponsor->create(
+                    [
+                        'event_id' => $event->id,
+                        'name' => $request->sponsor_name,
+                        'logo' => $logo,
+                        'start_date' => $data['start_date'],
+                        'end_date' => $data['end_date'],
+                        'description' => $request->deskripsiSponsor,
+                    ]
+                );
+            } else {
+                $sponsor->update(
+                    [
+                        'event_id' => $event->id,
+                        'name' => $request->sponsor_name,
+                        'logo' => $logo,
+                        'start_date' => $data['start_date'],
+                        'end_date' => $data['end_date'],
+                        'description' => $request->deskripsiSponsor,
+                    ]
+                );
+            }
+        }
+
+        // cek data sponsor sudah ada atau belum
+        // Cek jika data sponsor yang di kirim kosong
+        if ($request->sponsor_name != null) {
+            if ($event->sponsor()->exists() == false) {
+                $sponsor->create(
+                    [
+                        'event_id' => $event->id,
+                        'name' => $request->sponsor_name,
+                        'start_date' => $data['start_date'],
+                        'end_date' => $data['end_date'],
+                        'description' => $request->deskripsiSponsor,
+                    ]
+                );
+            } else {
+                $sponsor->update(
+                    [
+                        'event_id' => $event->id,
+                        'name' => $request->sponsor_name,
+                        'start_date' => $data['start_date'],
+                        'end_date' => $data['end_date'],
+                        'description' => $request->deskripsiSponsor,
+                    ]
+                );
+            }
+        }
+        // dd($request);
+        // Perbarui data event
+        $event->update($data);
 
         return redirect()->route('event.index')->with('message', 'Data Berhasil Diupdate');
     }
@@ -390,17 +447,22 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        // $dataEvent = Event::where('id', $id)->first();
-        Storage::disk('local')->delete('public/eventimage/' . $event->eventimage);
+        // Hapus gambar dari direktori publik jika ada
+        $publicPathEvent = public_path('assets/images/eventimage/') . $event->image;
+        if (file_exists($publicPathEvent)) {
+            unlink($publicPathEvent);
+        }
+
+        $event->penjadwalan()->delete();
         $event->delete();
+
         return redirect()->route('event.index')->with('message', 'Data Berhasil Dihapus');
     }
 
-    public function listpendaftar(){
+    public function listpendaftar()
+    {
         $data = Event::all();
-        $daftar = Pendaftaran::all();
         // dd($dataPendaftar);
-        return view('page.admin.listpendaftar', ['data'=> $data],['daftar'=>$daftar])->with('i', (request()->input('page', 1) - 1) * 20);
->>>>>>> f89a811 (First Commit : Progress 80%)
+        return view('page.admin.listpendaftar', ['data' => $data])->with('i', (request()->input('page', 1) - 1) * 20);
     }
 }

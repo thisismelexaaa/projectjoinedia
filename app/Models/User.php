@@ -53,6 +53,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     // relasi ke pendaftaran
@@ -63,4 +64,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pendaftaran::class, 'user_id');
     }
+=======
+>>>>>>> 8019b8b (70% Progress)
 }

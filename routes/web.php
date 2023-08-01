@@ -1,16 +1,20 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 use App\Http\Controllers\AlgoritmaGeneticController;
 use App\Http\Controllers\BuatEventController;
 =======
 
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+>>>>>>> 8019b8b (70% Progress)
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+<<<<<<< HEAD
 <<<<<<< HEAD
 use App\Http\Controllers\GeneticAlgorithmController;
 use App\Http\Controllers\GoogleCalendarController;
@@ -24,6 +28,14 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\Api\TransaksiController;
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+use App\Http\Controllers\SponsorController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\TransaksiController;
+use App\Models\Pendaftaran;
+>>>>>>> 8019b8b (70% Progress)
 
 /*
 |--------------------------------------------------------------------------
@@ -60,13 +72,20 @@ Route::get('/', [LandingPageController::class, 'index']);
 
 Auth::routes();
 
+<<<<<<< HEAD
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+// callback xendit
+Route::post('/callback', [PendaftaranController::class, 'callback']);
+
+>>>>>>> 8019b8b (70% Progress)
 Route::group(['middleware' => 'auth'], function () {
     // event
     Route::resource('home', HomeController::class);
     Route::resource('event', EventController::class);
     Route::get('/listpendaftar', [EventController::class, 'listpendaftar'])->name('listpendaftar');
     Route::get('/exportpdf/{id}', [EventController::class, 'exportpdfuser'])->name('exportpdfuser');
+<<<<<<< HEAD
 <<<<<<< HEAD
     Route::get('/laporan', [EventController::class, 'laporan'])->name('event.laporan');
 
@@ -114,14 +133,25 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get("/algoritma-genetika", [AlgoritmaGeneticController::class, "index"]);
 =======
+=======
+
+    // Pendaftaran
+    Route::resource('riwayat', PendaftaranController::class);
+
+>>>>>>> 8019b8b (70% Progress)
     // user
     Route::resource('user', UserController::class);
-    // Pendaftaran
-    Route::resource('pendaftaran', PendaftaranController::class);
-    Route::get('/detail/{id}', [PendaftaranController::class, 'detail'])->name('detail');
-    Route::get('/exportpdf', [PendaftaranController::class, 'exportpdf'])->name('exportpdf');
-    Route::get('/callback', [PendaftaranController::class, 'callback'])->name('callback');
+
+    // Kalender
+    Route::resource('penjadwalan', PenjadwalanController::class);
+
+    // Sponsor
+    Route::resource('sponsor', SponsorController::class);
+
 });
+<<<<<<< HEAD
 
 
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+>>>>>>> 8019b8b (70% Progress)

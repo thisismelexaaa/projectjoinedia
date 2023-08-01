@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 use Illuminate\Support\Carbon;
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+>>>>>>> 8019b8b (70% Progress)
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;

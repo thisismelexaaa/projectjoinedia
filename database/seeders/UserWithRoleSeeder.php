@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use Illuminate\Database\Seeder;
 =======
 use Faker\Factory as Faker;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Laravolt\Avatar\Avatar;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+use Illuminate\Database\Seeder;
+>>>>>>> 8019b8b (70% Progress)
 
 class UserWithRoleSeeder extends Seeder
 {

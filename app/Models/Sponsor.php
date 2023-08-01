@@ -14,6 +14,10 @@ class Sponsor extends Model
 
     public function event()
     {
+<<<<<<< HEAD
         return $this->belongsTo(Event::class);
+=======
+        return $this->belongsTo(Event::class, 'event_id');
+>>>>>>> 8019b8b (70% Progress)
     }
 }

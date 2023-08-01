@@ -43,16 +43,20 @@
                 <div class="card">
                     <a href="event/{{ $e->id }}">
                         <img class="img-fluid w-100" style="width:300;height:250px;"
-                            src="/storage/eventimage/{{ $e->eventimage }}" alt="..." />
+                            src="{{ asset('assets/images/eventimage/'.$e->image) }}" alt="..." />
                     </a>
                     <div class="card-body">
                         <a class="text-dark" href="event/{{ $e->id }}">
-                            <h5 class="card-title">{{ $e->eventname }} <br>
+                            <h5 class="card-title">{{ $e->nama }} <br>
                         </a>
-                        <span class="fw-light text-capitalize">{{ $e->eventorganizer }}</span>
+                        <span class="fw-light text-capitalize">{{ $e->organizer }}</span>
                         </h5>
+<<<<<<< HEAD
                         <p class="card-text">{!! Str::limit($e->eventdescription, 50) !!}</p>
 >>>>>>> f89a811 (First Commit : Progress 80%)
+=======
+                        <p class="card-text">{!! Str::limit($e->description, 50) !!}</p>
+>>>>>>> 8019b8b (70% Progress)
                     </div>
                     <div class="card-footer">
                         <a href="event/{{ $e->id }}">Lihat Detail Event</a>
