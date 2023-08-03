@@ -32,7 +32,7 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
     <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="shortcut icon">
+    <link href="{{ asset('assets/img/joinedia-warna.png') }}" rel="shortcut icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">

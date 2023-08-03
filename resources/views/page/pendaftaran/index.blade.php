@@ -163,12 +163,12 @@
                                 <td class="text-capitalize align-baseline">{{ $item->status }}</td>
                                 <td class="align-baseline">
                                     <div class="gap-3 d-flex">
-                                        {{-- Kirim data ke modal --}}
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        {{-- <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal" data-id="{{ $item->id }}">
                                             <i class="bi bi-credit-card" data-bs-toggle="tooltip"
                                                 data-bs-title="Pay Now"></i>
-                                        </button>
+                                        </a> --}}
+                                        {{-- Kirim data ke modal --}}
                                         <form action="{{ route('riwayat.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
@@ -178,6 +178,13 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
+                                        @if ($item->status == 'unpaid')
+                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal" data-id="{{ $item->id }}">
+                                                <i class="bi bi-credit-card" data-bs-toggle="tooltip"
+                                                    data-bs-title="Pay Now"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </td>
                                 </td>

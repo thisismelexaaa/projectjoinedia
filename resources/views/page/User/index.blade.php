@@ -40,16 +40,19 @@
     <div class="row row-cols-md-5">
         @foreach ($dataEvent as $e)
             <div class="col-md-2">
-                <div class="card">
+                <div class="card h-100">
                     <a href="event/{{ $e->id }}">
                         <img class="img-fluid w-100" style="width:300;height:250px;"
-                            src="{{ asset('assets/images/eventimage/'.$e->image) }}" alt="..." />
+                            src="{{ asset('assets/images/eventimage/' . $e->image) }}" alt="..." />
                     </a>
                     <div class="card-body">
                         <a class="text-dark" href="event/{{ $e->id }}">
                             <h5 class="card-title">{{ $e->nama }} <br>
                         </a>
-                        <span class="fw-light text-capitalize">{{ $e->organizer }}</span>
+                        <div class="d-flex justify-content-between">
+                            <span class="fw-light text-capitalize">{{ $e->organizer }}</span>
+                        </div>
+                        <span class="fw-light text-capitalize">{{ $e->start_date }}</span>
                         </h5>
 <<<<<<< HEAD
                         <p class="card-text">{!! Str::limit($e->eventdescription, 50) !!}</p>
