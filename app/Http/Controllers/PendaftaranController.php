@@ -45,6 +45,11 @@ class PendaftaranController extends Controller
         $data['tiket'] = $tiket;
 
         $event = Event::find($request->event_id);
+
+        if($event->type == 'gratis'){
+            $data['status'] = 'paid';
+        }
+
         $secret_key = 'Basic ' . config('xendit.key_auth');
         // $external_id = Str::random(10);
 
@@ -131,7 +136,7 @@ class PendaftaranController extends Controller
         Pendaftaran::where('tiket', $external_id)->update([
             'status' => $status
         ]);
-        // return response()->json($data);
-        return redirect()->route('riwayat.index')->with('success', 'Pembayaran berhasil');
+        return response()->json($data);
+        // return redirect()->route('riwayat.index')->with('success', 'Pembayaran berhasil');
     }
 }

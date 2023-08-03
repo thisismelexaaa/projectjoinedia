@@ -10,7 +10,7 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
     <!-- Favicons -->
-    <link href="{{ asset('assets/img/favicon.png') }}" rel="shortcut icon">
+    <link href="{{ asset('assets/img/joinedia-warna.png') }}" rel="shortcut icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -50,8 +50,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
             <a href="{{ url('home') }}" class="logo d-flex align-items-center">
-                <img src="{{ asset('assets/img/logo.png') }}" alt="">
-                <span class="d-none d-lg-block">{{ config('app.name', 'Joinedia') }}</span>
+                <img src="{{ asset('assets/img/joinedia.png') }}" alt="">
             </a>
 
             {{-- <i class="bi bi-list toggle-sidebar-btn"></i> --}}
@@ -296,7 +295,7 @@
     <!-- ======= Sidebar ======= -->
 
     <main id="main" class="main section dashboard">
-        {{ session('message') }}
+        {{-- {{ session('message') }} --}}
         @yield('content')
         </div>
     </main><!-- End #main -->

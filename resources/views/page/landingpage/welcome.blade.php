@@ -18,6 +18,9 @@
 
 <body class="background-topo">
     <div class="sideNav">
+        <button class="mobile-toggle-btn">
+            <i class="bi bi-list"></i>
+        </button>
         <ul>
             <li class="item-sideNav"><a href="#home">Home</a></li>
             <li class="item-sideNav"><a href="#feature">Feature</a></li>
@@ -36,7 +39,7 @@
         </div>
         <div class="body-content">
             <div class="sticky-content">
-                <a href="#"><img src="{{ asset('/landingpage/assets/img/Joinedia.png') }}" alt=""
+                <a href="/"><img src="{{ asset('/landingpage/assets/img/Joinedia.png') }}" alt=""
                         data-aos="fade-down" /></a>
             </div>
 
@@ -107,29 +110,29 @@
                         </div>
                     </div>
 
-            <div class="content-text" id="contact">
-                <div class="row">
-                    <h1>Contact Us</h1>
-                    <div class="row justify-content-center">
-                        <h3 class="col-1 mt-3 mx-3"><a target="_blank" href="https://facebook.com"
-                                class="text-white"><i class="bi bi-facebook"></a></i></h3>
-                        <h3 class="col-1 mt-3 mx-3"><a target="_blank" href="https://wa.me/087877006780"
-                                class="text-white"><i class="bi bi-whatsapp"></a></i></h3>
-                        <h3 class="col-1 mt-3 mx-3"><a target="_blank" href="mailto::yudhaxsinatra@gmail.com"
-                                class="text-white"><i class="bi bi-envelope"></a></i></h3>
+                    <div class="content-text" id="contact">
+                        <div class="row">
+                            <h1>Contact Us</h1>
+                            <div class="row justify-content-center">
+                                <h3 class="col-1 mt-3 mx-3"><a target="_blank" href="https://facebook.com"
+                                        class="text-white"><i class="bi bi-facebook"></a></i></h3>
+                                <h3 class="col-1 mt-3 mx-3"><a target="_blank" href="https://wa.me/087877006780"
+                                        class="text-white"><i class="bi bi-whatsapp"></a></i></h3>
+                                <h3 class="col-1 mt-3 mx-3"><a target="_blank" href="mailto::yudhaxsinatra@gmail.com"
+                                        class="text-white"><i class="bi bi-envelope"></a></i></h3>
+                            </div>
+                        </div>
+                        <div class="text-center p-3 cpy">
+                            © 2023 Copyright:
+                            <a class="" href="/">Joinedia</a>
+                        </div>
                     </div>
                 </div>
-                <div class="text-center p-3 cpy">
-                    © 2023 Copyright:
-                    <a class="" href="/">Joinedia</a>
-                </div>
             </div>
+
         </div>
-    </div>
 
-    </div>
-
-    {{-- <div class="h-100 position-relative">
+        {{-- <div class="h-100 position-relative">
         <div class="text-white position-absolute top-50 start-50 translate-middle">
             <div class="fs-1 fw-bold row gx-0" style="width: 43vw;">
                 <span class="col-md mx-0">Halo! Kami Adalah</span>
@@ -352,15 +355,25 @@
         <!-- End of .container -->
     </section> --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-    <script src="{{ asset('/landingPage/assets/script.js') }}"></script>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+        </script>
+        <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+        <script src="{{ asset('/landingPage/assets/script.js') }}"></script>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+            AOS.init();
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const mobileToggleBtn = document.querySelector(".mobile-toggle-btn");
+                const sideNav = document.querySelector(".sideNav ul");
+
+                mobileToggleBtn.addEventListener("click", function() {
+                    sideNav.classList.toggle("active");
+                    mobileToggleBtn.classList.toggle("active");
+                });
+            });
+        </script>
 
 </body>
 
