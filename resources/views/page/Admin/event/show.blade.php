@@ -8,17 +8,17 @@
         <div class="row g-0 card-body">
             <div class="col-md-3 mt-4">
                 <a class="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img class="img-fluid w-full rounded" style="width:500px;height:500px;"
-                        src="{{ asset('assets/images/eventimage/' . $event->image) }}" alt="..." />
+                    <img class="img-fluid w-full rounded" src="{{ asset('assets/images/eventimage/' . $event->image) }}"
+                        alt="..." />
                 </a>
 
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div class="m-auto">
-                                    <img class="img-fluid w-full rounded" style="width:500px;height:600px;"
+                                    <img class="img-fluid w-full rounded" style="scale: 1.4"
                                         src="{{ asset('assets/images/eventimage/' . $event->image) }}" alt="..." />
                                 </div>
                             </div>
@@ -26,6 +26,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-7">
                 <div class="card-body">
                     <div class="card-title">
@@ -74,13 +75,26 @@
                                 <td class="text-capitalize">{{ $event->kategori }}</td>
                             </tr>
                             <tr>
+                                <td><i class="bi bi-bookmark"></i></td>
+                                <td>Kuota</td>
+                                @if ($event->kuota == 0)
+                                    <td class="text-capitalize">Kuota Habis</td>
+                                @else
+                                    <td class="text-capitalize">{{ $event->kuota }}</td>
+                                @endif
+                            </tr>
+                            <tr>
                                 <td><i class="bi bi-badge-ad"></i></td>
                                 <td>Sponsored By</td>
                                 {{-- NULL SAFETY --}}
                                 @if ($event->sponsor == null)
                                     <td class="text-capitalize">Tidak Ada Sponsor</td>
                                 @else
-                                    <td class="text-capitalize">{{ $event->sponsor->name }}</td>
+                                    <td class="align-baseline text-capitalize">
+                                        @foreach ($event->sponsor as $sponsor)
+                                            {{ $sponsor->name }},
+                                        @endforeach
+                                    </td>
                                 @endif
                             </tr>
                         </table>

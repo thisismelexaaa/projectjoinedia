@@ -61,6 +61,9 @@ class EventFormRequest extends FormRequest
             'image' => [
                 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048',
             ],
+            'kuota' => [
+                'numeric', 'required',
+            ],
         ];
         return $rules;
     }

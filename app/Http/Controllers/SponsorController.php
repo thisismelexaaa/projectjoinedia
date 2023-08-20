@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
+use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\SponsorFormRequest;
 
@@ -77,18 +79,23 @@ class SponsorController extends Controller
      */
     public function destroy(Sponsor $sponsor)
     {
-        // Delete the image from the server
-        if ($sponsor->image) {
-            $imagePath = public_path('sponsorimage/' . $sponsor->image);
-
-            if (File::exists($imagePath)) {
-                File::delete($imagePath);
-            }
-        }
-
         // Delete the sponsor data from the database
         $sponsor->delete();
 
         return redirect()->route('sponsor.index')->with('success', 'Sponsor deleted successfully.');
+    }
+
+    public function laporansponsor()
+    {
+        $sponsors = Sponsor::all();
+
+        $pdf = PDF::loadView('page.sponsors.laporan',  compact('sponsors'))
+            ->setPaper('a4');
+
+        $fileName = 'laporan_event_' . Carbon::now()->format('Y-m-d_H-i-s') . '.pdf';
+
+        return $pdf->download($fileName);
+
+        return view('page.sponsors.laporan', compact('sponsors'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 }

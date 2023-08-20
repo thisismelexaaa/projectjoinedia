@@ -9,8 +9,6 @@ use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PenjadwalanController;
-use App\Http\Controllers\TransaksiController;
-use App\Models\Pendaftaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +27,7 @@ use App\Models\Pendaftaran;
 //         return view('welcome', LandingPageController::class);
 //     }
 // );
+
 Route::get('/', [LandingPageController::class, 'index']);
 
 Auth::routes();
@@ -42,17 +41,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('event', EventController::class);
     Route::get('/listpendaftar', [EventController::class, 'listpendaftar'])->name('listpendaftar');
     Route::get('/exportpdf/{id}', [EventController::class, 'exportpdfuser'])->name('exportpdfuser');
+    Route::get('/laporan', [EventController::class, 'laporan'])->name('event.laporan');
 
     // Pendaftaran
     Route::resource('riwayat', PendaftaranController::class);
+    Route::get('/laporanriwayat', [PendaftaranController::class, 'laporanriwayat'])->name('riwayat.laporanriwayat');
 
     // user
     Route::resource('user', UserController::class);
+    Route::get('/laporanuser', [UserController::class, 'laporanuser'])->name('user.laporanuser');
 
     // Kalender
     Route::resource('penjadwalan', PenjadwalanController::class);
 
     // Sponsor
     Route::resource('sponsor', SponsorController::class);
-
+    Route::get('/laporansponsor', [SponsorController::class, 'laporansponsor'])->name('sponsor.laporansponsor');
 });

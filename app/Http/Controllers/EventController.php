@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Sponsor;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EventFormRequest;
-use App\Http\Requests\SponsorFormRequest;
-use App\Models\Sponsor;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EventController extends Controller
 {
@@ -18,7 +18,7 @@ class EventController extends Controller
     {
         // get data user
 
-        $dataEvent = Event::all();
+        $dataEvent = Event::with('sponsor')->get();
         if (Auth::user()->role == 'user') {
             return view('page.user.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
         } else {
@@ -40,6 +40,9 @@ class EventController extends Controller
     public function store(EventFormRequest $request, Event $event, Sponsor $sponsor)
     {
         $data = $request->validated();
+        $numberOfSponsors = $request->input('number_of_sponsors');
+
+        // dd($request->all());
 
         $start_date = Carbon::parse($data['start_date']);
         $end_date = Carbon::parse($data['end_date']);
@@ -64,33 +67,35 @@ class EventController extends Controller
 
         $event = Event::create($data);
 
-        if ($request->sponsor_name != null) {
-            if ($request->hasFile('sponsor_logo')) {
-                $sponsorImagePath = public_path('assets/images/sponsors');
-                if (!file_exists($sponsorImagePath)) {
-                    // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
-                    mkdir($sponsorImagePath, 0755, true);
-                }
+        for ($i = 0; $i <= $numberOfSponsors; $i++) {
+            if ($request->input('sponsor_name' . $i) != null) {
+                // Validasi Gambar
+                if ($request->hasFile('sponsor_logo' . $i)) {
+                    $imagePath = public_path('assets/images/sponsorlogo/');
+                    if (!file_exists($imagePath)) {
+                        // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
+                        mkdir($imagePath, 0755, true);
+                    }
 
-                $image = $request->file('sponsor_logo');
-                $sponsorImagePath = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('assets/images/sponsors'), $sponsorImagePath);
-            }
-            $sponsor->create(
-                [
+                    // Unggah gambar baru
+                    $image = $request->file('sponsor_logo' . $i);
+                    $imagePath = time() . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
+                    $request['sponsor_logo' . $i] = $imagePath;
+                }
+                $sponsor->create([
                     'event_id' => $event->id,
-                    'name' => $request->sponsor_name,
-                    'logo' => $sponsorImagePath,
-                    'start_date' => $data['start_date'],
-                    'end_date' => $data['end_date'],
-                    'description' => $request->deskripsiSponsor,
-                ]
-            );
+                    'name' => $request->input('sponsor_name' . $i),
+                    'logo' => $imagePath,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+                    'description' => $request->input('deskripsiSponsor' . $i),
+                ]);
+            }
         }
 
         $event->penjadwalan()->create(['event_id' => $event->id]);
 
-        // dd($imagePath);
         return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
     }
 
@@ -113,19 +118,8 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         //edit data
-        $event->where('id', $event->id)->first();
-        if ($event->sponsor()->exists() == false) {
-            $sponsor = [
-                'name' => null,
-                'logo' => null,
-                'start_date' => null,
-                'end_date' => null,
-                'description' => null,
-            ];
-        } else {
-            $sponsor = $event->sponsor()->first();
-        }
-        return view('page.admin.event.edit', compact('event', 'sponsor'));
+        $event = Event::where('id', $event->id)->first();
+        return view('page.admin.event.edit', compact('event'));
     }
 
     /**
@@ -134,13 +128,14 @@ class EventController extends Controller
     public function update(EventFormRequest $request, Event $event, Sponsor $sponsor)
     {
         $data = $request->validated();
-        $sponsor->where('event_id', $event->id)->delete();
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+        $dataSponsor = $request['sponsors'];
 
         // Validasi Gambar
         if ($request->hasFile('image')) {
             $imagePath = public_path('assets/images/eventimage/');
             if (!file_exists($imagePath)) {
-                // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
                 mkdir($imagePath, 0755, true);
             }
 
@@ -153,80 +148,30 @@ class EventController extends Controller
             $image = $request->file('image');
             $imagePath = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('assets/images/eventimage'), $imagePath);
-            $data = $request->validated();
             $data['image'] = $imagePath;
         }
 
-        if ($request->hasFile('sponsor_logo')) {
-            $sponsorImagePath = public_path('assets/images/sponsors');
-            if (!file_exists($sponsorImagePath)) {
-                // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
-                mkdir($sponsorImagePath, 0755, true);
-            }
-
-            // Hapus gambar lama jika ada
-            if (file_exists(public_path($sponsorImagePath))) {
-                unlink($imagePath . $event->image);
-            }
-
-            $image = $request->file('sponsor_logo');
-            $sponsorImagePath = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('assets/images/sponsors'), $sponsorImagePath);
-            $logo = $sponsorImagePath;
-            // cek data sponsor sudah ada atau belum
-            if ($event->sponsor()->exists() == false) {
-                $sponsor->create(
-                    [
-                        'event_id' => $event->id,
-                        'name' => $request->sponsor_name,
-                        'logo' => $logo,
-                        'start_date' => $data['start_date'],
-                        'end_date' => $data['end_date'],
-                        'description' => $request->deskripsiSponsor,
-                    ]
-                );
-            } else {
-                $sponsor->update(
-                    [
-                        'event_id' => $event->id,
-                        'name' => $request->sponsor_name,
-                        'logo' => $logo,
-                        'start_date' => $data['start_date'],
-                        'end_date' => $data['end_date'],
-                        'description' => $request->deskripsiSponsor,
-                    ]
-                );
-            }
-        }
-
-        // cek data sponsor sudah ada atau belum
-        // Cek jika data sponsor yang di kirim kosong
-        if ($request->sponsor_name != null) {
-            if ($event->sponsor()->exists() == false) {
-                $sponsor->create(
-                    [
-                        'event_id' => $event->id,
-                        'name' => $request->sponsor_name,
-                        'start_date' => $data['start_date'],
-                        'end_date' => $data['end_date'],
-                        'description' => $request->deskripsiSponsor,
-                    ]
-                );
-            } else {
-                $sponsor->update(
-                    [
-                        'event_id' => $event->id,
-                        'name' => $request->sponsor_name,
-                        'start_date' => $data['start_date'],
-                        'end_date' => $data['end_date'],
-                        'description' => $request->deskripsiSponsor,
-                    ]
-                );
-            }
-        }
-        // dd($request);
         // Perbarui data event
         $event->update($data);
+
+        foreach ($dataSponsor as $sponsorData) {
+            if (isset($sponsorData['id'])) {
+                // Jika ada ID sponsor, itu adalah sponsor yang sudah ada dan perlu diperbarui
+                $existingSponsor = Sponsor::find($sponsorData['id']);
+                $existingSponsor->name = $sponsorData['name'];
+                $existingSponsor->description = $sponsorData['description'];
+
+                // Hanya ubah gambar jika ada gambar yang dipilih saat pengeditan
+                if (isset($sponsorData['logo']) && $sponsorData['logo'] !== null) {
+                    $image = $sponsorData['logo'];
+                    $imagePath = time() . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
+                    $existingSponsor->logo = $imagePath;
+                }
+
+                $existingSponsor->save();
+            }
+        }
 
         return redirect()->route('event.index')->with('message', 'Data Berhasil Diupdate');
     }
@@ -234,11 +179,24 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event)
+    public function destroy(Event $event, Sponsor $sponsor)
     {
         // Hapus gambar dari direktori publik jika ada
         $publicPathEvent = public_path('assets/images/eventimage/') . $event->image;
-        if (file_exists($publicPathEvent)) {
+
+        // cari sponsor yang terkait dengan event
+        $sponsor = $sponsor->where('event_id', $event->id)->get();
+
+        // hapus gambar sponsor
+        foreach ($sponsor as $s) {
+            $publicPathSponsor = public_path('assets/images/sponsorlogo/') . $s->logo;
+            if (file_exists($publicPathSponsor) && is_file($publicPathSponsor)) {
+                unlink($publicPathSponsor);
+            }
+        }
+
+
+        if (file_exists($publicPathEvent) && is_file($publicPathEvent)) {
             unlink($publicPathEvent);
         }
 
@@ -253,5 +211,20 @@ class EventController extends Controller
         $data = Event::all();
         // dd($dataPendaftar);
         return view('page.admin.listpendaftar', ['data' => $data])->with('i', (request()->input('page', 1) - 1) * 20);
+    }
+
+    public function laporan()
+    {
+        $dataEvent = Event::all();
+        $eventCount = $dataEvent->count();
+
+        $pdf = PDF::loadView('page.admin.event.laporan', compact('dataEvent', 'eventCount'))
+            ->setPaper('a4', 'landscape');
+
+        $fileName = 'laporan_event_' . Carbon::now()->format('Y-m-d_H-i-s') . '.pdf';
+
+        return $pdf->download($fileName);
+
+        // return view('page.admin.event.laporan', compact('dataEvent', 'eventCount'));
     }
 }

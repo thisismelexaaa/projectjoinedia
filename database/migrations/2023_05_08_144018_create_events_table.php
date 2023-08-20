@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('location');
             $table->text('description');
             $table->double('price')->default(0);
+            $table->integer('kuota')->default(150);
             $table->timestamps();
         });
     }

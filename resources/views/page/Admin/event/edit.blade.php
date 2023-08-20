@@ -17,7 +17,8 @@
                     </ul>
                 </div>
             @endif
-            <form class="row g-3" method="POST" action="{{ route('event.update', $event->id) }}" enctype="multipart/form-data">
+            <form class="row g-3" id="editForm" method="POST" action="{{ route('event.update', $event->id) }}"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <input type="text" name="user_id" id="" value="{{ $event->user_id }}" hidden>
@@ -37,8 +38,8 @@
                         </div>
                         <div class="col d-flex">
                             <span class="m-auto">Berakhir : &nbsp;&nbsp;&nbsp;</span>
-                            <input value="{{ $event->end_date }}" name="end_date" type="datetime-local" class="form-control col"
-                                id="end_date">
+                            <input value="{{ $event->end_date }}" name="end_date" type="datetime-local"
+                                class="form-control col" id="end_date">
                         </div>
                     </div>
 
@@ -100,6 +101,12 @@
                                 @endif
                             </select>
                         </div>
+                        <div class="col">
+                            <label class="form-label" for="kuota">Kuota</label>
+                            <input type="number" name="kuota" class="form-control" placeholder="Masukkan Kuota 1-150"
+                                max="150" min="1" value="{{ $event->kuota }}">
+                            <small class="form-label text-danger" for="kuota">*Default & max adalah 150</small>
+                        </div>
                     </div>
 
                     <div>
@@ -118,25 +125,44 @@
                             Event Ini Memiliki Sponsor
                         </label>
                     </div>
+                    {{-- Sponsor --}}
                     <div class="my-3 bg-light p-3 rounded border" id="sponsors" hidden>
-                        <div class="row">
-                            <div class="col">
-                                <label for="sponsor" class="form-label">Sponsor</label>
-                                <input placeholder="Masukkan Sponsor" name="sponsor_name" type="text"
-                                    class="form-control" id="sponsor"value='{{ $sponsor['name'] }}'>
-                            </div>
-                            <div class="col">
-                                <label for="logo" class="form-label">Logo Sponsor</label>
-                                <input value="{{ old('logo') }}" name="sponsor_logo" type="file"
-                                    class="form-control" id="logo">
-                                </span>
-                            </div>
+                        <span>Data Sponsor</span>
+                        <div id="added_sponsor">
+                            <!-- Tampilkan sponsor yang ada (jika ada) -->
+                            @foreach ($event->sponsor as $sponsor)
+                                <div class="my-3 bg-light p-3 rounded border">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="hidden" name="sponsors[{{ $loop->index }}][id]"
+                                                value="{{ $sponsor->id }}">
+                                            <label for="sponsor_name{{ $loop->index }}" class="form-label">Sponsor
+                                                {{ $loop->index + 1 }}</label>
+                                            <input placeholder="Masukkan Sponsor"
+                                                name="sponsors[{{ $loop->index }}][name]" type="text"
+                                                class="form-control" id="sponsor_name{{ $loop->index }}"
+                                                value="{{ $sponsor->name }}">
+                                        </div>
+                                        <div class="col">
+                                            <label for="sponsor_logo{{ $loop->index }}" class="form-label">Logo
+                                                Sponsor</label>
+                                            <input name="sponsors[{{ $loop->index }}][logo]" type="file"
+                                                class="form-control" id="sponsor_logo{{ $loop->index }}">
+                                        </div>
+                                    </div>
+                                    <div class="col my-3">
+                                        <label for="deskripsiSponsor{{ $loop->index }}" class="form-label">Deskripsi
+                                            Sponsor</label>
+                                        <input type="text" class="form-control"
+                                            name="sponsors[{{ $loop->index }}][description]"
+                                            value="{{ $sponsor->description }}">
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="col">
-                            <label for="deskripsiSponsor" class="form-label">Deskripsi Sponsor</label>
-                            <input type="hidden" name="deskripsiSponsor" value="{!! $sponsor['description'] !!}">
-                            <div id="editorSponsor"><span>{!! $sponsor['description'] !!}   </span></div>
-                        </div>
+                        <button type="button" class="btn btn-sm col-3 btn-primary my-3" id="addSponsor">
+                            Tambah Sponsor
+                        </button>
                     </div>
                     <div class="form-check my-3">
                         <input class="form-check-input gridCheck" name="gridCheck" type="checkbox" id="gridCheck">
@@ -172,6 +198,56 @@
                 } else {
                     document.getElementById("buttonSubmit").classList.add('disabled');
                 }
+            });
+        });
+
+        // check checklist
+        var elems = document.querySelectorAll('.sponsorCheck');
+
+        [].forEach.call(elems, function(el) {
+            el.addEventListener('change', function() {
+                var checked = document.querySelectorAll('.sponsorCheck:checked');
+                if (checked.length) {
+                    document.getElementById("sponsors").hidden = false;
+                } else {
+                    document.getElementById("sponsors").hidden = true;
+                }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const addSponsorButton = document.getElementById("addSponsor");
+            const addedSponsorsContainer = document.getElementById("added_sponsor");
+            let sponsorCount =
+                {{ count($event->sponsor) }}; // Set sponsorCount berdasarkan jumlah sponsor yang sudah ada
+
+
+            addSponsorButton.addEventListener("click", function() {
+                const sponsorTemplate = `
+                <div class="my-3 bg-light p-3 rounded border">
+                    <input type="hidden" name="sponsors[${sponsorCount}][id]" value="">
+                    <div class="row">
+                        <div class="col">
+                            <label for="sponsor_name${sponsorCount}" class="form-label">Sponsor ${sponsorCount}</label>
+                            <input placeholder="Masukkan Sponsor" name="sponsors[${sponsorCount}][name]" type="text" class="form-control" id="sponsor_name${sponsorCount}" value="">
+                        </div>
+                        <div class="col">
+                            <label for="sponsor_logo${sponsorCount}" class="form-label">Logo Sponsor</label>
+                            <input name="sponsors[${sponsorCount}][logo]" type="file" class="form-control" id="sponsor_logo${sponsorCount}">
+                        </div>
+                    </div>
+                    <div class="col my-3">
+                        <label for="deskripsiSponsor${sponsorCount}" class="form-label">Deskripsi Sponsor</label>
+                        <input type="text" class="form-control" name="sponsors[${sponsorCount}][description]" value="">
+                    </div>
+                </div>
+                `;
+
+                const sponsorDiv = document.createElement("div");
+                sponsorDiv.innerHTML = sponsorTemplate;
+
+                addedSponsorsContainer.appendChild(sponsorDiv);
+                sponsorCount++;
             });
         });
 
@@ -224,7 +300,6 @@
         // Panggil fungsi handleTypeChange saat halaman di-load
         handleTypeChange(document.getElementById("type"));
 
-
         // quill editor
         var quill = new Quill('#editor', {
             theme: 'snow'
@@ -238,20 +313,6 @@
         });
         quill2.on('text-change', function(delta, oldDelta, source) {
             document.querySelector("input[name='deskripsiSponsor']").value = quill2.root.innerHTML;
-        });
-
-        // check checklist
-        var elems = document.querySelectorAll('.sponsorCheck');
-
-        [].forEach.call(elems, function(el) {
-            el.addEventListener('change', function() {
-                var checked = document.querySelectorAll('.sponsorCheck:checked');
-                if (checked.length) {
-                    document.getElementById("sponsors").hidden = false;
-                } else {
-                    document.getElementById("sponsors").hidden = true;
-                }
-            });
         });
     </script>
 @endsection

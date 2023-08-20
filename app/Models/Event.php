@@ -23,6 +23,7 @@ class Event extends Model
         'price',
         'user_id',
         'event_id',
+        'kuota',
     ];
 
     // Relationship event dengan user
@@ -38,11 +39,16 @@ class Event extends Model
 
     public function sponsor()
     {
-        return $this->hasOne(Sponsor::class, 'event_id');
+        return $this->hasMany(Sponsor::class);
     }
 
     public function pendaftaran()
     {
         return $this->hasMany(Pendaftaran::class, 'event_id');
+    }
+
+    public function sponsorCount()
+    {
+        return $this->sponsor()->count();
     }
 }

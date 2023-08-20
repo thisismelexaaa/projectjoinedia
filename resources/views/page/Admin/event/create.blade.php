@@ -54,7 +54,6 @@
                                 <option selected value="gratis">Pilih Salah Satu</option>
                                 <option value="gratis">Gratis</option>
                                 <option value="berbayar">Berbayar</option>
-                                <!-- tambahkan opsi lain jika diperlukan -->
                             </select>
                         </div>
                         <div class="col-6">
@@ -68,18 +67,63 @@
                             <input readonly placeholder="Masukkan Type Event Dahulu" name="price" type="number"
                                 class="form-control" id="price" value="{{ old('price') }}">
                         </div>
-
                         <span class="text-danger fs-6 fst-italic col-12">"Jika Type Event Tidak Di Pilih Maka Event Akan
                             Dianggap Gratis"
                         </span>
                     </div>
+
                     <div class="my-3">
-                        <label for="penyelenggara" class="form-label">Penyelenggara</label>
+                        {{-- <div class="col">
+                            <label for="penyelenggara" class="form-label">Penyelenggara</label>
+                            <select name="organizer" id="penyelenggara" class="form-select">
+                                <option selected value="{{ old('organizer') }}">Pilih Salah Satu</option>
+                                <optgroup label="- FTI - Fakultas Teknologi & Informasi -">
+                                    <option value="Fakultas Teknologi & Informasi">Fakultas Teknologi & Informasi</option>
+                                    <option value="S1 - Teknik Informatika">S1 - Teknik Informatika</option>
+                                    <option value="S1 - Sistem Informasi">S1 - Sistem Informasi</option>
+                                    <option value="S1 - Desain Komunikasi Visual">S1 - Desain Komunikasi Visual</option>
+                                    <option value="D3 - Manajemen Informatika">D3 - Manajemen Informatika</option>
+                                    <option value="D3 - Komputerisasi Akutansi">D3 - Komputerisasi Akutansi</option>
+                                </optgroup>
+                                <optgroup label="- FEB - Fakultas Ekonomi Bisnis -">
+                                    <option value="Fakultas Ekonomi Bisnis">Fakultas Ekonomi Bisnis</option>
+                                    <option value="S1 - Manajemen">S1 - Manajemen</option>
+                                    <option value="S1 - Akuntansi">S1 - Akuntansi</option>
+                                    <option value="D3 - Manajemen Bisnis">D3 - Manajemen Bisnis</option>
+                                </optgroup>
+                                <optgroup label="- HIMA -">
+                                    <option value="HIMASI">HIMASI</option>
+                                    <option value="HIMATIF">HIMATIF</option>
+                                    <option value="HIMAMI">HIMAMI</option>
+                                    <option value="HIMAKA">HIMAKA</option>
+                                    <option value="HIMADKV">HIMADKV</option>
+                                    <option value="HIMABIS">HIMABIS</option>
+                                    <option value="HIMAKU">HIMAKU</option>
+                                    <option value="HIMAJEMEN">HIMAJEMEN</option>
+                                </optgroup>
+                                <optgroup label="- UKM -">
+                                    <option value="UKM ESPORTS">UKM ESPORTS</option>
+                                    <option value="UKM ARTOGRAFI">UKM ARTOGRAFI</option>
+                                    <option value="UKM OLAHRAGA">UKM OLAHRAGA</option>
+                                    <option value="UKM MUSIK">UKM MUSIK</option>
+                                    <option value="UKM NUSANTARI">UKM NUSANTARI</option>
+                                    <option value="UKM IPTEK">UKM IPTEK</option>
+                                </optgroup>
+                                <optgroup label="- LAINNYA - ">
+                                    <option value="">BKM</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="">Berkerja Sama Dengan</label>
+                            <input placeholder="Masukkan Penyelenggara Event" name="organizer" type="text"
+                                class="form-control" id="penyelenggara" value='{{ old('organizer') }}'>
+                        </div> --}}
                         <input placeholder="Masukkan Penyelenggara Event" name="organizer" type="text"
-                            class="form-control" id="penyelenggara"value='{{ old('organizer') }}'>
+                            class="form-control" id="penyelenggara" value='{{ old('organizer') }}'>
                     </div>
                     <div class="my-3 row">
-                        <div class="col-6">
+                        <div class="col">
                             <label for="status" class="form-label">Status</label>
                             <select class="form-select" name="status" id="status">
                                 <option selected value="aktif">Pilih Salah Satu</option>
@@ -87,13 +131,19 @@
                                 <option value="selesai">Selesai</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col">
                             <label for="kategori" class="form-label">Kategori Event</label>
                             <select class="form-select" name="kategori" id="eventkategori">
                                 <option selected value="aktif">Pilih Salah Satu</option>
                                 <option value="akademik">Akademik</option>
                                 <option value="non-akademik">Non-Akademik</option>
                             </select>
+                        </div>
+                        <div class="col">
+                            <label class="form-label" for="kuota">Kuota</label>
+                            <input type="number" name="kuota" class="form-control" placeholder="Masukkan Kuota 1-150"
+                                max="150" min="1">
+                            <small class="form-label text-danger" for="kuota">*Default & max adalah 150</small>
                         </div>
                     </div>
 
@@ -114,25 +164,16 @@
                             Event Ini Memiliki Sponsor
                         </label>
                     </div>
+
+                    {{-- Sponsor --}}
                     <div class="my-3 bg-light p-3 rounded border" id="sponsors" hidden>
-                        <div class="row">
-                            <div class="col">
-                                <label for="sponsor" class="form-label">Sponsor</label>
-                                <input placeholder="Masukkan Sponsor" name="sponsor_name" type="text"
-                                    class="form-control" id="sponsor"value='{{ old('sponsor_name') }}'>
-                            </div>
-                            <div class="col">
-                                <label for="logo" class="form-label">Logo Sponsor</label>
-                                <input value="{{ old('logo') }}" name="sponsor_logo" type="file"
-                                    class="form-control" id="logo">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col my-3">
-                            <label for="deskripsiSponsor" class="form-label">Deskripsi Sponsor</label>
-                            <input type="text" class="form-control" name="deskripsiSponsor" value="{{ old('deskripsiSponsor') }}">
-                        </div>
+                        <span>Data Sponsor</span>
+                        <div id="added_sponsor"></div>
+                        <button type="button" class="btn btn-sm col-3 btn-primary my-3" id="addSponsor">
+                            Tambah Sponsor
+                        </button>
                     </div>
+
                     <div class="form-check my-3">
                         <input class="form-check-input gridCheck" type="checkbox" id="gridCheck">
                         <label class="form-check-label" for="gridCheck">
@@ -238,5 +279,42 @@
             document.querySelector("input[name='description']").value = quill.root.innerHTML;
         });
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const addSponsorButton = document.getElementById("addSponsor");
+            const sponsorsContainer = document.getElementById("sponsors");
+            const AddedSponsorsContainer = document.getElementById("added_sponsor");
+
+            let sponsorCount = 1;
+
+            addSponsorButton.addEventListener("click", function() {
+                const sponsorTemplate = `
+                <div class="my-3 bg-light p-3 rounded border">
+                    <input type="hidden" name="number_of_sponsors" value="${sponsorCount}">
+                    <div class="row">
+                        <div class="col">
+                            <label for="sponsor${sponsorCount}" class="form-label">Sponsor ${sponsorCount}</label>
+                            <input placeholder="Masukkan Sponsor" name="sponsor_name${sponsorCount}" type="text"
+                                class="form-control" id="sponsor${sponsorCount}" value="{{ old('sponsor_name') }}">
+                        </div>
+                        <div class="col">
+                            <label for="logo${sponsorCount}" class="form-label">Logo Sponsor</label>
+                            <input value="{{ old('logo') }}" name="sponsor_logo${sponsorCount}" type="file"
+                                class="form-control" id="logo${sponsorCount}">
+                        </div>
+                    </div>
+                    <div class="col my-3">
+                        <label for="deskripsiSponsor${sponsorCount}" class="form-label">Deskripsi Sponsor</label>
+                        <input type="text" class="form-control" name="deskripsiSponsor${sponsorCount}" value="{{ old('deskripsiSponsor') }}">
+                    </div>
+                </div>
+            `;
+
+                const sponsorDiv = document.createElement("div");
+                sponsorDiv.innerHTML = sponsorTemplate;
+
+                AddedSponsorsContainer.appendChild(sponsorDiv);
+                sponsorCount++;
+            });
+        });
     </script>
 @endsection

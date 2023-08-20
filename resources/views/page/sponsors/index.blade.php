@@ -4,9 +4,9 @@
     <section class="card info-card sales-card overflow-auto">
         {{-- List Event --}}
         <div class="card-body">
-            <div class="card-title justify-content-between row">
+            <div class="card-title justify-content-between row me-2">
                 <p class="col-md">List Sponsors</p>
-                {{-- <a href="{{ route('sponsor.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add Sponsor</a> --}}
+                <a href="{{ route('sponsor.laporansponsor') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak Laporan</a>
             </div>
             <div class="overflow-auto">
                 <table
@@ -15,6 +15,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Nama Sponsor</th>
+                            <th scope="col">Nama Event</th>
                             <th scope="col">Description</th>
                             <th scope="col">Kontrak Sponsor</th>
                             <th scope="col">Action</th>
@@ -25,11 +26,12 @@
                             <tr>
                                 <th class="align-baseline" scope="row">{{ ++$i }}</th>
                                 <td class="align-baseline">
-                                    <img src="assets/images/sponsors/{{ $sponsor->logo }}" height="125" alt="">
+                                    <img src="assets/images/sponsorlogo/{{ $sponsor->logo }}" height="125" alt="">
                                     <span class="fw-bold">
                                         {!! $sponsor->name !!}
                                     </span>
                                 </td>
+                                <td class="align-baseline">{!! $sponsor->event->nama !!}</td>
                                 <td class="align-baseline">{!! $sponsor->description !!}</td>
                                 <td class="align-baseline">
                                     {{ \Carbon\Carbon::parse($sponsor->start_date)->formatLocalized('%d %B %Y') }}

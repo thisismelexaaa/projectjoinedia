@@ -3,10 +3,16 @@
 @section('content')
     <section class="card info-card sales-card">
         <div class="pagetitle p-3">
-            <h1>Detail</h1>
+            <div class="row justify-between card-title me-2">
+                <p class="col-md">Riwayat Transaksi</p>
+                @if (Auth::user()->role == 'superadmin')
+                    <a href="{{ route('riwayat.laporanriwayat') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+                        Laporan</a>
+                @endif
+            </div>
         </div>
         <div class="row card-body">
-            <div class="my-3 overflow-auto">
+            <div class="overflow-auto">
                 <table class="datatable table table-hover">
                     <thead>
                         <tr>
@@ -22,6 +28,9 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $item)
+                            <input type="hidden" value="{{ $item->transaksi->payment_link }}" class="paymentlink"
+                                id="paymentlink">
+                            {{-- <tr class="paymentlink" id="paymentlink">{{ $item->transaksi->payment_link }}</tr> --}}
                             <tr>
                                 <td class="align-baseline">{{ ++$i }}</td>
                                 <td class="text-capitalize align-baseline fw-bold">
@@ -29,7 +38,6 @@
                                         alt="">
                                     {{ $item->event->nama }}
                                 </td>
-                                <td class="paymentlink" hidden>{{ $item->transaksi->payment_link }}</td>
                                 <td class="text-capitalize align-baseline">{{ $item->tiket }}</td>
                                 <td class="align-baseline">
                                     {{ \Carbon\Carbon::parse($item->event->start_date)->formatLocalized('%A, %d %B %Y') }}
@@ -51,6 +59,15 @@
                                                 data-bs-title="Pay Now"></i>
                                         </a> --}}
                                         {{-- Kirim data ke modal --}}
+                                        @can('isUser')
+                                            @if ($item->status == 'unpaid')
+                                                <button class="btn btn-sm btn-success paynow" data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal" data-id="{{ $item->id }}">
+                                                    <i class="bi bi-credit-card" data-bs-toggle="tooltip"
+                                                        data-bs-title="Pay Now"></i>
+                                                </button>
+                                            @endif
+                                        @endcan
                                         <form action="{{ route('riwayat.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
@@ -60,13 +77,6 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
-                                        @if ($item->status == 'unpaid')
-                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal" data-id="{{ $item->id }}">
-                                                <i class="bi bi-credit-card" data-bs-toggle="tooltip"
-                                                    data-bs-title="Pay Now"></i>
-                                            </button>
-                                        @endif
                                     </div>
                                 </td>
                                 </td>
@@ -84,7 +94,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Pilih Pembayaran</h1>
-
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -106,16 +115,13 @@
 
         $(document).ready(function() {
             // Ketika tombol "Pay Now" diklik, ambil data dan isi ke dalam modal
-            $('.btn-primary').on('click', function() {
-                // Ambil data yang tersimpan dalam atribut data-id
-                const id = $(this).data('id');
-                const row = $(this).closest('tr');
-
+            $('.paynow').on('click', function() {
                 // Ambil data yang sesuai dari tabel
-                const paymentLink = row.find('.paymentlink').text();
-
+                var paymentLinkInput = document.querySelector('.paymentlink');
+                var paymentLinkValue = paymentLinkInput.value;
+                // console.log(paymentLinkValue);
                 // Isi data ke dalam modal
-                $('#modalPaymentLink').attr('src', paymentLink);
+                $('#modalPaymentLink').attr('src', paymentLinkValue);
 
                 // Tampilkan modal setelah mengisi nilai-nilai
                 $('#exampleModal').modal('show');

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\PDF;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserFormRequest;
 
@@ -98,7 +100,6 @@ class UserController extends Controller
         }
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -113,5 +114,21 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('user.index')->with('message', 'Data Berhasil Dihapus');
+    }
+
+    public function laporanUser()
+    {
+        // tampilkan semua user
+        $user = User::latest()->paginate(20);
+        $countUser = $user->count();
+
+        $pdf = PDF::loadView('page.admin.user.laporan', compact('user', 'countUser'))
+            ->setPaper('a4', 'landscape');
+
+        $fileName = 'laporan_user_' . Carbon::now()->format('Y-m-d_H-i-s') . '.pdf';
+
+        return $pdf->download($fileName);
+
+        // return view('page.admin.user.laporan', compact('user', 'countUser'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
 }

@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="pagetitle">
-        <h1>Home</h1>
-    </div>
     <section class="py-3 card info-card sales-card">
         <div class="card-body">
             <div class="text-center mb-4">
