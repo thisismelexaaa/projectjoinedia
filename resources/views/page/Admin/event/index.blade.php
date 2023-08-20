@@ -63,9 +63,15 @@
     <section class="card info-card sales-card overflow-auto">
         {{-- List Event --}}
         <div class="card-body">
-            <div class="card-title justify-content-between row">
+            <div class="card-title justify-content-between row me-2">
                 <p class="col-md">List Events</p>
-                <a href="{{ route('event.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add Event</a>
+                <div class="col-md justify-content-end row gap-1">
+                    <a href="{{ route('event.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add Event</a>
+                    @if (Auth::user()->role == 'superadmin')
+                        <a href="{{ route('event.laporan') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+                            Laporan</a>
+                    @endif
+                </div>
             </div>
             <div class="table-responsive">
                 <table id="data-table" class="table table-borderless datatable table-hover stripe row-border order-column">
@@ -83,6 +89,7 @@
                             <th>Uploaded By</th>
                             <th>Description</th>
                             <th>Sponsor</th>
+                            <th>Kuota</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -98,14 +105,14 @@
                                             alt="">
                                     </a>
                                 </td>
-                                <td class="align-baseline">
+                                <td class="align-baseline" width="15%">
                                     <a href="{{ route('event.show', $event->id) }}"
                                         class="text-decoration-none text-dark fw-bold">
 
                                         {{ Str::limit($event->nama, 25) }}
                                     </a>
                                 </td>
-                                <td class="align-baseline">
+                                <td class="align-baseline" width="25%">
                                     {{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%A, %d %B %Y') }}
                                     -
                                     {{ \Carbon\Carbon::parse($event->end_date)->formatLocalized('%A, %d %B %Y') }}
@@ -113,19 +120,22 @@
                                 <td class="text-capitalize align-baseline">{{ $event->type }}</td>
                                 <td class="text-capitalize align-baseline">
                                     {{ $event->kategori }}</td>
-                                <td class="align-baseline">{{ $event->organizer }}</td>
+                                <td class="align-baseline" width="15%">{{ $event->organizer }}</td>
                                 <td class="align-baseline">{{ $event->location }}</td>
                                 <td class="align-baseline">@currency($event->price)</td>
-                                <td class="align-baseline text-capitalize">{{ $event->user->name }}</td>
+                                <td class="align-baseline text-capitalize" width="15%">{{ $event->user->name }}</td>
                                 <td class="align-baseline">
                                     <span class="">{!! Str::limit($event->description, 75) !!}</span>
                                 </td>
-                                {{-- Null safety --}}
-                                @if ($event->sponsor == null)
-                                    <td class="align-baseline">Tidak Ada Sponsor</td>
-                                @else
-                                    <td class="align-baseline text-capitalize">{{ $event->sponsor->name }}</td>
-                                @endif
+                                <td class="align-baseline text-capitalize">
+                                    @if ($event->sponsor->isEmpty())
+                                        <span class="text-capitalize badge w-100 bg-danger">Tidak ada sponsor</span>
+                                    @endif
+                                    @foreach ($event->sponsor as $sponsor)
+                                        <ol>{{ $sponsor->name }}</ol>
+                                    @endforeach
+                                </td>
+                                <td class="align-baseline">{{ $event->kuota }}</td>
                                 @if ($event->status == 'aktif' || $event->status == 'Aktif')
                                     <td class="align-baseline"><span
                                             class="text-capitalize badge w-100 bg-success">{{ $event->status }}</span>

@@ -93,7 +93,6 @@
 >>>>>>> 8019b8b (70% Progress)
                                 <option value="gratis">Gratis</option>
                                 <option value="berbayar">Berbayar</option>
-                                <!-- tambahkan opsi lain jika diperlukan -->
                             </select>
                         </div>
                         <div class="col-6">
@@ -214,18 +213,18 @@
                             <input readonly placeholder="Masukkan Type Event Dahulu" name="price" type="number"
                                 class="form-control" id="price" value="{{ old('price') }}">
                         </div>
-
                         <span class="text-danger fs-6 fst-italic col-12">"Jika Type Event Tidak Di Pilih Maka Event Akan
                             Dianggap Gratis"
                         </span>
                     </div>
+
                     <div class="my-3">
                         <label for="penyelenggara" class="form-label">Penyelenggara</label>
                         <input placeholder="Masukkan Penyelenggara Event" name="organizer" type="text"
                             class="form-control" id="penyelenggara"value='{{ old('organizer') }}'>
                     </div>
                     <div class="my-3 row">
-                        <div class="col-6">
+                        <div class="col">
                             <label for="status" class="form-label">Status</label>
 <<<<<<< HEAD
                             <select class="form-select" name="eventstatus" id="status">
@@ -316,6 +315,8 @@
                             Event Ini Memiliki Sponsor
                         </label>
                     </div>
+
+                    {{-- Sponsor --}}
                     <div class="my-3 bg-light p-3 rounded border" id="sponsors" hidden>
                         <div class="row">
                             <div class="col">

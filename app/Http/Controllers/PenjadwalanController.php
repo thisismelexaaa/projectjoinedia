@@ -19,7 +19,15 @@ class PenjadwalanController extends Controller
         $jadwal = Penjadwalan::with('event')
             ->get()
             ->map(function ($item) {
-                $color = ($item->event->type == 'gratis') ? '#00713e' : '#f39c12';
+                $sponsorCount = $item->event->sponsorCount();
+
+                if ($sponsorCount >= 1 && $sponsorCount <= 2) {
+                    $color = '#00713e'; // Hijau
+                } elseif ($sponsorCount <= 3) {
+                    $color = '#f39c12'; // Kuning
+                } else {
+                    $color = '#e74c3c'; // Merah
+                }
 
                 return [
                     'title' => $item->event->nama,

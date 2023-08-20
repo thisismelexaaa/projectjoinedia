@@ -92,4 +92,9 @@ class Event extends Model
     {
         return $this->hasMany(Pendaftaran::class, 'event_id');
     }
+
+    public function sponsorCount()
+    {
+        return $this->sponsor()->count();
+    }
 }

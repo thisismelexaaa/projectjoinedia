@@ -47,6 +47,7 @@ return new class extends Migration
 =======
             $table->double('price')->default(0);
 >>>>>>> 8019b8b (70% Progress)
+            $table->integer('kuota')->default(150);
             $table->timestamps();
         });
     }

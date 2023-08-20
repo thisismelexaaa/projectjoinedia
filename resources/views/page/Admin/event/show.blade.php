@@ -184,13 +184,26 @@
                                 <td class="text-capitalize">{{ $event->kategori }}</td>
                             </tr>
                             <tr>
+                                <td><i class="bi bi-bookmark"></i></td>
+                                <td>Kuota</td>
+                                @if ($event->kuota == 0)
+                                    <td class="text-capitalize">Kuota Habis</td>
+                                @else
+                                    <td class="text-capitalize">{{ $event->kuota }}</td>
+                                @endif
+                            </tr>
+                            <tr>
                                 <td><i class="bi bi-badge-ad"></i></td>
                                 <td>Sponsored By</td>
                                 {{-- NULL SAFETY --}}
                                 @if ($event->sponsor == null)
                                     <td class="text-capitalize">Tidak Ada Sponsor</td>
                                 @else
-                                    <td class="text-capitalize">{{ $event->sponsor->name }}</td>
+                                    <td class="align-baseline text-capitalize">
+                                        @foreach ($event->sponsor as $sponsor)
+                                            {{ $sponsor->name }},
+                                        @endforeach
+                                    </td>
                                 @endif
 >>>>>>> 8019b8b (70% Progress)
                             </tr>

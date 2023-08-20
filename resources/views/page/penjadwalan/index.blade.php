@@ -87,8 +87,15 @@
 =======
     </style>
 
-    <div class="calendar-container">
-        <div id="calendar"></div>
+    <div class="callendar-body">
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
+        <p class="keterangan">Keterangan :
+            <span><i class="bi bi-file-fill lvl1"></i> Level 1 |</span>
+            <span><i class="bi bi-file-fill lvl2"></i> Level 2 |</span>
+            <span><i class="bi bi-file-fill lvl3"></i> Level 3</span>
+        </p>
     </div>
 >>>>>>> 8019b8b (70% Progress)
 @endsection

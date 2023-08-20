@@ -137,10 +137,12 @@ Route::get("/algoritma-genetika", [AlgoritmaGeneticController::class, "index"]);
 
     // Pendaftaran
     Route::resource('riwayat', PendaftaranController::class);
+    Route::get('/laporanriwayat', [PendaftaranController::class, 'laporanriwayat'])->name('riwayat.laporanriwayat');
 
 >>>>>>> 8019b8b (70% Progress)
     // user
     Route::resource('user', UserController::class);
+    Route::get('/laporanuser', [UserController::class, 'laporanuser'])->name('user.laporanuser');
 
     // Kalender
     Route::resource('penjadwalan', PenjadwalanController::class);

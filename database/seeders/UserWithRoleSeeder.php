@@ -57,14 +57,13 @@ class UserWithRoleSeeder extends Seeder
 =======
 
         $admin = new User;
-        $admin->name = 'Super Admin';
-        $admin->username = 'superadmin';
-        $admin->email = 'super@app.test';
+        $admin->name = 'Admin';
+        $admin->username = 'admin';
+        $admin->email = 'admin@app.test';
         $admin->email_verified_at = date('Y-m-d H:i:s');
         $admin->password = bcrypt('password');
-        $admin->role = 'superadmin';
-        $admin->bio = 'Aku Adalah Super Admin';
-        // $admin->photo = Avatar::create($admin->name)->getImageObject()->encode('png');
+        $admin->role = 'admin';
+        $admin->bio = 'Aku Adalah Admin';
         $admin->save();
 >>>>>>> f89a811 (First Commit : Progress 80%)
     }

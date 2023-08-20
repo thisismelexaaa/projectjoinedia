@@ -270,6 +270,10 @@ div [class^="col-"] {
     }
 =======
 
+div [class^="col-"] {
+    padding-left: 5px;
+    padding-right: 5px;
+}
 .card {
     border: none;
     transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);

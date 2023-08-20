@@ -105,6 +105,18 @@ class PendaftaranController extends Controller
         $deleteTransaksi = $transaksi->where('doc_no', $data->tiket)->get();
         $pendaftaran->destroy($id);
         $transaksi->destroy($deleteTransaksi);
+
+        // update kuota
+        $event = Event::find($data->event_id);
+        $event->kuota = $event->kuota + 1;
+
+        // cek kuoata sudah habis
+        if ($event->kuota > 0) {
+            $event->update([
+                'status' => 'aktif'
+            ]);
+        }
+        $event->save();
         return redirect()->route('riwayat.index')->with('success', 'Pendaftaran berhasil dihapus');
     }
 

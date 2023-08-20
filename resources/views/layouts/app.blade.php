@@ -516,7 +516,7 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('riwayat') ? 'active' : 'collapsed' }}"
                                 href="{{ url('riwayat') }}">
-                                <i class="bi bi-badge-ad"></i>
+                                <i class="bi bi-clock-history"></i>
                                 <span>Riwayat Aktifitas</span>
                             </a>
                         </li>

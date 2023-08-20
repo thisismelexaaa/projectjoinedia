@@ -42,7 +42,7 @@
             <div class="col-md-2">
                 <div class="card h-100">
                     <a href="event/{{ $e->id }}">
-                        <img class="img-fluid w-100" style="width:300;height:250px;"
+                        <img class="img-fluid w-100 p-2 rounded rounded-4" style="height: 350px;"
                             src="{{ asset('assets/images/eventimage/' . $e->image) }}" alt="..." />
                     </a>
                     <div class="card-body">

@@ -51,9 +51,12 @@
     {{-- List User --}}
     <div class="card info-card sales-card">
         <div class="card-body">
-            <div class="card-title justify-content-between row">
+            <div class="card-title justify-content-between row me-2">
                 <p class="col-md">List User</p>
-                <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary my-auto col-md-1">Add User</a>
+                <div class="justify-content-end row gap-1 col-md">
+                    <a href="{{ route('user.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add User</a>
+                    <a href="{{ route('user.laporanuser') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak Laporan</a>
+                </div>
             </div>
             <div class="overflow-auto ">
 >>>>>>> f89a811 (First Commit : Progress 80%)

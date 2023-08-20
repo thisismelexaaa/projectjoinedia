@@ -71,8 +71,8 @@
                         </div>
                         <div class="col d-flex">
                             <span class="m-auto">Berakhir : &nbsp;&nbsp;&nbsp;</span>
-                            <input value="{{ $event->end_date }}" name="end_date" type="datetime-local" class="form-control col"
-                                id="end_date">
+                            <input value="{{ $event->end_date }}" name="end_date" type="datetime-local"
+                                class="form-control col" id="end_date">
                         </div>
 >>>>>>> 8019b8b (70% Progress)
                     </div>
@@ -341,6 +341,7 @@
                             Event Ini Memiliki Sponsor
                         </label>
                     </div>
+                    {{-- Sponsor --}}
                     <div class="my-3 bg-light p-3 rounded border" id="sponsors" hidden>
                         <div class="row">
                             <div class="col">
@@ -360,6 +361,9 @@
                             <input type="hidden" name="deskripsiSponsor" value="{!! $sponsor['description'] !!}">
                             <div id="editorSponsor"><span>{!! $sponsor['description'] !!}   </span></div>
                         </div>
+                        <button type="button" class="btn btn-sm col-3 btn-primary my-3" id="addSponsor">
+                            Tambah Sponsor
+                        </button>
                     </div>
 >>>>>>> 8019b8b (70% Progress)
                     <div class="form-check my-3">

@@ -29,6 +29,7 @@
                             <th scope="col">Description</th>
 =======
                             <th scope="col">Nama Sponsor</th>
+                            <th scope="col">Nama Event</th>
                             <th scope="col">Description</th>
                             <th scope="col">Kontrak Sponsor</th>
 >>>>>>> 8019b8b (70% Progress)
