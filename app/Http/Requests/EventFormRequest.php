@@ -64,6 +64,9 @@ class EventFormRequest extends FormRequest
             'kuota' => [
                 'numeric', 'required',
             ],
+            'level' => [
+                'required', 'string', 'max:255',
+            ],
         ];
         return $rules;
     }

@@ -23,7 +23,7 @@
             background-color: lightgray
         }
 
-        .table-data td{
+        .table-data td {
             border-bottom: 1px solid black;
             text-transform: capitalize;
 
@@ -95,7 +95,11 @@
                     @if ($event->sponsor == null)
                         <td class="align-baseline">Tidak Ada Sponsor</td>
                     @else
-                        <td class="align-baseline text-capitalize">{{ $event->sponsor->name }}</td>
+                        <td class="align-baseline text-capitalize">
+                            @foreach ($event->sponsor as $item)
+                                {{ $item->name }},
+                            @endforeach
+                        </td>
                     @endif
                     @if ($event->status == 'aktif' || $event->status == 'Aktif')
                         <td class="align-baseline"><span

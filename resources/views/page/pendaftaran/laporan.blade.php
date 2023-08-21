@@ -37,7 +37,7 @@
         <tr>
             <td valign="top"><img src="assets/img/joinedia.png" alt="" width="150" /></td>
             <td align="right">
-                <h3>Laporan User</h3>
+                <h3>Laporan Riwayat</h3>
                 <pre>
                     Tanggal :
                     {{ \Carbon\Carbon::now()->formatLocalized('%A, %d %B %Y') }}

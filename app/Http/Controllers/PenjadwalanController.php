@@ -15,16 +15,21 @@ class PenjadwalanController extends Controller
         $jadwal = Penjadwalan::with('event')
             ->get()
             ->map(function ($item) {
-                $sponsorCount = $item->event->sponsorCount();
+                $sponsorLevel = $item->event->level;
 
-                if ($sponsorCount >= 1 && $sponsorCount <= 2) {
-                    $color = '#00713e'; // Hijau
-                } elseif ($sponsorCount <= 3) {
-                    $color = '#f39c12'; // Kuning
-                } else {
+                if ($sponsorLevel === 'universitas') {
+                    $color = '#0d6efd'; // Hijau
+                } elseif ($sponsorLevel === 'fakultas') {
+                    $color = '#6610f2'; // Kuning
+                } elseif ($sponsorLevel === 'prodi') {
+                    $color = '#ffc107'; // Kuning
+                } elseif ($sponsorLevel === 'hima') {
+                    $color = '#fd7e14'; // Merah
+                } elseif ($sponsorLevel === 'ukm') {
                     $color = '#e74c3c'; // Merah
+                } else {
+                    $color = '#34495e'; // Abu-abu (misalnya untuk "lainnya")
                 }
-
                 return [
                     'title' => $item->event->nama,
                     'start' => $item->event->start_date,

@@ -73,8 +73,8 @@
                     </div>
 
                     <div class="my-3">
+                        <label for="penyelenggara" class="form-label">Penyelenggara</label>
                         {{-- <div class="col">
-                            <label for="penyelenggara" class="form-label">Penyelenggara</label>
                             <select name="organizer" id="penyelenggara" class="form-select">
                                 <option selected value="{{ old('organizer') }}">Pilih Salah Satu</option>
                                 <optgroup label="- FTI - Fakultas Teknologi & Informasi -">
@@ -121,6 +121,39 @@
                         </div> --}}
                         <input placeholder="Masukkan Penyelenggara Event" name="organizer" type="text"
                             class="form-control" id="penyelenggara" value='{{ old('organizer') }}'>
+                        <div class="d-flex gap-2 mt-2">
+                            <label for="">Level :</label>
+                            <div class="form-check">
+                                <input type="radio" value="universitas" checked name="level" id="leveluniv"
+                                    class="form-check-input">
+                                <label for="leveluniv" form-check-label>Universitas</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" value="fakultas" name="level" id="levelfak"
+                                    class="form-check-input">
+                                <label for="levelfak" class="form-check-label">Fakultas</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" value="prodi" name="level" id="levelprod"
+                                    class="form-check-input">
+                                <label for="levelprod" class="form-check-label">Prodi</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" value="bkm" name="level" id="levelbkm"
+                                    class="form-check-input">
+                                <label for="levelbkm" class="form-check-label">Bkm</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" value="hima" name="level" id="levelhim"
+                                    class="form-check-input">
+                                <label for="levelhim" class="form-check-label">Hima</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" value="ukm" name="level" id="levelukm"
+                                    class="form-check-input">
+                                <label for="levelukm" class="form-check-label">Ukm</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="my-3 row">
                         <div class="col">
@@ -304,7 +337,7 @@
                     </div>
                     <div class="col my-3">
                         <label for="deskripsiSponsor${sponsorCount}" class="form-label">Deskripsi Sponsor</label>
-                        <input type="text" class="form-control" name="deskripsiSponsor${sponsorCount}" value="{{ old('deskripsiSponsor') }}">
+                        <textarea class="form-control" name="deskripsiSponsor${sponsorCount}" rows="5">{{ old('deskripsiSponsor') }}</textarea>
                     </div>
                 </div>
             `;

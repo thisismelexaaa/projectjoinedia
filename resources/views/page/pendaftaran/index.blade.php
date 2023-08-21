@@ -28,7 +28,7 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $item)
-                            <input type="hidden" value="{{ $item->transaksi->payment_link }}" class="paymentlink"
+                            <input type="text" hidden value="{{ $item->transaksi->payment_link }}" class="paymentlink"
                                 id="paymentlink">
                             {{-- <tr class="paymentlink" id="paymentlink">{{ $item->transaksi->payment_link }}</tr> --}}
                             <tr>
@@ -50,7 +50,16 @@
                                 @else
                                     <td class="align-baseline">@currency($item->event->price)</td>
                                 @endif
-                                <td class="text-capitalize align-baseline">{{ $item->status }}</td>
+
+                                @if ($item->status == 'unpaid')
+                                    <td class="text-capitalize align-baseline">
+                                        <span class="badge bg-danger">{{ $item->status }}</span>
+                                    </td>
+                                    @elseif($item->status == 'paid')
+                                    <td class="text-capitalize align-baseline">
+                                        <span class="badge bg-success">{{ $item->status }}</span>
+                                    </td>
+                                @endif
                                 <td class="align-baseline">
                                     <div class="gap-3 d-flex">
                                         {{-- <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal"
@@ -59,15 +68,15 @@
                                                 data-bs-title="Pay Now"></i>
                                         </a> --}}
                                         {{-- Kirim data ke modal --}}
-                                        @can('isUser')
-                                            @if ($item->status == 'unpaid')
-                                                <button class="btn btn-sm btn-success paynow" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal" data-id="{{ $item->id }}">
-                                                    <i class="bi bi-credit-card" data-bs-toggle="tooltip"
-                                                        data-bs-title="Pay Now"></i>
-                                                </button>
-                                            @endif
-                                        @endcan
+                                        {{-- @can('isUser') --}}
+                                        @if ($item->status == 'unpaid')
+                                            <button class="btn btn-sm btn-success paynow" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal" data-id="{{ $item->id }}">
+                                                <i class="bi bi-credit-card" data-bs-toggle="tooltip"
+                                                    data-bs-title="Pay Now"></i>
+                                            </button>
+                                        @endif
+                                        {{-- @endcan --}}
                                         <form action="{{ route('riwayat.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
@@ -114,16 +123,13 @@
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
         $(document).ready(function() {
-            // Ketika tombol "Pay Now" diklik, ambil data dan isi ke dalam modal
             $('.paynow').on('click', function() {
-                // Ambil data yang sesuai dari tabel
-                var paymentLinkInput = document.querySelector('.paymentlink');
-                var paymentLinkValue = paymentLinkInput.value;
-                // console.log(paymentLinkValue);
-                // Isi data ke dalam modal
-                $('#modalPaymentLink').attr('src', paymentLinkValue);
+                var paymentLinkValue = $('.paymentlink').val();
+                // console.log('Payment Link Value:', paymentLinkValue); // Tampilkan nilai di console
 
-                // Tampilkan modal setelah mengisi nilai-nilai
+                $('#modalPaymentLink').attr('src', paymentLinkValue);
+                // console.log('Modal Payment Link:', paymentLinkValue); // Tampilkan nilai di console
+
                 $('#exampleModal').modal('show');
             });
         });

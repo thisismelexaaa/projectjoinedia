@@ -7,6 +7,7 @@ use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserFormRequest;
+use GuzzleHttp\Psr7\Request;
 
 class UserController extends Controller
 {

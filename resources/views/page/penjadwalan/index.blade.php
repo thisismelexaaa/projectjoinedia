@@ -38,16 +38,25 @@
             margin: 15px;
         }
 
-        .lvl1 {
-            color: #00713e;
+        .univ {
+            color: #0d6efd;
         }
 
-        .lvl2 {
-            color: #f39c12;
+        .fak {
+            color: #6610f2;
         }
 
-        .lvl3 {
+        .prod {
+            color: #ffc107;
+        }
+        .hima {
+            color: #fd7e14;
+        }
+        .ukm {
             color: #e74c3c;
+        }
+        .bkm {
+            color: #34495e;
         }
     </style>
 
@@ -56,9 +65,12 @@
             <div id="calendar"></div>
         </div>
         <p class="keterangan">Keterangan :
-            <span><i class="bi bi-file-fill lvl1"></i> Level 1 |</span>
-            <span><i class="bi bi-file-fill lvl2"></i> Level 2 |</span>
-            <span><i class="bi bi-file-fill lvl3"></i> Level 3</span>
+            <span><i class="bi bi-file-fill univ"></i> Universitas |</span>
+            <span><i class="bi bi-file-fill fak"></i> Fakultas |</span>
+            <span><i class="bi bi-file-fill prod"></i> Prodi |</span>
+            <span><i class="bi bi-file-fill bkm"></i> Bkm |</span>
+            <span><i class="bi bi-file-fill hima"></i> Hima |</span>
+            <span><i class="bi bi-file-fill ukm"></i> Ukm </span>
         </p>
     </div>
 @endsection
