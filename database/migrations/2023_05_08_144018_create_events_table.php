@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('kategori');
             $table->string('location');
             $table->text('description');
-<<<<<<< HEAD
             $table->string('level');
             $table->double('price')->default(0);
             $table->integer('kuota')->default(150);

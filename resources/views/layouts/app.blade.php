@@ -76,11 +76,7 @@
             size: landscape;
         }
     </style>
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 8019b8b (70% Progress)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -88,16 +84,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @stack('scripts')
-<<<<<<< HEAD
 
     <link
         href="https://cdn.datatables.net/v/bs5/dt-1.13.6/b-2.4.1/b-html5-2.4.1/fc-4.3.0/fh-3.4.0/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.css"
         rel="stylesheet">
 
-=======
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
->>>>>>> 8019b8b (70% Progress)
 </head>
 
 <body @if (Auth::user() == true) class="" @else class="toggle-sidebar" @endif>
@@ -158,6 +149,9 @@
                                 @if (Auth::user()->userimage == null)
                                     {{-- <img src="{{ Avatar::create(Auth::user()->name)->toBase64() }}" alt="Profile"
                                         class="rounded-circle"> --}}
+                                @else
+                                    <img src="{{ asset('assets/images/userimage/' . Auth::user()->userimage) }}" alt="Profile"
+                                        class="rounded-circle">
                                 @else
                                     <img src="{{ asset('assets/images/userimage/' . Auth::user()->userimage) }}" alt="Profile"
                                         class="rounded-circle">
@@ -641,23 +635,16 @@
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-<<<<<<< HEAD
 
     @yield('scripts')
     <!-- Template Main JS File -->
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script
         src="https://cdn.datatables.net/v/bs5/dt-1.13.6/b-2.4.1/b-html5-2.4.1/fc-4.3.0/fh-3.4.0/r-2.5.0/sb-1.5.0/sp-2.2.0/datatables.min.js">
     </script>
 
-=======
-    @yield('scripts')
-    <!-- Template Main JS File -->
-
->>>>>>> f89a811 (First Commit : Progress 80%)
     {{-- MIDTRANS --}}
     <!-- @TODO: replace SET_YOUR_CLIENT_KEY_HERE with your client key -->
     <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"

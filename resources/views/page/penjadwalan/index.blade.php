@@ -44,6 +44,8 @@
 
         .univ {
             color: #0d6efd;
+        .univ {
+            color: #0d6efd;
         }
 
         .fak {
@@ -53,15 +55,12 @@
         .prod {
             color: #ffc107;
         }
-
         .hima {
             color: #fd7e14;
         }
-
         .ukm {
             color: #e74c3c;
         }
-
         .bkm {
             color: #34495e;
         }
@@ -78,23 +77,6 @@
             <span><i class="bi bi-file-fill bkm"></i> Bkm |</span>
             <span><i class="bi bi-file-fill hima"></i> Hima |</span>
             <span><i class="bi bi-file-fill ukm"></i> Ukm </span>
-        </p>
-    </div>
-    <form id="optimizeForm" action="{{ route('penjadwalan.optimasi') }}" method="POST" style="display:none;">
-        @csrf
-        <input type="hidden" name="jadwal" id="jadwalInput">
-    </form>
-=======
-    </style>
-
-    <div class="callendar-body">
-        <div class="calendar-container">
-            <div id="calendar"></div>
-        </div>
-        <p class="keterangan">Keterangan :
-            <span><i class="bi bi-file-fill lvl1"></i> Level 1 |</span>
-            <span><i class="bi bi-file-fill lvl2"></i> Level 2 |</span>
-            <span><i class="bi bi-file-fill lvl3"></i> Level 3</span>
         </p>
     </div>
 >>>>>>> 8019b8b (70% Progress)

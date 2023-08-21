@@ -41,22 +41,6 @@ class Event extends Model
         'event_id',
         'kuota',
         'level',
-=======
-        'eventname',
-        'eventdate',
-        'eventtype',
-        'eventorganizer',
-        'eventstatus',
-        'eventimage',
-        'eventdescription',
-        'eventkategori',
-        'eventlocation',
-        'eventprice',
-=======
->>>>>>> 8019b8b (70% Progress)
-        'user_id',
-        'event_id',
->>>>>>> f89a811 (First Commit : Progress 80%)
     ];
 
     // Relationship event dengan user
@@ -91,10 +75,5 @@ class Event extends Model
     public function pendaftaran()
     {
         return $this->hasMany(Pendaftaran::class, 'event_id');
-    }
-
-    public function sponsorCount()
-    {
-        return $this->sponsor()->count();
     }
 }

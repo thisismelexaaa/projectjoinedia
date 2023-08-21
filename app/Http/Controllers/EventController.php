@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Sponsor;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EventFormRequest;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Yajra\DataTables\Facades\DataTables;
 
 class EventController extends Controller
 {
@@ -16,13 +17,50 @@ class EventController extends Controller
      */
     public function index()
     {
-        // get data user
-
         $dataEvent = Event::with('sponsor')->get();
+
         if (Auth::user()->role == 'user') {
             return view('page.user.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
         } else {
->>>>>>> f89a811 (First Commit : Progress 80%)
+            if (request()->ajax()) {
+                return DataTables::of($dataEvent)
+                    ->addColumn('date', function ($event) {
+                        return [
+                            'start_date' => $event->start_date,
+                            'end_date' => $event->end_date
+                        ];
+                    })
+                    ->addColumn(
+                        'user',
+                        function ($event) {
+                            return $event->user->name;
+                        }
+                    )
+                    ->addColumn('action', function ($event) {
+                        $editUrl = route('event.edit', $event->id);
+                        $showUrl = route('event.show', $event->id);
+                        $deleteUrl = route('event.destroy', $event->id);
+
+                        return '
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-sm btn-warning" href="' . $editUrl . '" data-bs-toggle="tooltip" title="Edit">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a class="btn btn-sm btn-primary" href="' . $showUrl . '" data-bs-toggle="tooltip" title="Show">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <form class="delete-form" action="' . $deleteUrl . '" method="post">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-sm btn-danger delete-event" data-bs-toggle="tooltip" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        ';
+                    })
+                    ->tojson();
+            }
             return view('page.admin.event.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
         }
     }
@@ -192,11 +230,10 @@ class EventController extends Controller
     {
         $data = $request->validated();
         $numberOfSponsors = $request->input('number_of_sponsors');
-
-        // dd($request->all());
-
         $start_date = Carbon::parse($data['start_date']);
         $end_date = Carbon::parse($data['end_date']);
+        // dd($request->all());
+
 
         if ($event->whereDate('start_date', [$start_date->toDateString(), $end_date->toDateString()])->exists()) {
             return redirect()->back()->withInput()->with('message', 'Maaf, Tanggal Sudah Terdaftar');
@@ -216,6 +253,7 @@ class EventController extends Controller
             $data['image'] = $imagePath;
         }
 
+        // dd($request->all());
         $event = Event::create($data);
 
         for ($i = 0; $i <= $numberOfSponsors; $i++) {
@@ -242,6 +280,8 @@ class EventController extends Controller
                     'end_date' => $end_date,
                     'description' => $request->input('deskripsiSponsor' . $i),
                 ]);
+            } else {
+                continue;
             }
         }
 
@@ -279,10 +319,11 @@ class EventController extends Controller
     public function update(EventFormRequest $request, Event $event, Sponsor $sponsor)
     {
         $data = $request->validated();
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
         $dataSponsor = $request['sponsors'];
+        $start_date = Carbon::parse($data['start_date']);
+        $end_date = Carbon::parse($data['end_date']);
 
+        // dd($request->all());
         // Validasi Gambar
         if ($request->hasFile('image')) {
             $imagePath = public_path('assets/images/eventimage/');
@@ -302,25 +343,54 @@ class EventController extends Controller
             $data['image'] = $imagePath;
         }
 
+
         // Perbarui data event
         $event->update($data);
 
-        foreach ($dataSponsor as $sponsorData) {
-            if (isset($sponsorData['id'])) {
-                // Jika ada ID sponsor, itu adalah sponsor yang sudah ada dan perlu diperbarui
-                $existingSponsor = Sponsor::find($sponsorData['id']);
-                $existingSponsor->name = $sponsorData['name'];
-                $existingSponsor->description = $sponsorData['description'];
+        // Perbarui data sponsor
+        if ($dataSponsor != null) {
+            // Update data sponsor
+            foreach ($dataSponsor as $sponsorData) {
+                if (isset($sponsorData['id'])) {
+                    // Jika ada ID sponsor, itu adalah sponsor yang sudah ada dan perlu diperbarui
+                    $existingSponsor = Sponsor::find($sponsorData['id']);
+                    $existingSponsor->name = $sponsorData['name'];
+                    $existingSponsor->description = $sponsorData['description'];
 
-                // Hanya ubah gambar jika ada gambar yang dipilih saat pengeditan
-                if (isset($sponsorData['logo']) && $sponsorData['logo'] !== null) {
-                    $image = $sponsorData['logo'];
-                    $imagePath = time() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
-                    $existingSponsor->logo = $imagePath;
+                    // Hanya ubah gambar jika ada gambar yang dipilih saat pengeditan
+                    if (isset($sponsorData['logo']) && $sponsorData['logo'] !== null) {
+                        $image = $sponsorData['logo'];
+                        $imagePath = time() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
+                        $existingSponsor->logo = $imagePath;
+                    }
+
+                    $existingSponsor->save();
+                } else if (isset($sponsorData['name'])) {
+                    // Hanya ubah gambar jika ada gambar yang dipilih saat pengeditan
+                    if ($request->hasFile('sponsor_logo')) {
+                        $imagePath = public_path('assets/images/sponsorlogo/');
+                        if (!file_exists($imagePath)) {
+                            // Jika direktori belum ada, buat direktori baru dengan izin 0755 (boleh disesuaikan)
+                            mkdir($imagePath, 0755, true);
+                        }
+
+                        // Unggah gambar baru
+                        $image = $request->file('sponsor_logo');
+                        $imagePath = time() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
+                        $request['sponsor_logo'] = $imagePath;
+                    }
+                    $sponsor->create([
+                        'event_id' => $event->id,
+                        'name' => $sponsorData['name'],
+                        'start_date' => $start_date,
+                        'end_date' => $end_date,
+                        'description' => $sponsorData['description'],
+                    ]);
+                } else {
+                    continue;
                 }
-
-                $existingSponsor->save();
             }
         }
 

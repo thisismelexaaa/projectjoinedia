@@ -49,17 +49,42 @@
 =======
 >>>>>>> 8019b8b (70% Progress)
     {{-- List User --}}
+
+    <style>
+        .tbl-wrap {
+            overflow-x: auto;
+        }
+
+        .table-container {
+            position: relative;
+            width: fit-content;
+            /* Adjust as needed */
+        }
+
+        .table-container table {
+            min-width: 100%;
+            /* Ensure the table takes up the full width of the container */
+        }
+
+        .table-container .headcol {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            background-color: white;
+            /* Adjust as needed */
+        }
+    </style>
     <div class="card info-card sales-card">
         <div class="card-body">
             <div class="card-title justify-content-between row me-2">
                 <p class="col-md">List User</p>
                 <div class="justify-content-end row gap-1 col-md">
                     <a href="{{ route('user.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add User</a>
-                    <a href="{{ route('user.laporanuser') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak Laporan</a>
+                    <a href="{{ route('user.laporanuser') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+                        Laporan</a>
                 </div>
             </div>
-            <div class="overflow-auto ">
->>>>>>> f89a811 (First Commit : Progress 80%)
+            <div class="overflow-auto tbl-wrap">
                 <table
                     class="table table-borderless datatable table-hover table-responsive table-responsive-md table-responsive-lg table-responsive-sm d-block">
                     <thead>
@@ -71,11 +96,7 @@
                             <th scope="col">Bio</th>
                             <th scope="col">Jurusan</th>
                             <th scope="col">Role</th>
-<<<<<<< HEAD
                             <th class="headcol" scope="col">Action</th>
-=======
-                            <th scope="col">Action</th>
->>>>>>> f89a811 (First Commit : Progress 80%)
                         </tr>
                     </thead>
                     <tbody>

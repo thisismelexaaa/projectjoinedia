@@ -59,13 +59,7 @@
                     @foreach ($event as $itemevent)
                         <div class="news p-1 my-1">
                             <div class="post-item clearfix border rounded hover-overlay p-2">
-<<<<<<< HEAD
                                 <img src="{{ asset('assets/images/eventimage/' . $itemevent->image) }}" alt="">
-                                <h4><a href="event/{{ $itemevent->id }}" class="">
-                                        {{ Str::limit($itemevent->nama, 20) }}
-                                    </a></h4>
-=======
-                                <img src="{{ asset('assets/images/eventimage/'. $itemevent->image) }}" alt="">
                                 <h4><a href="event/{{ $itemevent->id }}">{{ $itemevent->nama }}</a></h4>
 >>>>>>> 8019b8b (70% Progress)
                                 <p class="text-truncate">{{ $itemevent->organizer }}</p>
@@ -113,10 +107,6 @@
                                             <div class="col bg-success rounded-5">
                                                 <span class="small pt-1 fw-bold  text-white">{{ $eventAktif }}</span>
                                                 <span class="small pt-2 ps-1 text-white">Event Aktif</span>
-                                            </div>
-                                            <div class="col bg-primary rounded-5">
-                                                <span class="small pt-1 fw-bold  text-white">{{ $eventBerjalan }}</span>
-                                                <span class="small pt-2 ps-1 text-white">Event Berjalan</span>
                                             </div>
                                             <div class="col bg-danger rounded-5">
                                                 <span class="small pt-1 fw-bold  text-white">{{ $eventSelesai }}</span>
@@ -276,7 +266,8 @@
                                 @foreach ($event as $itemevent)
                                     <div class="news p-1 my-1">
                                         <div class="post-item clearfix border rounded hover-overlay p-2">
-                                            <img src="{{ asset('assets/images/eventimage/'. $itemevent->image) }}" alt="">
+                                            <img src="{{ asset('assets/images/eventimage/' . $itemevent->image) }}"
+                                                alt="">
                                             <h4><a href="event/{{ $itemevent->id }}">{{ $itemevent->nama }}</a></h4>
                                             <p class="text-truncate">{{ $itemevent->organizer }}</p>
                                             <p><a href="event/{{ $itemevent->id }}">Selengkapnya</a></p>

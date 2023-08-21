@@ -10,16 +10,6 @@ use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserFormRequest;
 use GuzzleHttp\Psr7\Request;
-=======
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserFormRequest;
-use Illuminate\Support\Facades\Storage;
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserFormRequest;
->>>>>>> 8019b8b (70% Progress)
 
 class UserController extends Controller
 {
