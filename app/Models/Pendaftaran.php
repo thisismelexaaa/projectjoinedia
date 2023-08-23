@@ -14,12 +14,18 @@ class Pendaftaran extends Model
     // relasi ke tabel event
     public function event()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'event_id');
     }
 
     // relasi ke table transaksi
     public function transaksi()
     {
         return $this->hasOne(Transaksi::class, 'pendaftarans_id');
+    }
+
+    // relasi ke user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
