@@ -145,70 +145,80 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{-- Jika event_id tidak cocok maka tampilkan teks kosong --}}
                         @foreach ($data as $item)
-                            <input type="text" hidden value="{{ $item->transaksi->payment_link }}" class="paymentlink"
-                                id="paymentlink">
-                            {{-- <tr class="paymentlink" id="paymentlink">{{ $item->transaksi->payment_link }}</tr> --}}
-                            <tr>
-                                <td class="align-baseline">{{ ++$i }}</td>
-                                <td class="text-capitalize align-baseline fw-bold">
-                                    <img src="{{ asset('assets/images/eventimage/' . $item->event->image) }}" height="125"
-                                        alt="">
-                                    {{ $item->event->nama }}
-                                </td>
-                                <td class="text-capitalize align-baseline">{{ $item->tiket }}</td>
-                                <td class="align-baseline">
-                                    {{ \Carbon\Carbon::parse($item->event->start_date)->formatLocalized('%A, %d %B %Y') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($item->event->end_date)->formatLocalized('%A, %d %B %Y') }}
-                                </td>
-                                <td class="text-capitalize align-baseline">{{ $item->type }}</td>
-                                @if ($item->event->type == 'gratis')
-                                    <td class="align-baseline">Gratis</td>
-                                @else
-                                    <td class="align-baseline">@currency($item->event->price)</td>
-                                @endif
+                            {{-- @dd($item) --}}
+                            @if ($item->event == null)
+                                {{ $item->event }}
+                                @continue
+                                {{-- @break --}}
+                            @else
+                                <tr>
+                                    <td hidden class="paymentlink" id="paymentlink">{{ $item->transaksi->payment_link }}</td>
+                                    <td class="align-baseline">{{ ++$i }}</td>
+                                    <td class="text-capitalize align-baseline fw-bold">
+                                        @if ($item->event->image == null)
+                                            <span>No Image</span>
+                                        @else
+                                            <img src="{{ asset('assets/images/eventimage/' . $item->event->image) }}"
+                                                height="125" alt="">
+                                        @endif
+                                        {{ $item->event->name }}
+                                    </td>
+                                    <td class="text-capitalize align-baseline">{{ $item->tiket }}</td>
+                                    <td class="align-baseline">
+                                        {{ \Carbon\Carbon::parse($item->event->start_date)->formatLocalized('%A, %d %B %Y') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($item->event->end_date)->formatLocalized('%A, %d %B %Y') }}
+                                    </td>
+                                    <td class="text-capitalize align-baseline">{{ $item->type }}</td>
+                                    @if ($item->event->type == 'gratis')
+                                        <td class="align-baseline">Gratis</td>
+                                    @else
+                                        <td class="align-baseline">@currency($item->event->price)</td>
+                                    @endif
 
-                                @if ($item->status == 'unpaid')
-                                    <td class="text-capitalize align-baseline">
-                                        <span class="badge bg-danger">{{ $item->status }}</span>
-                                    </td>
+                                    @if ($item->status == 'unpaid')
+                                        <td class="text-capitalize align-baseline">
+                                            <span class="badge bg-danger">{{ $item->status }}</span>
+                                        </td>
                                     @elseif($item->status == 'paid')
-                                    <td class="text-capitalize align-baseline">
-                                        <span class="badge bg-success">{{ $item->status }}</span>
-                                    </td>
-                                @endif
-                                <td class="align-baseline">
-                                    <div class="gap-3 d-flex">
-                                        {{-- <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        <td class="text-capitalize align-baseline">
+                                            <span class="badge bg-success">{{ $item->status }}</span>
+                                        </td>
+                                    @endif
+                                    <td class="align-baseline">
+                                        <div class="gap-3 d-flex">
+                                            {{-- <a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#exampleModal" data-id="{{ $item->id }}">
                                             <i class="bi bi-credit-card" data-bs-toggle="tooltip"
                                                 data-bs-title="Pay Now"></i>
                                         </a> --}}
-                                        {{-- Kirim data ke modal --}}
-                                        {{-- @can('isUser') --}}
-                                        @if ($item->status == 'unpaid')
-                                            <button class="btn btn-sm btn-success paynow" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal" data-id="{{ $item->id }}">
-                                                <i class="bi bi-credit-card" data-bs-toggle="tooltip"
-                                                    data-bs-title="Pay Now"></i>
-                                            </button>
-                                        @endif
-                                        {{-- @endcan --}}
-                                        <form action="{{ route('riwayat.destroy', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="Javascript: return confirm('Apakah anda ingin menghapus data ini?')"
-                                                data-bs-toggle="tooltip" data-bs-title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                                </td>
-                            </tr>
->>>>>>> f89a811 (First Commit : Progress 80%)
+
+                                            {{-- Kirim data ke modal --}}
+                                            @can('isUser')
+                                                @if ($item->status == 'unpaid')
+                                                    <button class="btn btn-sm btn-success paynow" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal" data-id="{{ $item->id }}">
+                                                        <i class="bi bi-credit-card" data-bs-toggle="tooltip"
+                                                            data-bs-title="Pay Now"></i>
+                                                    </button>
+                                                @endif
+                                            @endcan
+                                            <form action="{{ route('riwayat.destroy', $item->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    onclick="Javascript: return confirm('Apakah anda ingin menghapus data ini?')"
+                                                    data-bs-toggle="tooltip" data-bs-title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -286,11 +296,12 @@
 
         $(document).ready(function() {
             $('.paynow').on('click', function() {
-                var paymentLinkValue = $('.paymentlink').val();
-                // console.log('Payment Link Value:', paymentLinkValue); // Tampilkan nilai di console
+                var paymentLinkValue = $(this).closest('tr').find('#paymentlink')
+                    .text(); // Menggunakan .text() untuk mengambil teks dari <td>
+                console.log('Payment Link Value:', paymentLinkValue); // Tampilkan nilai di console
 
                 $('#modalPaymentLink').attr('src', paymentLinkValue);
-                // console.log('Modal Payment Link:', paymentLinkValue); // Tampilkan nilai di console
+                console.log('Modal Payment Link:', paymentLinkValue); // Tampilkan nilai di console
 
                 $('#exampleModal').modal('show');
             });

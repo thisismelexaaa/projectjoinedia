@@ -33,12 +33,31 @@ class PendaftaranController extends Controller
     {
         $data = $pendaftaran->all();
         $dataTransaksi = $transaksi->all();
-        // tampilkan data pendaftaran sesuai user
-        if (auth()->user()->role == 'user') {
-            $data = $pendaftaran->where('user_id', auth()->user()->id)->get();
+        $user = auth()->user();
+        // Tampilkan event sesuai event_id yang ada di pendaftaran
+        foreach ($data as $key => $value) {
+            // Jika user yang login adalah admin, maka tampilkan semua event
+            if (auth()->user()->role == 'admin') {
+                $event = Event::find($value->event_id);
+                $value->event = $event;
+                continue;
+            } else {
+                // Jika user yang login adalah user biasa, maka tampilkan event yang sesuai dengan user_id
+                if ($value->user_id == $user->id) {
+                    $event = Event::find($value->event_id);
+                    $value->event = $event;
+                    // Jika event tidak ada, maka tampikan pesan event tidak ditemukan
+                    if (!$value->event) {
+                        $value->event = null;
+                    }
+                    continue;
+                }
+            }
         }
 
-        return view('page.pendaftaran.index', compact('data', 'dataTransaksi'))->with('i', (request()->input('page', 1) - 1) * 20);;
+        // dd($value->transaksi);
+
+        return view('page.pendaftaran.index', compact('data', 'dataTransaksi'))->with('i', (request()->input('page', 1) - 1) * 20);
     }
 
     /**

@@ -53,17 +53,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class);
     }
-<<<<<<< HEAD
 
-<<<<<<< HEAD
     // relasi ke pendaftaran
-=======
-    // Relationship user dengan pendaftaran
->>>>>>> f89a811 (First Commit : Progress 80%)
     public function pendaftaran()
     {
         return $this->hasMany(Pendaftaran::class, 'user_id');
     }
-=======
->>>>>>> 8019b8b (70% Progress)
 }
