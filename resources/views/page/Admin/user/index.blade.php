@@ -80,8 +80,10 @@
                 <p class="col-md">List User</p>
                 <div class="justify-content-end row gap-1 col-md">
                     <a href="{{ route('user.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add User</a>
-                    <a href="{{ route('user.laporanuser') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
-                        Laporan</a>
+                    @if (Auth::user()->role == 'superadmin')
+                        <a href="{{ route('user.laporanuser') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+                            Laporan</a>
+                    @endif
                 </div>
             </div>
             <div class="overflow-auto tbl-wrap">

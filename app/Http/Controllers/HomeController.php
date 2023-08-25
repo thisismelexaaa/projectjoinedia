@@ -51,10 +51,11 @@ class HomeController extends Controller
 
         // Count Event
         # Count all event
-        $event = Event::all();
+        $event = Event::all(); // Mengambil semua data event
         $eventCounts = Event::selectRaw('status, count(*) as count')
             ->groupBy('status')
             ->pluck('count', 'status')
+            ->take(5)
             ->toArray();
 
         $eventCount = array_sum($eventCounts);

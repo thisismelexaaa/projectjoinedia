@@ -84,7 +84,7 @@
                 scrollCollapse: true,
                 scrollX: true,
                 columns: [{
-                    // Buat nomor urut
+                        // Buat nomor urut
                         data: 'id',
                         name: 'id',
                         render: function(data, type, full, meta) {
@@ -100,7 +100,7 @@
                                 return "No Image";
                             }
                             return "<img class='align-baseline' src=\"assets/images/eventimage/" +
-                                data + "\" height=\"50\"/>";
+                                data + "\" height=\"120\"/>";
                         }
                     },
                     {
@@ -108,7 +108,8 @@
                         name: 'name',
                         render: function(data, type, full, meta) {
                             link = "{{ route('event.show', ':id') }}";
-                            return "<a class='align-baseline text-black fw-bold' href=\"" + link.replace(':id', full.id) +
+                            return "<a class='align-baseline text-black fw-bold' href=\"" + link
+                                .replace(':id', full.id) +
                                 "\">" + data + "</a>";
                         }
                     },
@@ -183,6 +184,10 @@
                             $.each(data, function(index, value) {
                                 sponsors.push(value.name);
                             });
+                            // Jika tidak ada sponsor, tampilkan pesan tidak ada sponsor
+                            if (sponsors.length == 0) {
+                                return '<span class="badge bg-danger">No Sponsor</span>';
+                            }
                             return sponsors.join(', ');
                         }
                     },
