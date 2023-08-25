@@ -8,10 +8,10 @@
 
     <div class="row row-cols-md-5">
         @foreach ($dataEvent as $e)
-            <div class="col-md-2">
+            <div class="col-md-2 mb-3">
                 <div class="card h-100">
                     <a href="event/{{ $e->id }}">
-                        <img class="img-fluid w-100 p-2 rounded rounded-4" style="height: 350px;"
+                        <img class="img-fluid w-100 p-2 rounded rounded-4" style="height: 250px;"
                             src="{{ asset('assets/images/eventimage/' . $e->image) }}" alt="..." />
                     </a>
                     <div class="card-body">
@@ -19,7 +19,7 @@
                             <a class="text-dark" href="event/{{ $e->id }}">
                                 <h5>
                                     <b>
-                                        {{ $e->nama }}
+                                        {{ Str::limit($e->nama, 20) }}
                                     </b>
                                 </h5>
                             </a>

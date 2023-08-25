@@ -50,7 +50,8 @@
                         <div class="news p-1 my-1">
                             <div class="post-item clearfix border rounded hover-overlay p-2">
                                 <img src="{{ asset('assets/images/eventimage/' . $itemevent->image) }}" alt="">
-                                <h4><a href="event/{{ $itemevent->id }}">{{ $itemevent->nama }}</a></h4>
+                                <h4><a href="event/{{ $itemevent->id }}" class=""> {{ Str::limit($itemevent->nama, 20) }}
+                                    </a></h4>
                                 <p class="text-truncate">{{ $itemevent->organizer }}</p>
                                 <p><a href="event/{{ $itemevent->id }}">Selengkapnya</a></p>
                             </div>

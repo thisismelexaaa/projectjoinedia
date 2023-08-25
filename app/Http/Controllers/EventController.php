@@ -181,9 +181,10 @@ class EventController extends Controller
                 mkdir($imagePath, 0755, true);
             }
 
-            // Hapus gambar lama jika ada
-            if (file_exists(public_path('assets/images/eventimage/' . $event->image))) {
-                unlink($imagePath . $event->image);
+            // Hapus gambar lama dari direktori publik jika ada
+            $publicPath = public_path('assets/images/eventimage/') . $event->image;
+            if (file_exists($publicPath) && is_file($publicPath)) {
+                unlink($publicPath);
             }
 
             // Unggah gambar baru

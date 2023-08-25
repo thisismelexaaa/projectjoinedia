@@ -6,7 +6,10 @@
         <div class="card-body">
             <div class="card-title justify-content-between row me-2">
                 <p class="col-md">List Sponsors</p>
-                <a href="{{ route('sponsor.laporansponsor') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak Laporan</a>
+                @if (Auth::user()->role == 'superadmin')
+                    <a href="{{ route('sponsor.laporansponsor') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+                        Laporan</a>
+                @endif
             </div>
             <div class="overflow-auto">
                 <table
@@ -14,7 +17,7 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Nama Sponsor</th>
+                            <th scope="col" colspan="2">Nama Sponsor</th>
                             <th scope="col">Nama Event</th>
                             <th scope="col">Description</th>
                             <th scope="col">Kontrak Sponsor</th>
@@ -27,13 +30,16 @@
                                 <th class="align-baseline" scope="row">{{ ++$i }}</th>
                                 <td class="align-baseline">
                                     <img src="assets/images/sponsorlogo/{{ $sponsor->logo }}" height="125" alt="">
+                                </td>
+
+                                <td class="align-baseline">
                                     <span class="fw-bold">
                                         {!! $sponsor->name !!}
                                     </span>
                                 </td>
-                                <td class="align-baseline">{!! $sponsor->event->nama !!}</td>
+                                <td class="align-baseline" width="20%">{!! $sponsor->event->nama !!}</td>
                                 <td class="align-baseline">{!! $sponsor->description !!}</td>
-                                <td class="align-baseline">
+                                <td class="align-baseline" width="20%">
                                     {{ \Carbon\Carbon::parse($sponsor->start_date)->formatLocalized('%d %B %Y') }}
                                     -
                                     {{ \Carbon\Carbon::parse($sponsor->end_date)->formatLocalized('%d %B %Y') }}
