@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,16 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $event = Event::latest()->paginate(6);
-        return view('page.landingpage.welcome', compact('event'));
+        $event = Event::first()->paginate(6);
+        // count event
+        $countEvent = Event::count();
+        // count event yang sudah selesei
+        $countEventFinish = Event::where('status', 'selesai')->count();
+        $countEventNotFinish = Event::where('status', 'aktif')->count();
+        // count user
+        $countUser = User::count();
+
+        return view('page.landingpage.landingpage', compact('event', 'countEvent', 'countEventFinish', 'countEventNotFinish', 'countUser'));
     }
 
     /**

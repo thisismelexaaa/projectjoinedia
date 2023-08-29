@@ -17,7 +17,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        $dataEvent = Event::with('sponsor')->get();
+        $dataEvent = Event::with('sponsor')
+        ->latest()
+        ->get();
 
         if (Auth::user()->role == 'user') {
             return view('page.user.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
