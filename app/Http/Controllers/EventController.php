@@ -150,7 +150,11 @@ class EventController extends Controller
         // show detail data event
         $event = Event::where('id', $event->id)->first();
         // ambil semua event kecuali yang sedang ditampilkan
-        $eventexcept = Event::where('id', '!=', $event->id)->get();
+        $eventexcept = Event::where('id', '!=', $event->id)->get()->take(5);
+
+        // acak event yang ditampilkan di halaman detail event kecuali yang sedang ditampilkan ketika halaman di refresh
+        $eventexcept = $eventexcept->shuffle();
+
 
         return view('page.admin.event.show', compact('event', 'eventexcept'));
     }
