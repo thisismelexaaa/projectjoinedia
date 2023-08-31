@@ -154,7 +154,8 @@
                                 {{-- @break --}}
                             @else
                                 <tr>
-                                    <td hidden class="paymentlink" id="paymentlink">{{ $item->transaksi->payment_link }}</td>
+                                    <td hidden class="paymentlink" id="paymentlink">{{ $item->transaksi->payment_link }}
+                                    </td>
                                     <td class="align-baseline">{{ ++$i }}</td>
                                     <td class="text-capitalize align-baseline fw-bold">
                                         @if ($item->event->image == null)
@@ -163,8 +164,8 @@
                                             <img src="{{ asset('assets/images/eventimage/' . $item->event->image) }}"
                                                 height="125" alt="">
                                         @endif
-                                        {{ $item->event->name }}
                                     </td>
+                                    <td class="align-baseline"><a class="text-dark" href="event/{{ $item->event->id }}"><b>{{ $item->event->nama }}</b></a></td>
                                     <td class="text-capitalize align-baseline">{{ $item->tiket }}</td>
                                     <td class="align-baseline">
                                         {{ \Carbon\Carbon::parse($item->event->start_date)->formatLocalized('%A, %d %B %Y') }}
