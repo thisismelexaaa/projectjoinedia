@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         if (env(key: 'APP_ENV') !== 'local') {
-            URL::forceScheme(scheme: 'https');
+            URL::forceScheme(scheme: 'http');
         }
     }
 
@@ -28,8 +28,7 @@ class AppServiceProvider extends ServiceProvider
         setlocale(LC_ALL, 'IND');
         Carbon::setLocale('id');
 
-
-
+        // currency blade directive
         Blade::directive('currency', function ($expression) {
             return "Rp. <?php echo number_format($expression,0,',','.'); ?>";
         });

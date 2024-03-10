@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Pendaftaran;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,7 +41,6 @@ class HomeController extends Controller
         $userSuperAdminCount = $userCounts['superadmin'] ?? 0;
         $usersCount = $userCount + $userAdminCount + $userSuperAdminCount;
 
-
         // Count Event
         # Count all event
         $event = Event::all(); // Mengambil semua data event
@@ -55,9 +55,11 @@ class HomeController extends Controller
         $eventBerjalan = $eventCounts['berjalan'] ?? 0;
         $eventSelesai = $eventCounts['selesai'] ?? 0;
 
-
         // Quote
         $quote = Inspiring::quote();
+
+        //show peseerta event
+        $eventPendaftar = Pendaftaran::all();
 
         // Show Home
         $viewData = compact(
@@ -72,8 +74,10 @@ class HomeController extends Controller
             'usersCount',
             'event',
             'quote',
+            'eventPendaftar'
         );
 
+        // dd($eventPendaftar);
         $view = (Auth::user()->role) ? 'page.home.index' : 'auth.login';
         return view($view, $viewData);
     }

@@ -36,7 +36,7 @@
 
     <table width="100%">
         <tr>
-            <td valign="top"><img src="assets/img/joinedia.png" alt="" width="150" /></td>
+            php artisan serve<td valign="top"><img src="assets/img/joinedia.png" alt="" width="150" /></td>
             <td align="right">
                 <h3>Laporan Event</h3>
                 <pre>

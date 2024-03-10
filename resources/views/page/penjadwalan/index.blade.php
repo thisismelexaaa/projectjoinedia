@@ -81,7 +81,6 @@
             var data = @json($jadwal);
             console.log(data);
             $('#calendar').fullCalendar({
-
                 header: {
                     left: 'prev,next today',
                     center: 'title',

@@ -50,7 +50,8 @@
                         <div class="news p-1 my-1">
                             <div class="post-item clearfix border rounded hover-overlay p-2">
                                 <img src="{{ asset('assets/images/eventimage/' . $itemevent->image) }}" alt="">
-                                <h4><a href="event/{{ $itemevent->id }}" class=""> {{ Str::limit($itemevent->nama, 20) }}
+                                <h4><a href="event/{{ $itemevent->id }}" class="">
+                                        {{ Str::limit($itemevent->nama, 20) }}
                                     </a></h4>
                                 <p class="text-truncate">{{ $itemevent->organizer }}</p>
                                 <p><a href="event/{{ $itemevent->id }}">Selengkapnya</a></p>
@@ -154,40 +155,90 @@
                 </section>
 
                 <section>
-                    <div class="card">
+                    <div class="card overflow-hidden" style="height:460px">
                         <div class="card-body pb-1">
-                            <h5 class="card-title">List Event</h5>
-                            <div class="row row-cols-md-5">
-                                {{-- <div class="col"> --}}
-                                @foreach ($event as $itemevent)
-                                    <div class="news p-1 my-1">
-                                        <div class="post-item clearfix border rounded hover-overlay p-2">
-                                            <img src="{{ asset('assets/images/eventimage/' . $itemevent->image) }}"
-                                                alt="">
-                                            <h4><a href="event/{{ $itemevent->id }}">{{ $itemevent->nama }}</a></h4>
-                                            <p class="text-truncate">{{ $itemevent->organizer }}</p>
-                                            <p><a href="event/{{ $itemevent->id }}">Selengkapnya</a></p>
+                            <div class="row gap-4">
+                                <div class="col overflow-auto pb-5" style="height:550px">
+                                    <h5 class="card-title sticky-top w-full bg-white my-0">List Event</h5>
+                                    <div class="row row-cols-2">
+                                        @foreach ($event as $itemevent)
+                                            <div class="news my-1 py-2">
+                                                <div class="post-item clearfix border rounded hover-overlay p-2">
+                                                    <img src="{{ asset('assets/images/eventimage/' . $itemevent->image) }}"
+                                                        alt="">
+                                                    <h4><a
+                                                            href="event/{{ $itemevent->id }}">{{ Str::limit($itemevent->nama, 20) }}</a>
+                                                    </h4>
+                                                    <p class="text-truncate">{{ $itemevent->organizer }}</p>
+                                                    <p><a href="event/{{ $itemevent->id }}">Selengkapnya</a></p>
+                                                </div>
+                                            </div><!-- End sidebar recent posts-->
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col overflow-auto" style="height:450px">
+                                    <h5 class="card-title sticky-top w-full bg-white my-0">Daftar Peserta</h5>
+                                    @foreach ($event as $index => $itemevent)
+                                        <div class="accordion accordion-flush" id="accordion-{{ $index }}">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse-{{ $index }}"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapse-{{ $index }}">
+                                                        <b>{{ $itemevent->nama }}</b>
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse-{{ $index }}"
+                                                    class="accordion-collapse collapse"
+                                                    data-bs-parent="#accordion-{{ $index }}">
+                                                    <div class="accordion-body">
+                                                        @php
+                                                            $pesertaFound = false;
+                                                        @endphp
+
+                                                        @foreach ($eventPendaftar as $data)
+                                                            @if ($data->event_id == $itemevent->id)
+                                                                <ol>
+                                                                    <li>
+                                                                        <a class="text-dark"
+                                                                            href="user/{{ $data->user_id }}">{{ $data->nama }}</a>
+                                                                    </li>
+                                                                </ol>
+                                                                @php
+                                                                    $pesertaFound = true;
+                                                                @endphp
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+
+                                                    @if (!$pesertaFound)
+                                                        <p class="text-danger">Tidak ada peserta</p>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div><!-- End sidebar recent posts-->
+                                    </div>
                                 @endforeach
-                                {{-- </div> --}}
                             </div>
                         </div>
                     </div>
-                </section>
-            @endif
-        </div>
-    </section>
+                </div>
+            </section>
+        @endif
+    </div>
+</section>
 @endsection
 
 @section('scripts')
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-    <script>
-        var typed = new Typed('.typed', {
-            strings: ['to Joinedia', '{{ $user->name }}'],
-            typeSpeed: 50,
-            backSpeed: 50,
-            loop: false
-        });
-    </script>
+<script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+<script>
+    var typed = new Typed('.typed', {
+        strings: ['to Joinedia', '{{ $user->name }}'],
+        typeSpeed: 50,
+        backSpeed: 50,
+        loop: false
+    });
+</script>
 @endsection
