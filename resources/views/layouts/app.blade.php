@@ -568,34 +568,6 @@
                     </div>
                 </div> --}}
             </aside>
-        @endauth
-
-=======
-                            <a class="nav-link {{ Request::is('pendaftaran') ? 'nav-link' : 'collapsed' }}"
-                                href="{{ url('pendaftaran') }}">
-                                <i class="bi bi-grid"></i>
-                                <span>Aktivitas</span>
-=======
-                                <i class="bi bi-badge-ad"></i>
-                                <span>Riwayat Aktifitas</span>
->>>>>>> 8019b8b (70% Progress)
-                            </a>
-                        </li>
-                    @endcan
-                </ul>
-                <div class="footer bottom-100">
-                    <div class="copyright">
-                        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-                    </div>
-                    <div class="credits">
-                        <!-- All the links in the footer should remain intact. -->
-                        <!-- You can delete the links only if you purchased the pro version. -->
-                        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                    </div>
-                </div>
-            </aside>
 <<<<<<< HEAD
         @endif
 >>>>>>> f89a811 (First Commit : Progress 80%)
@@ -639,6 +611,7 @@
     @yield('scripts')
     <!-- Template Main JS File -->
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script

@@ -29,37 +29,24 @@ class EventsSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-<<<<<<< HEAD
         // date between 1 - 30 days from now
         $datetime = now();
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             // generate random end_date that is not earlier than start_date
             $end_date = $datetime->copy()->addDays($faker->numberBetween(0, 1)); // Adds 0 to 30 days to start_date
-
-            // insert data ke table pegawai menggunakan Faker
-            DB::table('buat_events')->insert(
-                [
-                    'nama' => 'EVENT ' . $faker->randomElement(
-                        array(
-=======
-        for ($i = 1; $i <= 3; $i++) {
 
             // insert data ke table pegawai menggunakan Faker
             DB::table('events')->insert(
                 [
                     'nama' => 'EVENT ' . $faker->randomElement(
-                        $array = array(
->>>>>>> f89a811 (First Commit : Progress 80%)
+                        array(
                             'BKM', 'SEMARAK', 'WEBINAR', 'KULINER', 'KONSER', 'FESTIVAL', 'PAMERAN', 'PENTAS', 'KARNAVAL', 'KOMUNITAS', 'UKM'
                         )
                     ),
                     'user_id' => 1,
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    'hari' => $faker->numberBetween(1, 7),
-                    'start_date' => null,
-                    'end_date' => null,
+                    'start_date' => $datetime,
+                    'end_date' => $end_date,
                     'type' => $faker->randomElement(
                         array(
                             'gratis', 'berbayar'
@@ -67,7 +54,11 @@ class EventsSeeder extends Seeder
                     ),
                     'organizer' => $faker->company,
                     'location' => $faker->address,
-                    'status' => 'aktif',
+                    'status' => $faker->randomElement(
+                        array(
+                            'berjalan', 'aktif', 'selesai'
+                        )
+                    ),
                     'image' => 'https://source.unsplash.com/random/200x200/?/event',
                     'kategori' => $faker->randomElement(
                         array(
@@ -82,35 +73,6 @@ class EventsSeeder extends Seeder
                     ),
                     'price' => $faker->randomElement(
                         array(
-=======
-                    'eventdate' => $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now', $timezone = 'Asia/Jakarta'),
-                    'eventtype' => $faker->randomElement(
-=======
-                    'start_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now', $timezone = null),
-                    'end_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now', $timezone = null),
-                    'type' => $faker->randomElement(
->>>>>>> 8019b8b (70% Progress)
-                        $array = array(
-                            'gratis', 'berbayar'
-                        )
-                    ),
-                    'organizer' => $faker->company,
-                    'location' => $faker->address,
-                    'status' => $faker->randomElement(
-                        $array = array(
-                            'berjalan', 'aktif', 'selesai'
-                        )
-                    ),
-                    'image' => 'https://source.unsplash.com/random/200x200/?/event',
-                    'kategori' => $faker->randomElement(
-                        $array = array(
-                            'akademik', 'non-akademik'
-                        )
-                    ),
-                    'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
-                    'price' => $faker->randomElement(
-                        $array = array(
->>>>>>> f89a811 (First Commit : Progress 80%)
                             '0', '10000', '20000', '30000', '40000', '50000', '60000', '70000', '80000', '90000', '100000'
                         )
                     ),

@@ -2,7 +2,6 @@
 
 @section('content')
     <style>
-<<<<<<< HEAD
         body {
             overflow: auto;
         }
@@ -55,12 +54,15 @@
         .prod {
             color: #ffc107;
         }
+
         .hima {
             color: #fd7e14;
         }
+
         .ukm {
             color: #e74c3c;
         }
+
         .bkm {
             color: #34495e;
         }
@@ -79,12 +81,14 @@
             <span><i class="bi bi-file-fill ukm"></i> Ukm </span>
         </p>
     </div>
->>>>>>> 8019b8b (70% Progress)
+    <form id="optimizeForm" action="{{ route('penjadwalan.optimasi') }}" method="POST" style="display:none;">
+        @csrf
+        <input type="hidden" name="jadwal" id="jadwalInput">
+    </form>
 @endsection
 
 @push('scripts')
     <script>
-<<<<<<< HEAD
         $(document).ready(() => {
             let data = @json($jadwal);
             $('#calendar').fullCalendar({
@@ -134,26 +138,12 @@
                             });
                         }
                     }
-=======
-        $(document).ready(function() {
-            var data = @json($jadwal);
-            console.log(data);
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
->>>>>>> 8019b8b (70% Progress)
                 },
                 events: data,
                 themeSystem: 'bootstrap',
                 selectable: true,
                 selectHelper: true,
-<<<<<<< HEAD
                 height: 750,
-=======
-                height: 825,
->>>>>>> 8019b8b (70% Progress)
                 locale: 'id',
             });
         });

@@ -3,17 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penjadwalan;
-<<<<<<< HEAD
 use Illuminate\Http\JsonResponse;
-=======
->>>>>>> 8019b8b (70% Progress)
 use Illuminate\Http\Request;
 
 class PenjadwalanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $jadwal = Penjadwalan::with('event')
@@ -35,6 +29,7 @@ class PenjadwalanController extends Controller
                     $color = '#34495e'; // Abu-abu (misalnya untuk "lainnya")
                 }
                 return [
+                    'id' => $item->id,
                     'title' => $item->event->nama,
                     'start' => $item->event->start_date,
                     'end' => $item->event->end_date,
@@ -47,51 +42,141 @@ class PenjadwalanController extends Controller
         return view('page.penjadwalan.index', compact('jadwal'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function OptimalasisaData(Request $request): JsonResponse
     {
-        //
+        // Mendekode data jadwal dari input tersembunyi
+        $jadwal = json_decode($request->input('jadwal'), true);
+
+        // count jadwal
+        $countJadwal = count($jadwal);
+
+        // Parameter genetika
+        $populationSize = $countJadwal;
+        $generations = $countJadwal * 10;
+        $mutationRate = $countJadwal / 1000;
+
+        // Inisialisasi populasi
+        $population = $this->initializePopulation($populationSize, $jadwal);
+        dd($population);
+
+        for ($i = 0; $i < $generations; $i++) {
+            // Evaluasi populasi
+            $population = $this->evaluatePopulation($population);
+
+            // Seleksi dan reproduksi
+            $newPopulation = [];
+            for ($j = 0; $j < $populationSize / 2; $j++) {
+                $parent1 = $this->select($population);
+                $parent2 = $this->select($population);
+                $offspring = $this->crossover($parent1, $parent2);
+
+                // Mutasi
+                if (rand() / getrandmax() < $mutationRate) {
+                    $offspring[0] = $this->mutate($offspring[0]);
+                }
+                if (rand() / getrandmax() < $mutationRate) {
+                    $offspring[1] = $this->mutate($offspring[1]);
+                }
+
+                $newPopulation[] = $offspring[0];
+                $newPopulation[] = $offspring[1];
+            }
+
+            $population = $newPopulation;
+        }
+
+        // Jadwal terbaik
+        $bestSchedule = $this->getBestSchedule($population);
+
+        // Kembalikan hasil optimasi
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Jadwal berhasil dioptimasi!',
+            'data' => $bestSchedule,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    private function initializePopulation($populationSize, $jadwal)
     {
-        //
+        $population = [];
+        for ($i = 0; $i < $populationSize; $i++) {
+            // Buat salinan jadwal awal dan acak urutannya
+            $individual = $jadwal;
+            shuffle($individual);
+            $population[] = $individual;
+        }
+        return $population;
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Penjadwalan $penjadwalan)
+    private function evaluatePopulation($population)
     {
-        //
+        // Evaluasi fitness setiap individu dalam populasi
+        foreach ($population as &$individual) {
+            $individual['fitness'] = $this->calculateFitness($individual);
+        }
+        return $population;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Penjadwalan $penjadwalan)
+    private function calculateFitness($individual)
     {
-        //
+        $fitness = 0;
+        // Hitung jumlah konflik dalam jadwal
+        foreach ($individual as $event) {
+            foreach ($individual as $otherEvent) {
+                if ($event['id'] !== $otherEvent['id'] && $this->isConflict($event, $otherEvent)) {
+                    $fitness--;
+                }
+            }
+        }
+        return $fitness;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Penjadwalan $penjadwalan)
+    private function isConflict($event1, $event2)
     {
-        //
+        return ($event1['start'] < $event2['end'] && $event1['end'] > $event2['start']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Penjadwalan $penjadwalan)
+    private function select($population)
     {
-        //
+        // Seleksi berdasarkan roulette wheel selection
+        $totalFitness = array_sum(array_column($population, 'fitness'));
+        $random = rand() / getrandmax() * $totalFitness;
+        $current = 0;
+        foreach ($population as $individual) {
+            $current += $individual['fitness'];
+            if ($current >= $random) {
+                return $individual;
+            }
+        }
+        return $population[0];
+    }
+
+    private function crossover($parent1, $parent2)
+    {
+        // Single point crossover
+        $crossoverPoint = rand(0, count($parent1));
+        $offspring1 = array_merge(array_slice($parent1, 0, $crossoverPoint), array_slice($parent2, $crossoverPoint));
+        $offspring2 = array_merge(array_slice($parent2, 0, $crossoverPoint), array_slice($parent1, $crossoverPoint));
+        return [$offspring1, $offspring2];
+    }
+
+    private function mutate($individual)
+    {
+        // Swap mutasi sederhana
+        $index1 = array_rand($individual);
+        $index2 = array_rand($individual);
+        $temp = $individual[$index1];
+        $individual[$index1] = $individual[$index2];
+        $individual[$index2] = $temp;
+        return $individual;
+    }
+
+    private function getBestSchedule($population)
+    {
+        // Kembalikan individu dengan fitness terbaik
+        usort($population, function ($a, $b) {
+            return $b['fitness'] - $a['fitness'];
+        });
+        return $population[0];
     }
 }

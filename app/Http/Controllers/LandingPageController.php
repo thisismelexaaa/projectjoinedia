@@ -18,7 +18,11 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $event = Event::first()->paginate(6);
+        if ($event = Event::first()) {
+            $event = Event::first()->paginate(6);
+        } else {
+            $event = [];
+        }
         // count event
         $countEvent = Event::count();
         // count event yang sudah selesei
