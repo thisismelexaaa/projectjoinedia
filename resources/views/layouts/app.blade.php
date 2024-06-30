@@ -278,7 +278,7 @@
                         </li>
                     @endcan
                 </ul>
-                <div class="footer bottom-100">
+                {{-- <div class="footer bottom-100">
                     <div class="copyright">
                         &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
                     </div>
@@ -289,7 +289,7 @@
                         <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
                         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                     </div>
-                </div>
+                </div> --}}
             </aside>
         @endauth
 
@@ -325,6 +325,7 @@
     @yield('scripts')
     <!-- Template Main JS File -->
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script

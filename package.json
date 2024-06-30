@@ -16,6 +16,7 @@
         "aos": "^2.3.4",
         "bootstrap-icons": "^1.10.5",
         "datatables.net-dt": "^1.13.6",
-        "fullcalendar": "^6.1.8"
+        "fullcalendar": "^6.1.8",
+        "sweetalert2": "^11.11.1"
     }
 }

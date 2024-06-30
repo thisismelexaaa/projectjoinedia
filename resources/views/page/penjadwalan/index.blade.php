@@ -2,8 +2,8 @@
 
 @section('content')
     <style>
-        body{
-            overflow: hidden;
+        body {
+            overflow: auto;
         }
 
         #calendar {
@@ -49,12 +49,15 @@
         .prod {
             color: #ffc107;
         }
+
         .hima {
             color: #fd7e14;
         }
+
         .ukm {
             color: #e74c3c;
         }
+
         .bkm {
             color: #34495e;
         }
@@ -73,24 +76,69 @@
             <span><i class="bi bi-file-fill ukm"></i> Ukm </span>
         </p>
     </div>
+    <form id="optimizeForm" action="{{ route('penjadwalan.optimasi') }}" method="POST" style="display:none;">
+        @csrf
+        <input type="hidden" name="jadwal" id="jadwalInput">
+    </form>
 @endsection
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            var data = @json($jadwal);
-            console.log(data);
+        $(document).ready(() => {
+            let data = @json($jadwal);
             $('#calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
+                    right: 'month,agendaWeek,agendaDay optimasiBtn'
+                },
+                customButtons: {
+                    optimasiBtn: {
+                        text: 'Optimasi Jadwal',
+                        click: () => {
+                            swal.fire({
+                                title: 'Optimasi Jadwal',
+                                text: 'Apakah anda yakin ingin mengoptimasi jadwal?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Ya',
+                                cancelButtonText: 'Batal'
+                            }).then(function(result) {
+                                if (result.isConfirmed) {
+                                    let dataCalendar = $('#calendar').fullCalendar(
+                                        'clientEvents');
+                                    let jadwal = [];
+                                    dataCalendar.forEach((item) => {
+                                        let start = moment(item.start).format(
+                                            'Y-MM-DD HH:mm:ss');
+                                        let end = moment(item.end).format(
+                                            'Y-MM-DD HH:mm:ss');
+
+                                        jadwal.push({
+                                            id: item._id,
+                                            title: item.title,
+                                            start: start,
+                                            end: end,
+                                        });
+                                    });
+
+                                    // Fill the hidden input with the serialized schedule data
+                                    $('#jadwalInput').val(JSON.stringify(jadwal));
+
+                                    // Submit the form
+                                    $('#optimizeForm').submit();
+                                }
+                            });
+                        }
+                    }
                 },
                 events: data,
                 themeSystem: 'bootstrap',
                 selectable: true,
                 selectHelper: true,
-                height: 825,
+                height: 750,
                 locale: 'id',
             });
         });

@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Kalender
     Route::resource('penjadwalan', PenjadwalanController::class);
+    Route::post('penjadwalan/optimalisasi', [PenjadwalanController::class, 'OptimalasisaData'])->name('penjadwalan.optimasi');
 
     // Sponsor
     Route::resource('sponsor', SponsorController::class);
