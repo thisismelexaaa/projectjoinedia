@@ -6,11 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-<<<<<<< HEAD
         "barryvdh/laravel-dompdf": "^2.0",
-=======
-        "barryvdh/laravel-dompdf": "*",
->>>>>>> f89a811 (First Commit : Progress 80%)
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
         "laravel/sanctum": "^3.2",
@@ -18,10 +14,7 @@
         "laravel/ui": "^4.2",
         "laravolt/avatar": "^5.0",
         "midtrans/midtrans-php": "^2.5",
-<<<<<<< HEAD
-<<<<<<< HEAD
         "nesbot/carbon": "^2.67",
-        "spatie/laravel-google-calendar": "^3.8",
         "xendit/xendit-php": "^2.19",
         "yajra/laravel-datatables": "10.0"
     },

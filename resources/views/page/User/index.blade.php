@@ -4,7 +4,6 @@
     <div class="pagetitle">
         <h1>List event</h1>
     </div>
-<<<<<<< HEAD
     <p>Cari event yang kamu sukai</p>
 
     <div class="row row-cols-md-5">
@@ -34,32 +33,6 @@
                             </div>
                         </div>
                         <span class="card-text">{!! Str::limit($e->description, 50) !!}</span>
-=======
-    <p>Here you can see all events</p>
-
-    <div class="row row-cols-md-5">
-        @foreach ($dataEvent as $e)
-            <div class="col-md-2">
-                <div class="card h-100">
-                    <a href="event/{{ $e->id }}">
-                        <img class="img-fluid w-100 p-2 rounded rounded-4" style="height: 350px;"
-                            src="{{ asset('assets/images/eventimage/' . $e->image) }}" alt="..." />
-                    </a>
-                    <div class="card-body">
-                        <a class="text-dark" href="event/{{ $e->id }}">
-                            <h5 class="card-title">{{ $e->nama }} <br>
-                        </a>
-                        <div class="d-flex justify-content-between">
-                            <span class="fw-light text-capitalize">{{ $e->organizer }}</span>
-                        </div>
-                        <span class="fw-light text-capitalize">{{ $e->start_date }}</span>
-                        </h5>
-<<<<<<< HEAD
-                        <p class="card-text">{!! Str::limit($e->eventdescription, 50) !!}</p>
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
-                        <p class="card-text">{!! Str::limit($e->description, 50) !!}</p>
->>>>>>> 8019b8b (70% Progress)
                     </div>
                     <div class="card-footer">
                         <a href="event/{{ $e->id }}">Lihat Detail Event</a>

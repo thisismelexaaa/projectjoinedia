@@ -2,14 +2,6 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use App\Models\BuatEvent;
-use App\Models\User;
-use App\Models\Event;
-use App\Models\Pendaftaran;
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Auth;
-=======
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Pendaftaran;

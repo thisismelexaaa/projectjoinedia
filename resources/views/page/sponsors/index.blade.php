@@ -4,7 +4,6 @@
     <section class="card info-card sales-card overflow-auto">
         {{-- List Event --}}
         <div class="card-body">
-<<<<<<< HEAD
             <div class="card-title justify-content-between row me-2">
                 <p class="col-md">List Sponsors</p>
                 @if (Auth::user()->role == 'superadmin')
@@ -22,7 +21,6 @@
                             <th scope="col">Nama Event</th>
                             <th scope="col">Description</th>
                             <th scope="col">Kontrak Sponsor</th>
->>>>>>> 8019b8b (70% Progress)
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -31,7 +29,6 @@
                             <tr>
                                 <th class="align-baseline" scope="row">{{ ++$i }}</th>
                                 <td class="align-baseline">
-<<<<<<< HEAD
                                     <img src="assets/images/sponsorlogo/{{ $sponsor->logo }}" height="125" alt="">
                                 </td>
 
@@ -48,7 +45,6 @@
                                     {{ \Carbon\Carbon::parse($sponsor->end_date)->formatLocalized('%d %B %Y') }}
                                 </td>
                                 <td class="align-baseline">
->>>>>>> 8019b8b (70% Progress)
                                     <div class="gap-3 d-flex">
                                         {{-- <a href="{{ route('sponsor.show', $sponsor->id) }}" class="btn btn-sm btn-primary"
                                             data-bs-toggle="tooltip" data-bs-title="Show">

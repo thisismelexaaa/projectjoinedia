@@ -2,23 +2,9 @@
 
 namespace Database\Seeders;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
-=======
-use App\Models\Event;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
->>>>>>> 8019b8b (70% Progress)
 
 
 class EventsSeeder extends Seeder

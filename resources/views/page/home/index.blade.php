@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<<<<<<< HEAD
-=======
-    <div class="pagetitle">
-        <h1>Home</h1>
-    </div>
->>>>>>> f89a811 (First Commit : Progress 80%)
     <section class="py-3 card info-card sales-card">
         <div class="card-body">
             <div class="text-center mb-4">
@@ -49,10 +43,6 @@
             </div>
             @if (Auth::user()->role == 'user')
                 {{-- Tampilan User --}}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 8019b8b (70% Progress)
                 <h5 class="card-title">List Event</h5>
                 <div class="row row-cols-md-5">
                     {{-- <div class="col"> --}}
@@ -70,12 +60,6 @@
                     @endforeach
                     {{-- </div> --}}
                 </div>
-<<<<<<< HEAD
-=======
-                <p>Tampilan user</p>
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
->>>>>>> 8019b8b (70% Progress)
             @else
                 <div class="filter">
                     <a class="icon" href="#" data-bs-toggle="dropdown" aria-expanded="false">

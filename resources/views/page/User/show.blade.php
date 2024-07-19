@@ -13,15 +13,7 @@
                         @if ($user->userimage == null)
                             <img src="{{ Avatar::create($user->name)->toBase64() }}" alt="Profile" class="rounded-circle">
                         @else
-<<<<<<< HEAD
-<<<<<<< HEAD
                             <img src="{{ asset('assets/images/userimage/'. $user->userimage) }}" alt="Profile"
-=======
-                            <img src="{{ asset('storage/userimage/' . $user->userimage) }}" alt="Profile"
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
-                            <img src="{{ asset('assets/images/userimage/'. $user->userimage) }}" alt="Profile"
->>>>>>> 8019b8b (70% Progress)
                                 class="rounded-circle">
                         @endif
                         <h2>{{ $user->name }}</h2>
@@ -109,15 +101,7 @@
                                                 <img id="output" src="{{ Avatar::create($user->name)->toBase64() }}"
                                                     alt="Profile">
                                             @else
-<<<<<<< HEAD
-<<<<<<< HEAD
                                                 <img src="{{ asset('assets/images/userimage/' . $user->userimage) }}"
-=======
-                                                <img src="{{ asset('storage/userimage/' . $user->userimage) }}"
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
-                                                <img src="{{ asset('assets/images/userimage/' . $user->userimage) }}"
->>>>>>> 8019b8b (70% Progress)
                                                     alt="Profile" id="output" class="rounded-circle">
                                             @endif
 

@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
-<<<<<<< HEAD
 use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-=======
-use Illuminate\Http\Request;
->>>>>>> 8019b8b (70% Progress)
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\SponsorFormRequest;
 
@@ -83,24 +79,11 @@ class SponsorController extends Controller
      */
     public function destroy(Sponsor $sponsor)
     {
-<<<<<<< HEAD
-=======
-        // Delete the image from the server
-        if ($sponsor->image) {
-            $imagePath = public_path('sponsorimage/' . $sponsor->image);
-
-            if (File::exists($imagePath)) {
-                File::delete($imagePath);
-            }
-        }
-
->>>>>>> 8019b8b (70% Progress)
         // Delete the sponsor data from the database
         $sponsor->delete();
 
         return redirect()->route('sponsor.index')->with('success', 'Sponsor deleted successfully.');
     }
-<<<<<<< HEAD
 
     public function laporansponsor()
     {
@@ -115,6 +98,4 @@ class SponsorController extends Controller
 
         return view('page.sponsors.laporan', compact('sponsors'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
-=======
->>>>>>> 8019b8b (70% Progress)
 }

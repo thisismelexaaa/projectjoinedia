@@ -6,8 +6,6 @@
             overflow: auto;
         }
 
-=======
->>>>>>> 8019b8b (70% Progress)
         #calendar {
             background-color: #fff;
             border: 1px solid #ccc;
@@ -33,7 +31,6 @@
         .fc-event:hover {
             opacity: 0.8;
         }
-<<<<<<< HEAD
 
         .keterangan {
             font-size: 14px;
@@ -41,8 +38,6 @@
             margin: 15px;
         }
 
-        .univ {
-            color: #0d6efd;
         .univ {
             color: #0d6efd;
         }

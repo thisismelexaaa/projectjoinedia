@@ -12,11 +12,7 @@
                 <hr class="w-50 m-auto">
             </div>
             <div class="my-3 overflow-auto">
-<<<<<<< HEAD
-                <table class="m-auto w-50">
-=======
                 <table class="m-auto">
->>>>>>> 8019b8b (70% Progress)
                     <tbody>
                         <tr>
                             <th>Nama Event</th>
@@ -27,19 +23,8 @@
                         <tr>
                             <th>Tanggal Pelaksanaan</th>
                             <td>:</td>
-<<<<<<< HEAD
-                            @if ($data->start_date != null)
-                                <td class="text-capitalize"><input disabled type="text" class="form-control"
-                                        value="Tidak Ada Jadwal">
-                                </td>
-                            @else
-                                <td class="text-capitalize"><input disabled type="text" class="form-control"
-                                        value="{{ $data->start_date . ' - ' . $data->end_date }}"></td>
-                            @endif
-=======
                             <td class="text-capitalize"><input disabled type="text" class="form-control"
                                     value="{{ $data->start_date . ' - ' . $data->end_date }}"></td>
->>>>>>> 8019b8b (70% Progress)
                         </tr>
                         <tr>
                             <th>Type Event</th>

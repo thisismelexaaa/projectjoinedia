@@ -3,19 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-<<<<<<< HEAD
-<<<<<<< HEAD
 use Illuminate\Database\Seeder;
-=======
-use Faker\Factory as Faker;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Laravolt\Avatar\Avatar;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
-use Illuminate\Database\Seeder;
->>>>>>> 8019b8b (70% Progress)
 
 class UserWithRoleSeeder extends Seeder
 {
@@ -24,7 +12,6 @@ class UserWithRoleSeeder extends Seeder
      */
     public function run(): void
     {
-<<<<<<< HEAD
         $superadmin = new User;
         $superadmin->name = 'Super Admin';
         $superadmin->username = 'superadmin';
@@ -54,17 +41,5 @@ class UserWithRoleSeeder extends Seeder
         $user->role = 'user';
         $user->bio = 'Aku Adalah User';
         $user->save();
-=======
-
-        $admin = new User;
-        $admin->name = 'Admin';
-        $admin->username = 'admin';
-        $admin->email = 'admin@app.test';
-        $admin->email_verified_at = date('Y-m-d H:i:s');
-        $admin->password = bcrypt('password');
-        $admin->role = 'admin';
-        $admin->bio = 'Aku Adalah Admin';
-        $admin->save();
->>>>>>> f89a811 (First Commit : Progress 80%)
     }
 }

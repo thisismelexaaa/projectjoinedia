@@ -40,7 +40,7 @@
                             <th>Harga</th>
                             <th>Uploaded By</th>
                             <th>Description</th>
-                            <th>Sponsor</th>
+                            {{-- <th>Sponsor</th> --}}
                             <th>Level</th>
                             <th>Kuota</th>
                             <th>Status</th>
@@ -52,11 +52,6 @@
                     </tbody>
                 </table>
             </div>
-<<<<<<< HEAD
-
->>>>>>> f89a811 (First Commit : Progress 80%)
-=======
->>>>>>> 8019b8b (70% Progress)
         </div>
     </section>
 @endsection
@@ -175,22 +170,22 @@
                                 text;
                         }
                     },
-                    {
-                        data: 'sponsor',
-                        name: 'sponsor',
-                        // Tampilkan semua sponsor yang terkait dengan event
-                        render: function(data, type, full, meta) {
-                            var sponsors = [];
-                            $.each(data, function(index, value) {
-                                sponsors.push(value.name);
-                            });
-                            // Jika tidak ada sponsor, tampilkan pesan tidak ada sponsor
-                            if (sponsors.length == 0) {
-                                return '<span class="badge bg-danger">No Sponsor</span>';
-                            }
-                            return sponsors.join(', ');
-                        }
-                    },
+                    // {
+                    //     data: 'sponsor',
+                    //     name: 'sponsor',
+                    //     // Tampilkan semua sponsor yang terkait dengan event
+                    //     render: function(data, type, full, meta) {
+                    //         var sponsors = [];
+                    //         $.each(data, function(index, value) {
+                    //             sponsors.push(value.name);
+                    //         });
+                    //         // Jika tidak ada sponsor, tampilkan pesan tidak ada sponsor
+                    //         if (sponsors.length == 0) {
+                    //             return '<span class="badge bg-danger">No Sponsor</span>';
+                    //         }
+                    //         return sponsors.join(', ');
+                    //     }
+                    // },
                     {
                         data: 'level',
                         name: 'level',
@@ -245,6 +240,5 @@
                 }
             });
         });
->>>>>>> 8019b8b (70% Progress)
     </script>
 @endsection
