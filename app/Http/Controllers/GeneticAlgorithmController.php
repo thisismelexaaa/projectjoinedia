@@ -25,6 +25,7 @@ class GeneticAlgorithmController extends Controller
         // Algoritma Genetika untuk Penjadwalan
         $scheduledEvents = $this->geneticAlgorithm($events, $bulan, $tahun);
 
+
         return view('page.MakeSchedule.index', compact('scheduledEvents', 'bulan', 'tahun'));
     }
 
@@ -48,7 +49,8 @@ class GeneticAlgorithmController extends Controller
         $population = $this->generateInitialPopulation($events, $bulan, $tahun);
 
         // Iterasi untuk evolusi
-        for ($i = 0; $i < 100; $i++) {
+        $iterations = max(10, min(100, count($events) * 10));
+        for ($i = 0; $i < $iterations; $i++) {
             // Seleksi
             $selected = $this->selection($population);
 
@@ -66,18 +68,19 @@ class GeneticAlgorithmController extends Controller
         return $this->removeDuplicateEvents($population);
     }
 
+
     private function generateInitialPopulation($events, $bulan, $tahun)
     {
         $population = [];
         $daysInMonth = Carbon::createFromDate($tahun, $bulan, 1)->daysInMonth;
+        $availableDays = range(1, $daysInMonth);
+        shuffle($availableDays);
 
-        $usedDays = [];
         foreach ($events as $event) {
             do {
-                $startDay = rand(1, $daysInMonth - $event->hari + 1);
-            } while ($this->checkConflict($usedDays, $startDay, $event->hari));
+                $startDay = array_pop($availableDays);
+            } while ($this->checkConflict($availableDays, $startDay, $event->hari));
 
-            $usedDays = array_merge($usedDays, range($startDay, $startDay + $event->hari - 1));
             $population[] = [
                 'event' => $event,
                 'startDay' => $startDay,
@@ -87,6 +90,7 @@ class GeneticAlgorithmController extends Controller
 
         return $population;
     }
+
 
     private function checkConflict($usedDays, $startDay, $duration)
     {
@@ -101,7 +105,7 @@ class GeneticAlgorithmController extends Controller
     private function selection($population)
     {
         // Implementasi seleksi: pilih individu terbaik
-        usort($population, function($a, $b) {
+        usort($population, function ($a, $b) {
             return $this->fitness($a) > $this->fitness($b);
         });
 
@@ -161,13 +165,10 @@ class GeneticAlgorithmController extends Controller
 
     private function fitness($individual)
     {
-        // Hitung nilai fitness: minimalkan bentrok
-        $event = $individual['event'];
-        $startDay = $individual['startDay'];
-        $endDay = $individual['endDay'];
-
-        return 1 / ($startDay + 1); // Prioritaskan event lebih awal
+        $conflicts = $this->findConflicts([$individual]);
+        return 1 / (count($conflicts) + 1); // Prioritaskan event dengan konflik lebih sedikit
     }
+
 
     private function removeDuplicateEvents($population)
     {
