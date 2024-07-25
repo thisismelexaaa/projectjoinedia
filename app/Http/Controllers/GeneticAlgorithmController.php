@@ -8,11 +8,43 @@ use Carbon\Carbon;
 
 class GeneticAlgorithmController extends Controller
 {
+    public function hapusFilter()
+    {
+        session()->forget("scheduledEvents");
+        session()->forget("conflicts");
+        session()->forget("filter_tahun");
+        session()->forget("filter_bulan");
+
+        return back()->with("success", "Filter Berhasil di Hapus");
+    }
+
     public function index(Request $request)
     {
-        $scheduledEvents = []; // Inisialisasi variabel scheduledEvents sebagai array kosong
-        $conflicts = []; // Inisialisasi variabel conflicts sebagai array kosong
+        $scheduledEvents = session('scheduledEvents', []);
+        $conflicts = session('conflicts', []);
         return view('page.MakeSchedule.index', compact('scheduledEvents', 'conflicts'));
+    }
+
+    public function tambah_calender($id)
+    {
+        $scheduledEvents = session('scheduledEvents', []);
+
+        $scheduledEvent = collect($scheduledEvents)->firstWhere('event.id', $id);
+
+        if (!$scheduledEvent) {
+            return redirect()->back()->with('error', 'Event not found in the scheduled events.');
+        }
+
+        $event = BuatEvent::findOrFail($id);
+        $event->status = 'berjalan';
+        $event->start_date = Carbon::createFromDate($scheduledEvent['year'], $scheduledEvent['month'], $scheduledEvent['startDay'])->toDateTimeString();
+        $event->end_date = Carbon::createFromDate($scheduledEvent['year'], $scheduledEvent['month'], $scheduledEvent['endDay'])->toDateTimeString();
+        $event->save();
+
+        $googleCalendarController = new GoogleCalendarController();
+        $googleCalendarController->createEvent($event);
+
+        return redirect()->back()->with('success', 'Event created successfully and added to Google Calendar!');
     }
 
     public function generateSchedule(Request $request)
@@ -22,11 +54,20 @@ class GeneticAlgorithmController extends Controller
 
         $events = BuatEvent::where('status', 'aktif')->get();
 
-        // Algoritma Genetika untuk Penjadwalan
         $scheduledEvents = $this->geneticAlgorithm($events, $bulan, $tahun);
 
+        foreach ($scheduledEvents as &$event) {
+            $event['year'] = $tahun;
+            $event['month'] = $bulan;
+        }
 
-        return view('page.MakeSchedule.index', compact('scheduledEvents', 'bulan', 'tahun'));
+        session(['scheduledEvents' => $scheduledEvents]);
+        session(["filter_bulan" => $bulan]);
+        session(["filter_tahun" => $tahun]);
+
+        session(['conflicts' => []]);
+
+        return back()->with("success", "Berhasil Generate Jadwal");
     }
 
     public function checkConflicts(Request $request)
@@ -34,52 +75,50 @@ class GeneticAlgorithmController extends Controller
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        $events = BuatEvent::where('status', 'aktif')->get();
-        $scheduledEvents = $this->geneticAlgorithm($events, $bulan, $tahun);
+        $scheduledEvents = session('scheduledEvents', []);
 
-        // Pengecekan konflik
         $conflicts = $this->findConflicts($scheduledEvents);
 
-        return view('page.MakeSchedule.index', compact('scheduledEvents', 'conflicts', 'bulan', 'tahun'));
+        session(['conflicts' => $conflicts]);
+
+        if (count($conflicts) > 0) {
+            return redirect()->back()->with('success', 'Conflict check completed!');
+        } else {
+            return redirect()->back()->with('error', 'No conflicts found.');
+        }
     }
 
     private function geneticAlgorithm($events, $bulan, $tahun)
     {
-        // Populasi awal
-        $population = $this->generateInitialPopulation($events, $bulan, $tahun);
+        $daysInMonth = Carbon::createFromDate($tahun, $bulan, 1)->daysInMonth;
 
-        // Iterasi untuk evolusi
+        $population = $this->generateInitialPopulation($events, $bulan, $tahun, $daysInMonth);
+
         $iterations = max(10, min(100, count($events) * 10));
         for ($i = 0; $i < $iterations; $i++) {
-            // Seleksi
             $selected = $this->selection($population);
-
-            // Crossover
             $offspring = $this->crossover($selected);
-
-            // Mutasi
-            $mutated = $this->mutation($offspring, $bulan, $tahun);
-
-            // Evaluasi
-            $population = $this->evaluate($mutated, $events, $bulan, $tahun);
+            $mutated = $this->mutation($offspring, $bulan, $tahun, $daysInMonth);
+            $population = $this->evaluate($mutated, $events, $bulan, $tahun, $daysInMonth);
         }
 
-        // Kembalikan individu terbaik tanpa duplikasi event
         return $this->removeDuplicateEvents($population);
     }
 
-
-    private function generateInitialPopulation($events, $bulan, $tahun)
+    private function generateInitialPopulation($events, $bulan, $tahun, $daysInMonth)
     {
         $population = [];
-        $daysInMonth = Carbon::createFromDate($tahun, $bulan, 1)->daysInMonth;
         $availableDays = range(1, $daysInMonth);
         shuffle($availableDays);
 
         foreach ($events as $event) {
             do {
                 $startDay = array_pop($availableDays);
-            } while ($this->checkConflict($availableDays, $startDay, $event->hari));
+            } while ($this->checkConflict($availableDays, $startDay, $event->hari, $daysInMonth));
+
+            if ($startDay + $event->hari - 1 > $daysInMonth) {
+                continue;
+            }
 
             $population[] = [
                 'event' => $event,
@@ -91,9 +130,12 @@ class GeneticAlgorithmController extends Controller
         return $population;
     }
 
-
-    private function checkConflict($usedDays, $startDay, $duration)
+    private function checkConflict($usedDays, $startDay, $duration, $daysInMonth)
     {
+        if ($startDay + $duration - 1 > $daysInMonth) {
+            return true;
+        }
+
         for ($i = 0; $i < $duration; $i++) {
             if (in_array($startDay + $i, $usedDays)) {
                 return true;
@@ -104,9 +146,8 @@ class GeneticAlgorithmController extends Controller
 
     private function selection($population)
     {
-        // Implementasi seleksi: pilih individu terbaik
         usort($population, function ($a, $b) {
-            return $this->fitness($a) > $this->fitness($b);
+            return $this->fitness($a) <=> $this->fitness($b);
         });
 
         return array_slice($population, 0, count($population) / 2);
@@ -114,7 +155,6 @@ class GeneticAlgorithmController extends Controller
 
     private function crossover($selected)
     {
-        // Implementasi crossover: lakukan persilangan antar individu
         $offspring = [];
         $count = count($selected);
 
@@ -143,12 +183,10 @@ class GeneticAlgorithmController extends Controller
         return $offspring;
     }
 
-    private function mutation($offspring, $bulan, $tahun)
+    private function mutation($offspring, $bulan, $tahun, $daysInMonth)
     {
-        // Implementasi mutasi: ubah startDay secara acak
         foreach ($offspring as &$individual) {
-            if (rand(0, 100) < 5) { // 5% probabilitas mutasi
-                $daysInMonth = Carbon::createFromDate($tahun, $bulan, 1)->daysInMonth;
+            if (rand(0, 100) < 5) {
                 $individual['startDay'] = rand(1, $daysInMonth - $individual['event']->hari + 1);
                 $individual['endDay'] = $individual['startDay'] + $individual['event']->hari - 1;
             }
@@ -157,18 +195,16 @@ class GeneticAlgorithmController extends Controller
         return $offspring;
     }
 
-    private function evaluate($mutated, $events, $bulan, $tahun)
+    private function evaluate($mutated, $events, $bulan, $tahun, $daysInMonth)
     {
-        // Evaluasi: gabungkan individu hasil mutasi ke populasi
-        return array_merge($mutated, $this->generateInitialPopulation($events, $bulan, $tahun));
+        return array_merge($mutated, $this->generateInitialPopulation($events, $bulan, $tahun, $daysInMonth));
     }
 
     private function fitness($individual)
     {
         $conflicts = $this->findConflicts([$individual]);
-        return 1 / (count($conflicts) + 1); // Prioritaskan event dengan konflik lebih sedikit
+        return 1 / (count($conflicts) + 1);
     }
-
 
     private function removeDuplicateEvents($population)
     {

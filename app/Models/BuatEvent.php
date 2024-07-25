@@ -11,6 +11,8 @@ class BuatEvent extends Model
     protected $fillable = [
         'nama',
         'hari',
+        'start_date',
+        'end_date',
         'type',
         'organizer',
         'status',
