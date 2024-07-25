@@ -18,7 +18,7 @@
                     </ul>
                 </div>
             @endif
-            <form class="row g-3" method="POST" action="{{ route('event.index') }}" enctype="multipart/form-data">
+            <form class="row g-3" method="POST" action="{{ route('be.store') }}" enctype="multipart/form-data">
                 @method('POST')
                 @csrf
                 {{-- Cek akun yang sedang login sekarang --}}
@@ -29,18 +29,10 @@
                         <input placeholder="Masukkan Nama Event" value="{{ old('nama') }}" name="nama" type="text"
                             class="form-control" id="nama">
                     </div>
-                    <div class="my-3 row">
-                        <label class="form-label">Tanggal Pelaksanaan Event</label>
-                        <div class="col d-flex">
-                            <span for="start_date" class="m-auto">Dimulai : &nbsp;&nbsp;&nbsp;</span>
-                            <input placeholder="Masukkan Tanggal Event" value="{{ old('start_date') }}" name="start_date"
-                                type="datetime-local" class="form-control col" id="start_date">
-                        </div>
-                        <div class="col d-flex">
-                            <span for="end_date" class="m-auto">Berakhir : &nbsp;&nbsp;&nbsp;</span>
-                            <input placeholder="Masukkan Tanggal Event" value="{{ old('end_date') }}" name="end_date"
-                                type="datetime-local" class="form-control col" id="end_date">
-                        </div>
+                    <div class="my-3">
+                        <label class="form-label">Berapa Hari Pelaksanaan Event</label>
+                        <input placeholder="Masukkan Lama waktu Event" value="{{ old('hari') }}" name="hari" type="text"
+                            class="form-control" id="hari">
                     </div>
                     <div class="my-3">
                         <label for="tempat" class="form-label">Tempat</label>

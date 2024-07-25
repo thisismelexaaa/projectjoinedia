@@ -1,14 +1,19 @@
 <?php
 
+use App\Http\Controllers\AlgoritmaGeneticController;
+use App\Http\Controllers\BuatEventController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GeneticAlgorithmController;
+use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PenjadwalanController;
+use App\Http\Controllers\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +35,10 @@ use App\Http\Controllers\PenjadwalanController;
 
 Route::get('/', [LandingPageController::class, 'index']);
 
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
 Auth::routes();
 
 // callback xendit
@@ -42,6 +51,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/listpendaftar', [EventController::class, 'listpendaftar'])->name('listpendaftar');
     Route::get('/exportpdf/{id}', [EventController::class, 'exportpdfuser'])->name('exportpdfuser');
     Route::get('/laporan', [EventController::class, 'laporan'])->name('event.laporan');
+
+    // Make Schedule
+    Route::resource('make_schedule', ScheduleController::class)->except(['show']);
+    Route::post('make_schedule/duplicate', [ScheduleController::class, 'checkDuplicates'])->name('make_schedule.duplicate');
+
+    Route::get("/hapus-filter", [GeneticAlgorithmController::class, "hapusFilter"]);
+
+    // Buat Event
+    Route::post('buat_event', [BuatEventController::class, 'buat'])->name('be.store');
+    Route::get('buatSchedule', [GeneticAlgorithmController::class, 'index'])->name('be.index');
+    Route::post('/generate-schedule', [GeneticAlgorithmController::class, 'generateSchedule'])->name('be.algo');
+    Route::post('/CekJadwalBentrok', [GeneticAlgorithmController::class, 'checkConflicts'])->name('be.checkConflicts');
+    Route::put('/tambah/event/{id}', [GeneticAlgorithmController::class, 'tambah_calender'])->name('be.tambah_calender');
+
+    Route::get('/test/{id}', function ($id) {
+        return "Testing route with ID: $id";
+    });
+    
+    Route::post('google-calendar/connect', [GoogleCalendarController::class, 'connect'])->name('google-calendar.connect');
+    Route::get('google-calendar/callback', [GoogleCalendarController::class, 'callback'])->name('google-calendar.callback');
+
+    Route::post('google-calendar/event', [GoogleCalendarController::class, 'createEvent'])->name('google-calendar.createEvent');
 
     // Pendaftaran
     Route::resource('riwayat', PendaftaranController::class);
@@ -59,3 +90,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('sponsor', SponsorController::class);
     Route::get('/laporansponsor', [SponsorController::class, 'laporansponsor'])->name('sponsor.laporansponsor');
 });
+
+Route::get("/algoritma-genetika", [AlgoritmaGeneticController::class, "index"]);

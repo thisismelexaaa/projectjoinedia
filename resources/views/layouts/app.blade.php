@@ -106,8 +106,8 @@
                             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                                 data-bs-toggle="dropdown">
                                 @if (Auth::user()->userimage == null)
-                                    <img src="{{ Avatar::create(Auth::user()->name)->toBase64() }}" alt="Profile"
-                                        class="rounded-circle">
+                                    {{-- <img src="{{ Avatar::create(Auth::user()->name)->toBase64() }}" alt="Profile"
+                                        class="rounded-circle"> --}}
                                 @else
                                     <img src="{{ asset('assets/images/userimage/' . Auth::user()->userimage) }}" alt="Profile"
                                         class="rounded-circle">
@@ -202,6 +202,13 @@
                                 href="{{ url('riwayat') }}">
                                 <i class="bi bi-clock-history"></i>
                                 <span>Riwayat Aktifitas</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('buatSchedule') ? 'active' : 'collapsed' }}"
+                                href="{{ url('buatSchedule') }}">
+                                <i class="bi bi-clock-history"></i>
+                                <span>Buat Jadwal</span>
                             </a>
                         </li>
                     @elsecan('isAdmin')

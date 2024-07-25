@@ -94,9 +94,9 @@ class GeneticAlgorithmController extends Controller
 
         $population = $this->generateInitialPopulation($events, $bulan, $tahun, $daysInMonth);
 
-        $iterations = max(10, min(100, count($events) * 10));
+        $iterations = max(10, min(50, count($events) * 5));
         for ($i = 0; $i < $iterations; $i++) {
-            $selected = $this->selection($population);
+            $selected = $this->tournamentSelection($population);
             $offspring = $this->crossover($selected);
             $mutated = $this->mutation($offspring, $bulan, $tahun, $daysInMonth);
             $population = $this->evaluate($mutated, $events, $bulan, $tahun, $daysInMonth);
@@ -104,6 +104,7 @@ class GeneticAlgorithmController extends Controller
 
         return $this->removeDuplicateEvents($population);
     }
+
 
     private function generateInitialPopulation($events, $bulan, $tahun, $daysInMonth)
     {
@@ -144,13 +145,26 @@ class GeneticAlgorithmController extends Controller
         return false;
     }
 
-    private function selection($population)
+    private function tournamentSelection($population)
     {
-        usort($population, function ($a, $b) {
-            return $this->fitness($a) <=> $this->fitness($b);
-        });
+        $selected = [];
+        $tournamentSize = 3;
 
-        return array_slice($population, 0, count($population) / 2);
+        for ($i = 0; $i < count($population); $i++) {
+            $tournament = [];
+
+            for ($j = 0; $j < $tournamentSize; $j++) {
+                $tournament[] = $population[rand(0, count($population) - 1)];
+            }
+
+            usort($tournament, function ($a, $b) {
+                return $this->fitness($a) <=> $this->fitness($b);
+            });
+
+            $selected[] = $tournament[0];
+        }
+
+        return $selected;
     }
 
     private function crossover($selected)
@@ -200,11 +214,13 @@ class GeneticAlgorithmController extends Controller
         return array_merge($mutated, $this->generateInitialPopulation($events, $bulan, $tahun, $daysInMonth));
     }
 
+
     private function fitness($individual)
     {
         $conflicts = $this->findConflicts([$individual]);
         return 1 / (count($conflicts) + 1);
     }
+
 
     private function removeDuplicateEvents($population)
     {

@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EventFormRequest;
+use App\Models\BuatEvent;
 use Illuminate\Support\Facades\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,8 +16,7 @@ class EventController extends Controller
 {
     public function index()
     {
-        $dataEvent = Event::with('sponsor')
-        ->latest()
+        $dataEvent = BuatEvent::latest()
         ->get();
 
         if (Auth::user()->role == 'user') {
