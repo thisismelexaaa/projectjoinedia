@@ -44,6 +44,19 @@ class GeneticAlgorithmController extends Controller
         $googleCalendarController = new GoogleCalendarController();
         $googleCalendarController->createEvent($event);
 
+        session()->forget("scheduledEvents");
+
+        $events = BuatEvent::where('status', 'aktif')->get();
+
+        $scheduledEvents = $this->geneticAlgorithm($events, session("filter_bulan"), session("filter_tahun"));
+
+        foreach ($scheduledEvents as &$event) {
+            $event['year'] = session("filter_tahun");
+            $event['month'] = session("filter_bulan");
+        }
+
+        session(['scheduledEvents' => $scheduledEvents]);
+
         return redirect()->back()->with('success', 'Event created successfully and added to Google Calendar!');
     }
 
