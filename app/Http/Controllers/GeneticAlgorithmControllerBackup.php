@@ -4,110 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\BuatEvent;
 use App\Models\Event;
-use App\Models\Penjadwalan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class GeneticAlgorithmController extends Controller
 {
-
-    public function generateSchedule(Request $request)
+    public function generateSchedule()
     {
-        try {
-            DB::beginTransaction();
+        // Ambil data event yang aktif dari database
+        $events = BuatEvent::where('status', 'aktif')->orderBy('hari')->get()->toArray();
 
-            // Ambil limit dari input
-            $limit = $request->limit_data;
-
-            // Ambil event dengan limit jika ada, jika tidak ambil semua event aktif
-            if ($limit) {
-                $events = BuatEvent::where('status', 'aktif')->orderBy('hari')->take($limit)->get()->toArray();
-                // count event
-                $count = count($events);
-                if ($limit > $count) {
-                    return redirect()->back()->with('error', 'Jumlah event yang diinginkan melebihi batas. Terdapat ' . $count . ' event aktif. Maksimal Limit adalah ' . $count);
-                }
-            } else {
-                $events = BuatEvent::where('status', 'aktif')->orderBy('hari')->get()->toArray();
-            }
-
-            // Cek apakah ada event yang ditemukan
-            if (empty($events)) {
-                return redirect()->back()->with('error', 'No active events found.');
-            }
-
-            // Jalankan algoritma genetika
-            $optimalSchedule = $this->geneticAlgorithm($events, 20, 150); // Ukuran populasi 20 dan 150 generasi
-
-            // Simpan jadwal yang dihasilkan dalam sesi
-            session(['generated_schedule' => $optimalSchedule]);
-
-            DB::commit();
-
-            return back()->with("success", "Generate Schedule Success");
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with("error", $e->getMessage());
+        // Pastikan ada data sebelum melanjutkan
+        if (empty($events)) {
+            return redirect()->back()->with('error', 'No active events found.');
         }
-    }
 
-    public function tambah_calender(Request $request, $id)
-    {
-        try {
-            DB::beginTransaction();
+        // Hasilkan jadwal optimal menggunakan algoritma genetika
+        $optimalSchedule = $this->geneticAlgorithm($events, 20, 150); // Ukuran populasi 20 dan 150 generasi
 
-            $scheduledEvents = session('generated_schedule', []);
 
-            $event = BuatEvent::where("id", $id)->first();
+        // Simpan jadwal yang dihasilkan ke dalam session
+        session(['generated_schedule' => $optimalSchedule]);
 
-            $event->update([
-                "status" => "berjalan",
-                "start_date" => $request->tanggal_mulai,
-                "end_date" => $request->tanggal_akhir
-            ]);
-
-            $googleCalendarController = new GoogleCalendarController();
-            $googleCalendarController->createEvent($event);
-
-            Penjadwalan::create([
-                "event_id" => $event->id
-            ]);
-
-            $cek = BuatEvent::where("status", "aktif")->get();
-
-            session(["generated_schedule" => $cek]);
-
-            DB::commit();
-
-            return redirect()->back()->with('success', 'Event created successfully and added to Google Calendar!');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with("error", $e->getMessage());
-        }
+        return back();
     }
 
     private function geneticAlgorithm($events, $populationSize, $generations)
     {
+        // Inisialisasi populasi awal
         $population = $this->initializePopulation($events, $populationSize);
 
         for ($i = 0; $i < $generations; $i++) {
+            // Pilih orang tua untuk crossover
             $parents = $this->selectParents($population);
             $newPopulation = [];
 
             for ($j = 0; $j < $populationSize / 2; $j++) {
+                // Buat anak-anak melalui crossover
                 $offspring = $this->crossover($parents[0], $parents[1]);
                 $newPopulation[] = $this->mutate($offspring[0]);
                 $newPopulation[] = $this->mutate($offspring[1]);
             }
 
+            // Update populasi dengan generasi baru
             $population = $newPopulation;
         }
 
+        // Urutkan populasi berdasarkan fitness dan pilih individu terbaik
         usort($population, function ($a, $b) {
             return $this->fitnessFunction($b) <=> $this->fitnessFunction($a);
         });
 
+        // Pilih event yang unik dari jadwal terbaik
         return $this->selectUniqueEvents($population[0]);
     }
 
@@ -125,6 +73,7 @@ class GeneticAlgorithmController extends Controller
     private function fitnessFunction($events)
     {
         $conflicts = $this->calculateConflicts($events);
+        // Mengembalikan nilai fitness, lebih banyak konflik berarti fitness lebih rendah
         return 1 / (count($conflicts) + 1);
     }
 
@@ -134,7 +83,7 @@ class GeneticAlgorithmController extends Controller
             return $this->fitnessFunction($b) <=> $this->fitnessFunction($a);
         });
 
-        return array_slice($population, 0, 2);
+        return array_slice($population, 0, 2); // Pilih 2 individu terbaik
     }
 
     private function crossover($parent1, $parent2)
@@ -150,6 +99,7 @@ class GeneticAlgorithmController extends Controller
         $index1 = rand(0, count($individual) - 1);
         $index2 = rand(0, count($individual) - 1);
 
+        // Swap elements at index1 and index2
         $temp = $individual[$index1];
         $individual[$index1] = $individual[$index2];
         $individual[$index2] = $temp;
@@ -162,11 +112,13 @@ class GeneticAlgorithmController extends Controller
         $conflicts = [];
         $n = count($events);
 
+        // Bandingkan setiap pasangan event untuk mendeteksi konflik
         for ($i = 0; $i < $n; $i++) {
             for ($j = $i + 1; $j < $n; $j++) {
                 $event1 = $events[$i];
                 $event2 = $events[$j];
 
+                // Periksa apakah event1 dan event2 bertabrakan
                 if ($this->eventsOverlap($event1, $event2)) {
                     $conflicts[] = [
                         'event1' => $event1['id'],
@@ -181,6 +133,7 @@ class GeneticAlgorithmController extends Controller
 
     private function eventsOverlap($event1, $event2)
     {
+        // Convert start and end dates to Carbon instances for comparison
         $start1 = Carbon::parse($event1['start_date']);
         $end1 = Carbon::parse($event1['end_date']);
         $start2 = Carbon::parse($event2['start_date']);
@@ -209,35 +162,16 @@ class GeneticAlgorithmController extends Controller
         $currentDate = Carbon::now();
 
         foreach ($events as &$event) {
+            // Tentukan durasi event berdasarkan nilai 'hari'
             $eventDuration = $event['hari'];
 
-            // Loop untuk mencari tanggal yang belum ada di database
-            do {
-                $startDate = $currentDate->format('Y-m-d');
-                $endDate = $currentDate->copy()->addDays($eventDuration - 1)->format('Y-m-d');
+            // Tentukan tanggal mulai (start_date) sesuai dengan tanggal sekarang atau tanggal setelah event sebelumnya
+            $event['start_date'] = $currentDate->format('Y-m-d');
 
-                // Periksa apakah tanggal tersebut sudah ada di database
-                $existingEvent = BuatEvent::where(function ($query) use ($startDate, $endDate) {
-                    $query->whereBetween('start_date', [$startDate, $endDate])
-                        ->orWhereBetween('end_date', [$startDate, $endDate])
-                        ->orWhere(function ($query) use ($startDate, $endDate) {
-                            $query->where('start_date', '<=', $startDate)
-                                ->where('end_date', '>=', $endDate);
-                        });
-                })->exists();
+            // Tentukan tanggal selesai (end_date) dengan menambah durasi hari
+            $event['end_date'] = $currentDate->copy()->addDays($eventDuration - 1)->format('Y-m-d');
 
-                if (!$existingEvent) {
-                    // Jika tanggal belum ada, set tanggal untuk event ini
-                    $event['start_date'] = $startDate;
-                    $event['end_date'] = $endDate;
-                    break;
-                }
-
-                // Jika tanggal sudah ada, tambahkan 1 hari dan coba lagi
-                $currentDate->addDay();
-            } while ($existingEvent);
-
-            // Tambahkan durasi untuk tanggal berikutnya
+            // Update tanggal sekarang ke tanggal setelah event ini selesai
             $currentDate->addDays($eventDuration);
         }
 
@@ -245,8 +179,6 @@ class GeneticAlgorithmController extends Controller
 
         return view('page.MakeSchedule.index', ['events' => $events]);
     }
-
-
 
     public function updateSchedule(Request $request)
     {
@@ -257,7 +189,7 @@ class GeneticAlgorithmController extends Controller
         ]);
 
         foreach ($validated['events'] as $eventData) {
-            BuatEvent::where('id', $eventData['id'])
+            Event::where('id', $eventData['id'])
                 ->update([
                     'start_date' => $eventData['start_date'],
                     'end_date' => $eventData['end_date']
@@ -265,13 +197,5 @@ class GeneticAlgorithmController extends Controller
         }
 
         return redirect()->back()->with('success', 'Schedule updated successfully!');
-    }
-
-    public function hapusFilter()
-    {
-        session()->forget("generated_schedule");
-        session()->forget("conflicts");
-
-        return back()->with("success", "Filter Berhasil di Hapus");
     }
 }

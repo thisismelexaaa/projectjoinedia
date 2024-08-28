@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('penjadwalans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained('events');
+            $table->string('event_id');
             $table->timestamps();
         });
     }

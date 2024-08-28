@@ -46,7 +46,13 @@
                             <tr>
                                 <td><i class="bi bi-calendar"></i></td>
                                 <td>Tanggal Pelaksanaan</td>
-                                <td>{{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%A, %d %B %Y') }}</td>
+                                <td>
+                                    @if ($event->start_date != null)
+                                        {{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%A, %d %B %Y') }}
+                                    @else
+                                        Tidak Ada Jadwal
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td><i class="bi bi-geo-alt"></i></td>
@@ -83,20 +89,20 @@
                                     <td class="text-capitalize">{{ $event->kuota }}</td>
                                 @endif
                             </tr>
-                            {{-- <tr>
+                            <tr>
                                 <td><i class="bi bi-badge-ad"></i></td>
-                                <td>Sponsored By</td> --}}
+                                <td>Sponsored By</td>
                                 {{-- NULL SAFETY --}}
-                                {{-- @if ($event->sponsor == null)
+                                @if ($sponsor == null)
                                     <td class="text-capitalize">Tidak Ada Sponsor</td>
                                 @else
                                     <td class="align-baseline text-capitalize">
-                                        @foreach ($event->sponsor as $sponsor)
+                                        @foreach ($sponsor as $sponsor)
                                             {{ $sponsor->name }},
                                         @endforeach
                                     </td>
-                                @endif --}}
-                            {{-- </tr> --}}
+                                @endif
+                            </tr>
                         </table>
                         <hr>
                     </div>

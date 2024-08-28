@@ -65,18 +65,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/show/{id}/event', [BuatEventController::class, 'show'])->name('be.show');
     Route::delete('/destroy/{id}/event', [BuatEventController::class, 'destroy'])->name('be.destroy');
     Route::get('/laporan/event', [BuatEventController::class, 'laporan'])->name('be.laporan');
-    
+
     // Genetik
     Route::get('buatSchedule', [GeneticAlgorithmController::class, 'index'])->name('be.index');
     Route::post('/generate-schedule', [GeneticAlgorithmController::class, 'generateSchedule'])->name('be.algo');
     Route::post('/CekJadwalBentrok', [GeneticAlgorithmController::class, 'checkConflicts'])->name('be.checkConflicts');
     Route::put('/tambah/event/{id}', [GeneticAlgorithmController::class, 'tambah_calender'])->name('be.tambah_calender');
 
-
-    // Route::get('/test/{id}', function ($id) {
-    //     return "Testing route with ID: $id";
-    // });
-    
     Route::post('google-calendar/connect', [GoogleCalendarController::class, 'connect'])->name('google-calendar.connect');
     Route::get('google-calendar/callback', [GoogleCalendarController::class, 'callback'])->name('google-calendar.callback');
 

@@ -10,12 +10,72 @@ use App\Models\Sponsor;
 use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BuatEventController extends Controller
 {
-    public function buat(Request $request)
+    public function buat(Request $request, Event $event, Sponsor $sponsor)
     {
-        $buat_event = BuatEvent::create($request->all());
+        $data = $request->all();
+
+        $numberOfSponsors = $request->input('number_of_sponsors');
+
+        if ($request->hasFile('image')) {
+            $imagePath = public_path('assets/images/eventimage');
+            if (!file_exists($imagePath)) {
+                mkdir($imagePath, 0755, true);
+            }
+
+            $image = $request->file('image');
+            $imagePath = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/eventimage'), $imagePath);
+            $data['image'] = $imagePath;
+        }
+
+        $data = [
+            "user_id" => Auth::user()->id,
+            "nama" => $data['nama'],
+            "hari" => $data['hari'],
+            "location" => $data['location'],
+            "type" => $data['type'],
+            "price" => $data['price'],
+            "organizer" => $data['organizer'],
+            "level" => $data['level'],
+            "status" => $data['status'],
+            "kategori" => $data['kategori'],
+            "kuota" => $data['kuota'],
+            "description" => $data['description'],
+            "image" => $data['image'] ?? null,
+        ];
+        // dd($request->all(), $data);
+
+        $event = BuatEvent::create($data);
+
+        for ($i = 0; $i <= $numberOfSponsors; $i++) {
+            if ($request->input('sponsor_name' . $i) != null) {
+
+                if ($request->hasFile('sponsor_logo' . $i)) {
+                    $imagePath = public_path('assets/images/sponsorlogo/');
+                    if (!file_exists($imagePath)) {
+
+                        mkdir($imagePath, 0755, true);
+                    }
+
+                    $image = $request->file('sponsor_logo' . $i);
+                    $imagePath = time() . '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
+                    $request['sponsor_logo' . $i] = $imagePath;
+                }
+                $sponsor->create([
+                    'event_id' => $event->id,
+                    'name' => $request->input('sponsor_name' . $i),
+                    'logo' => $imagePath ?? null,
+                    'description' => $request->input('deskripsiSponsor' . $i),
+                ]);
+            } else {
+                continue;
+            }
+        }
 
         return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
     }
@@ -106,25 +166,19 @@ class BuatEventController extends Controller
         return redirect()->route('event.index')->with('message', 'Data Berhasil Diupdate');
     }
 
-    public function show(BuatEvent $event)
+    public function show($id)
     {
-
-        $event = BuatEvent::where('id', $event->id)->first();
-
-        dd($event);
-
+        $event = BuatEvent::where('id', $id)->first();
+        $sponsor = Sponsor::where('event_id', $event->id)->get();
         $eventexcept = BuatEvent::where('id', '!=', $event->id)->get()->take(5);
-
-
         $eventexcept = $eventexcept->shuffle();
-
-
-        return view('page.admin.event.show', compact('event', 'eventexcept'));
+        return view('page.admin.event.show', compact('event', 'eventexcept', 'sponsor'));
     }
 
     public function destroy(BuatEvent $event, Sponsor $sponsor)
     {
 
+        dd($event);
         $publicPathEvent = public_path('assets/images/eventimage/') . $event->image;
 
 
@@ -143,8 +197,10 @@ class BuatEventController extends Controller
             unlink($publicPathEvent);
         }
 
+
         $event->penjadwalan()->delete();
         $event->delete();
+        $sponsor->delete();
 
         return redirect()->route('event.index')->with('message', 'Data Berhasil Dihapus');
     }
@@ -161,5 +217,4 @@ class BuatEventController extends Controller
 
         return $pdf->download($fileName);
     }
-
 }

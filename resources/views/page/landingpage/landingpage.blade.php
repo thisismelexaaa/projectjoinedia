@@ -696,14 +696,19 @@
                                             class="img-fluid" alt="">
                                     @endif
                                 </div>
-                                <span
-                                    class="post-date">{{ \Carbon\Carbon::parse($item->start_date)->formatLocalized('%d %B %Y') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($item->end_date)->formatLocalized('%d %B %Y') }}</span>
+                                <span class="post-date">
+                                    @if ($item->start_date == null && $item->end_date == null)
+                                        Coming Soon
+                                    @else
+                                        {{ \Carbon\Carbon::parse($item->start_date)->formatLocalized('%d %B %Y') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($item->end_date)->formatLocalized('%d %B %Y') }}
+                                    @endif
+                                </span>
                                 <h3 class="post-title">{{ $item->nama }}</h3>
                                 <a href="event/{{ $item->id }}"
-                                    class="readmore stretched-link mt-auto"><span>Lihat Event</span><i
-                                        class="bi bi-arrow-right"></i></a>
+                                    class="readmore stretched-link mt-auto"><span>Lihat
+                                        Event</span><i class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
                     @endforeach

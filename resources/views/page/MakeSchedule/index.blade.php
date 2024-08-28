@@ -19,77 +19,62 @@
             </div>
         </div>
         <div class="card-body">
-            <form class="row g-3" method="POST" action="{{ route('be.algo') }}" enctype="multipart/form-data">
+            <form class="d-flex justify-content-between gap-2" method="POST" action="{{ route('be.algo') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="col-md-6 m-auto">
-                    <div class="my-3 row">
-                        <div class="col-md-6">
-                            <label for="bulan" class="form-label">Bulan</label>
-                            <select id="bulan" name="bulan" class="form-select">
-                                <option value="">- Pilih -</option>
-                                @foreach (range(1, 12) as $month)
-                                    <option value="{{ $month }}" {{ $month == session('filter_bulan') ? 'selected' : '' }}>
-                                        {{ \Carbon\Carbon::createFromDate(null, $month, 1)->format('F') }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="tahun" class="form-label">Tahun</label>
-                            <select id="tahun" name="tahun" class="form-select">
-                                <option value="">- Pilih -</option>
-                                @foreach (range(date('Y'), date('Y') + 5) as $year)
-                                    <option value="{{ $year }}" {{ $year == session('filter_tahun') ? 'selected' : '' }}>
-                                        {{ $year }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Generate Schedule</button>
-                        @if (session('filter_tahun') || session('filter_bulan'))
-                            <a href="{{ url('/hapus-filter') }}" class="btn btn-danger">Hapus Filter</a>
-                        @endif
-                    </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Generate Schedule</button>
+                    <input type="text" name="limit_data" placeholder="Limit Data" class="form-control">
                 </div>
+                @if (session('generated_schedule'))
+                    <a onclick="return confirm('Yakin ? Apakah Anda Yakin Ingin Menghapus Filter Ini ?')"
+                        href="{{ url('/hapus-filter') }}" class="btn btn-danger">Hapus Filter</a>
+                @endif
             </form>
+            <span class="text-danger small py-2 fw-bold">*Semakin banyak data yang di ambil semakin lama proses generasi data</span>
 
-            @if (!empty($scheduledEvents))
-                <h5 class="mt-5">Scheduled Events</h5>
-                <div class="card-title justify-content-between row me-2">
-                    <div class="justify-content-end row gap-1 col-md">
-                        <form method="POST" action="{{ route('be.checkConflicts') }}">
-                            @csrf
-                            <input type="hidden" name="bulan" value="{{ session('filter_bulan') }}">
-                            <input type="hidden" name="tahun" value="{{ session('filter_tahun') }}">
-                            <button type="submit" class="btn btn-warning">Check Conflicts</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="overflow-auto tbl-wrap">
-                    <table class="table datatable table-hover table-responsive table-responsive-md table-responsive-lg table-responsive-sm d-block">
+            <hr>
+
+            @if (session('generated_schedule'))
+                <div class="overflow-auto tbl-wrap mt-4">
+                    <table
+                        class="table datatable table-hover table-responsive table-responsive-md table-responsive-lg table-responsive-sm d-block">
                         <thead>
                             <tr style="text-align:center">
-                                <th>No</th>
-                                <th text='center'>Event Name</th>
-                                <th>Start Day</th>
-                                <th>End Day</th>
-                                <th class="headcol">Actions</th>
+                                <th class="text-center">No</th>
+                                <th>Event Name</th>
+                                <th class="text-center">Hari</th>
+                                <th class="text-center">Level</th>
+                                <th class="text-center">Tanggal Mulai</th>
+                                <th class="text-center">Tanggal Akhir</th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($scheduledEvents as $event)
-                                <tr style="text-align:center">
-                                    <td>{{ $loop->iteration }}.</td>
-                                    <td>{{ $event['event']->nama }}</td>
-                                    <td>{{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $event['startDay'])->format('d F Y') }}</td>
-                                    <td>{{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $event['endDay'])->format('d F Y') }}</td>
-                                    <td>
-                                        <form action="{{ url('/tambah/event', $event['event']->id) }}" method="POST">
+                            @php
+                                $nomer = 1;
+                            @endphp
+                            @foreach (session('updated_schedule', []) as $event)
+                                <tr>
+                                    <td class="text-center">{{ $nomer++ }}.</td>
+                                    <td>{{ $event['nama'] }}</td>
+                                    <td class="text-center">{{ $event['hari'] }} Hari</td>
+                                    <td class="text-center text-uppercase">{{ $event['level'] }}</td>
+                                    <td class="text-center">
+                                        {{ \Carbon\Carbon::parse($event['start_date'])->locale('id')->translatedFormat('d F Y') }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ \Carbon\Carbon::parse($event['end_date'])->locale('id')->translatedFormat('d F Y') }}
+                                    </td>
+                                    <td class="text-center">
+                                        <form action="{{ url('/tambah/event/' . $event['id']) }}" method="POST"
+                                            style="display: inline">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="btn btn-success">Update Data</button>
+                                            <input type="hidden" name="tanggal_mulai" value="{{ $event['start_date'] }}">
+                                            <input type="hidden" name="tanggal_akhir" value="{{ $event['end_date'] }}">
+                                            <button class="btn btn-success btn-sm">
+                                                Update Data
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -98,66 +83,9 @@
                     </table>
                 </div>
             @endif
-
-            {{-- @if (!empty($conflicts))
-                <h5 class="mt-5">Conflicts</h5>
-                <ul>
-                    @foreach ($conflicts as $conflict)
-                        <li>{{ $conflict['event1'] }} conflicts with {{ $conflict['event2'] }}</li>
-                    @endforeach
-                </ul>
-            @endif --}}
+            {{-- @endif --}}
         </div>
     </section>
-
-    @if (!empty($conflicts))
-    <section class="card info-card sales-card ">
-        {{-- List Event --}}
-        <div class="card-body">
-            <div class="card-title justify-content-between d-flex">
-                <p>List Events yang Bentrok</p>
-            </div>
-            <table
-                class="table datatable table-hover table-responsive table-responsive-md table-responsive-lg table-responsive-sm">
-                <thead>
-                    <tr style="text-align:center">
-                        <th scope="col">NO</th>
-                        <th scope="col">Nama Event 1</th>
-                        <th scope="col">Nama Event 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($conflicts as $conflict)
-                        <tr style="text-align:center">
-                            <td rowspan="2">{{ $loop->iteration }}.</td>
-                            {{-- <td class="align-baseline">
-                                {{ $conflict['event1'] }}
-                                {{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $conflict['start1'])->format('d F Y') }} -
-                                {{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $conflict['end1'])->format('d F Y') }}
-                            </td>
-                            <td class="align-baseline">
-                                {{ $conflict['event2'] }}
-                                {{ \Carbon\Carbon::parse($conflict['start2'])->format('d F Y') }} - {{ \Carbon\Carbon::parse($conflict['end2'])->format('d F Y') }}
-                            </td> --}}
-                            <td class="align-baseline">{{ $conflict['event1'] }}</td>
-                            <td class="align-baseline">{{ $conflict['event2'] }}</td>
-                        </tr>
-                        <tr style="text-align:center">
-                            <td>
-                                {{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $conflict['start1'])->format('d F Y') }} -
-                                {{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $conflict['end1'])->format('d F Y') }}
-                            </td>
-                            <td>
-                                {{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $conflict['start2'])->format('d F Y') }} -
-                                {{ \Carbon\Carbon::createFromDate(session('filter_tahun'), session('filter_bulan'), $conflict['end2'])->format('d F Y') }}
-                            </td>
-                        </tr>
-                        @endforeach
-                </tbody>
-            </table>
-        </div>
-    </section>
-    @endif
 
 @endsection
 

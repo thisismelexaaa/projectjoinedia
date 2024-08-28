@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BuatEvent;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -10,14 +9,14 @@ class ScheduleController extends Controller
 {
     public function index(Request $request)
     {
-        $events = collect();
-
+        $events = collect(); 
+        
         if ($request->has('bulan') && $request->has('tahun')) {
             $bulan = $request->bulan;
             $tahun = $request->tahun;
 
-
-            $events = BuatEvent::where(function ($query) use ($tahun, $bulan) {
+            
+            $events = Event::where(function ($query) use ($tahun, $bulan) {
                 $query->whereYear('start_date', $tahun)
                       ->whereMonth('start_date', $bulan)
                       ->whereIn('status', ['aktif', 'berjalan']);
@@ -29,7 +28,7 @@ class ScheduleController extends Controller
             })
             ->get();
 
-
+            
             $events = $events->sortBy(function ($event) use ($bulan, $tahun) {
                 // Prioritaskan event berdasarkan start_date, jika tidak memenuhi, gunakan end_date
                 $startDatePriority = (date('Y-m', strtotime($event->start_date)) === "$tahun-$bulan") ? strtotime($event->start_date) : null;
@@ -57,7 +56,7 @@ class ScheduleController extends Controller
             $tahun = $request->tahun;
 
             // Proses logika genetika untuk penjadwalan
-            $events = BuatEvent::where(function ($query) use ($tahun, $bulan) {
+            $events = Event::where(function ($query) use ($tahun, $bulan) {
                 $query->whereYear('start_date', $tahun)
                       ->whereMonth('start_date', $bulan)
                       ->whereIn('status', ['aktif', 'berjalan']);

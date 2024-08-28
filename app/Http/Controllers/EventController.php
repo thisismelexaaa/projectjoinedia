@@ -9,6 +9,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EventFormRequest;
 use App\Models\BuatEvent;
+use App\Models\Penjadwalan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -81,14 +84,6 @@ class EventController extends Controller
     {
         $data = $request->validated();
         $numberOfSponsors = $request->input('number_of_sponsors');
-        $start_date = Carbon::parse($data['start_date']);
-        $end_date = Carbon::parse($data['end_date']);
-
-
-
-        if ($event->whereDate('start_date', [$start_date->toDateString(), $end_date->toDateString()])->exists()) {
-            return redirect()->back()->withInput()->with('message', 'Maaf, Tanggal Sudah Terdaftar');
-        }
 
         if ($request->hasFile('image')) {
             $imagePath = public_path('assets/images/eventimage');
@@ -127,8 +122,6 @@ class EventController extends Controller
                     'event_id' => $event->id,
                     'name' => $request->input('sponsor_name' . $i),
                     'logo' => $imagePath,
-                    'start_date' => $start_date,
-                    'end_date' => $end_date,
                     'description' => $request->input('deskripsiSponsor' . $i),
                 ]);
             } else {
@@ -136,29 +129,28 @@ class EventController extends Controller
             }
         }
 
-        $event->penjadwalan()->create(['event_id' => $event->id]);
-
         return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
     }
 
-    public function show(Event $event)
+    public function show($id)
     {
-
-        $event = BuatEvent::where('id', $event->id)->first();
-
+        $event = BuatEvent::where('id', $id)->first();
         $eventexcept = BuatEvent::where('id', '!=', $event->id)->get()->take(5);
-
+        $sponsor = Sponsor::where('event_id', $event->id)->get();
 
         $eventexcept = $eventexcept->shuffle();
 
 
-        return view('page.admin.event.show', compact('event', 'eventexcept'));
+        return view('page.admin.event.show', compact('event', 'eventexcept', 'sponsor'));
     }
 
     public function edit(Event $event)
     {
         $event = BuatEvent::where('id', $event->id)->first();
-        return view('page.admin.event.edit', compact('event'));
+        $sponsor = Sponsor::where('event_id', $event->id)->get();
+        $countSponsor = $sponsor->count();
+        // dd($countSponsor);
+        return view('page.admin.event.edit', compact('event', 'sponsor', 'countSponsor'));
     }
 
     public function update(EventFormRequest $request, BuatEvent $event, Sponsor $sponsor)
@@ -238,31 +230,44 @@ class EventController extends Controller
         return redirect()->route('event.index')->with('message', 'Data Berhasil Diupdate');
     }
 
-    public function destroy(BuatEvent $event, Sponsor $sponsor)
+    public function destroy(BuatEvent $event)
     {
+        DB::beginTransaction();
 
-        $publicPathEvent = public_path('assets/images/eventimage/') . $event->image;
+        try {
+            // Delete event image
+            $this->deleteFile('assets/images/eventimage/', $event->image);
 
+            // Delete sponsor logos and records
+            $sponsors = Sponsor::where('event_id', $event->id)->get(); // Assuming you have a relationship defined
+            foreach ($sponsors as $sponsor) {
+                // dd($sponsor);
+                $this->deleteFile('assets/images/sponsorlogo/', $sponsor->logo);
+                $sponsor->delete();
+            }
 
-        $sponsor = $sponsor->where('event_id', $event->id)->get();
+            $penjadwalan = Penjadwalan::where('event_id', $event->id)->delete();
 
+            // Delete related records
+            // $penjadwalan->delete();
+            $event->delete();
 
-        foreach ($sponsor as $s) {
-            $publicPathSponsor = public_path('assets/images/sponsorlogo/') . $s->logo;
-            if (file_exists($publicPathSponsor) && is_file($publicPathSponsor)) {
-                unlink($publicPathSponsor);
+            DB::commit();
+            return redirect()->route('event.index')->with('message', 'Data Berhasil Dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+        }
+    }
+
+    private function deleteFile($path, $filename)
+    {
+        if ($filename) {
+            $fullPath = public_path($path . $filename);
+            if (File::exists($fullPath)) {
+                File::delete($fullPath);
             }
         }
-
-
-        if (file_exists($publicPathEvent) && is_file($publicPathEvent)) {
-            unlink($publicPathEvent);
-        }
-
-        $event->penjadwalan()->delete();
-        $event->delete();
-
-        return redirect()->route('event.index')->with('message', 'Data Berhasil Dihapus');
     }
 
     public function listpendaftar()

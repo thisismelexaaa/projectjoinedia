@@ -51,7 +51,8 @@ class PendaftaranController extends Controller
         $tiket = $data['nama'] . '#' . rand(1, 9999);
         $data['tiket'] = $tiket;
 
-        $event = BuatEvent::find($request->event_id);
+        $event = BuatEvent::findOrFail($request->event_id);
+        // dd($event);
 
         // cek jika sudah terdaftar
         $cek = Pendaftaran::where('user_id', auth()->user()->id)->where('event_id', $request->event_id)->first();
@@ -141,9 +142,9 @@ class PendaftaranController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(BuatEvent $event, string $id)
+    public function show($id)
     {
-        $data = $event->findOrFail($id);
+        $data = BuatEvent::where('id', $id)->first();
         $data->start_date = date('d F Y H:H', strtotime($data->start_date));
         $data->end_date = date('d F Y H:H', strtotime($data->end_date));
         return view('page.user.pendaftaran', compact('data'));

@@ -21,6 +21,9 @@ class LandingPageController extends Controller
         }
         // count event
         $countEvent = BuatEvent::count();
+
+        // seleksi event yang sudah berjalan
+
         // count event yang sudah selesei
         $countEventFinish = BuatEvent::where('status', 'selesai')->count();
         $countEventNotFinish = BuatEvent::where('status', 'aktif')->count();

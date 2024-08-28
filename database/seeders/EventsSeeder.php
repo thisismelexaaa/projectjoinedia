@@ -18,12 +18,12 @@ class EventsSeeder extends Seeder
         // date between 1 - 30 days from now
         $datetime = now();
 
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             // generate random end_date that is not earlier than start_date
             $end_date = $datetime->copy()->addDays($faker->numberBetween(0, 1)); // Adds 0 to 30 days to start_date
 
             // insert data ke table pegawai menggunakan Faker
-            DB::table('events')->insert(
+            DB::table('buat_events')->insert(
                 [
                     'nama' => 'EVENT ' . $faker->randomElement(
                         array(
@@ -31,8 +31,9 @@ class EventsSeeder extends Seeder
                         )
                     ),
                     'user_id' => 1,
-                    'start_date' => $datetime,
-                    'end_date' => $end_date,
+                    'hari' => $faker->numberBetween(1, 7),
+                    'start_date' => null,
+                    'end_date' => null,
                     'type' => $faker->randomElement(
                         array(
                             'gratis', 'berbayar'
@@ -40,11 +41,7 @@ class EventsSeeder extends Seeder
                     ),
                     'organizer' => $faker->company,
                     'location' => $faker->address,
-                    'status' => $faker->randomElement(
-                        array(
-                            'berjalan', 'aktif', 'selesai'
-                        )
-                    ),
+                    'status' => 'aktif',
                     'image' => 'https://source.unsplash.com/random/200x200/?/event',
                     'kategori' => $faker->randomElement(
                         array(

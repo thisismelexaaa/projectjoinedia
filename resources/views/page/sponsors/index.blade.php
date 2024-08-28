@@ -20,7 +20,6 @@
                             <th scope="col" colspan="2">Nama Sponsor</th>
                             <th scope="col">Nama Event</th>
                             <th scope="col">Description</th>
-                            <th scope="col">Kontrak Sponsor</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -37,13 +36,8 @@
                                         {!! $sponsor->name !!}
                                     </span>
                                 </td>
-                                <td class="align-baseline" width="20%">{!! $sponsor->event->nama !!}</td>
+                                <td class="align-baseline" width="20%">{!! $sponsor->nama !!}</td>
                                 <td class="align-baseline">{!! $sponsor->description !!}</td>
-                                <td class="align-baseline" width="20%">
-                                    {{ \Carbon\Carbon::parse($sponsor->start_date)->formatLocalized('%d %B %Y') }}
-                                    -
-                                    {{ \Carbon\Carbon::parse($sponsor->end_date)->formatLocalized('%d %B %Y') }}
-                                </td>
                                 <td class="align-baseline">
                                     <div class="gap-3 d-flex">
                                         {{-- <a href="{{ route('sponsor.show', $sponsor->id) }}" class="btn btn-sm btn-primary"

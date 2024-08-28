@@ -102,7 +102,7 @@
                         data: 'nama',
                         name: 'name',
                         render: function(data, type, full, meta) {
-                            link = "{{ route('event.show', ':id') }}";
+                            link = "{{ route('be.show', ':id') }}";
                             return "<a class='align-baseline text-black fw-bold' href=\"" + link
                                 .replace(':id', full.id) +
                                 "\">" + data + "</a>";
@@ -113,12 +113,13 @@
                         name: 'date',
                         //    Format tanggal ke dalam format Indonesia
                         render: function(data, type, full, meta) {
-                            if (full.start_date == null && full.end_date == null) {
-                                return 'Belum Ada Tanggal'
-                            } else {
+                            if (full.start_date != null && full.end_date != null) {
                                 start_date = moment(full.start_date).format('DD MMMM YYYY')
                                 end_date = moment(full.end_date).format('DD MMMM YYYY')
                                 return start_date + " - " + end_date;
+                            }else{
+                                isDateNull = 'Tanggal belum di generate'
+                                return isDateNull;
                             }
                         }
                     },
@@ -220,29 +221,29 @@
             $('[data-bs-toggle="tooltip"]').tooltip();
 
             // Event delegation untuk tombol delete
-            $('#myTable').on('submit', '.delete-form', function(e) {
-                e.preventDefault();
+            // $('#myTable').on('submit', '.delete-form', function(e) {
+            //     e.preventDefault();
 
-                var deleteUrl = $(this).attr('action');
+            //     var deleteUrl = $(this).attr('action');
 
-                // Lakukan konfirmasi penghapusan (optional)
-                if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                    // Lakukan proses penghapusan melalui AJAX
-                    $.ajax({
-                        url: deleteUrl,
-                        method: 'POST',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            // Refresh atau manipulasi tabel setelah penghapusan berhasil
-                            // Misalnya, reload tabel
-                            $('#myTable').DataTable().ajax.reload();
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    });
-                }
-            });
+            //     // Lakukan konfirmasi penghapusan (optional)
+            //     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            //         // Lakukan proses penghapusan melalui AJAX
+            //         $.ajax({
+            //             url: deleteUrl,
+            //             method: 'POST',
+            //             data: $(this).serialize(),
+            //             success: function(response) {
+            //                 // Refresh atau manipulasi tabel setelah penghapusan berhasil
+            //                 // Misalnya, reload tabel
+            //                 $('#myTable').DataTable().ajax.reload();
+            //             },
+            //             error: function(error) {
+            //                 console.log(error);
+            //             }
+            //         });
+            //     }
+            // });
         });
     </script>
 @endsection

@@ -28,12 +28,12 @@ class EventFormRequest extends FormRequest
             'nama' => [
                 'required', 'string', 'max:255'
             ],
-            // 'start_date' => [
-            //     'required', 'date',
-            // ],
-            // 'end_date' => [
-            //     'required', 'date',
-            // ],
+            'start_date' => [
+                'required', 'date',
+            ],
+            'end_date' => [
+                'required', 'date',
+            ],
             'type' => [
                 'required', 'string', 'max:255',
             ],
@@ -43,9 +43,9 @@ class EventFormRequest extends FormRequest
             'status' => [
                 'required', 'string', 'max:255',
             ],
-            // 'description' => [
-            //     'required', 'string',
-            // ],
+            'description' => [
+                'required', 'string',
+            ],
             'location' => [
                 'required', 'string', 'max:255',
             ],
@@ -55,9 +55,9 @@ class EventFormRequest extends FormRequest
             'user_id' => [
                 'required', 'string', 'max:255',
             ],
-            // 'price' => [
-            //     'numeric',
-            // ],
+            'price' => [
+                'numeric',
+            ],
             'image' => [
                 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048',
             ],
