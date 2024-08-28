@@ -11,6 +11,10 @@ use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\PendaftaranFormRequest;
+<<<<<<< HEAD
+=======
+use App\Models\BuatEvent;
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
 class PendaftaranController extends Controller
 {
@@ -50,7 +54,12 @@ class PendaftaranController extends Controller
         $tiket = $data['nama'] . '#' . rand(1, 9999);
         $data['tiket'] = $tiket;
 
+<<<<<<< HEAD
         $event = Event::find($request->event_id);
+=======
+        $event = BuatEvent::findOrFail($request->event_id);
+        // dd($event);
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
         // cek jika sudah terdaftar
         $cek = Pendaftaran::where('user_id', auth()->user()->id)->where('event_id', $request->event_id)->first();
@@ -140,9 +149,15 @@ class PendaftaranController extends Controller
     /**
      * Display the specified resource.
      */
+<<<<<<< HEAD
     public function show(Event $event, string $id)
     {
         $data = $event->findOrFail($id);
+=======
+    public function show($id)
+    {
+        $data = BuatEvent::where('id', $id)->first();
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
         $data->start_date = date('d F Y H:H', strtotime($data->start_date));
         $data->end_date = date('d F Y H:H', strtotime($data->end_date));
         return view('page.user.pendaftaran', compact('data'));
@@ -177,7 +192,11 @@ class PendaftaranController extends Controller
         $transaksi->destroy($deleteTransaksi);
 
         // update kuota
+<<<<<<< HEAD
         $event = Event::find($data->event_id);
+=======
+        $event = BuatEvent::find($data->event_id);
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
         $event->kuota = $event->kuota + 1;
 
         // cek kuoata sudah habis
@@ -209,7 +228,11 @@ class PendaftaranController extends Controller
     public function laporanriwayat()
     {
         $data = Pendaftaran::all();
+<<<<<<< HEAD
         $event = Event::all();
+=======
+        $event = BuatEvent::all();
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
         // Hitung total transaksi
         $totalTransaksi = $event->sum('price');

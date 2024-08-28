@@ -17,7 +17,11 @@
                     </ul>
                 </div>
             @endif
+<<<<<<< HEAD
             <form class="row g-3" id="editForm" method="POST" action="{{ route('event.update', $event->id) }}"
+=======
+            <form class="row g-3" id="editForm" method="POST" action="{{ route('be.update', $event->id) }}"
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -163,7 +167,11 @@
                         <span>Data Sponsor</span>
                         <div id="added_sponsor">
                             <!-- Tampilkan sponsor yang ada (jika ada) -->
+<<<<<<< HEAD
                             @foreach ($event->sponsor as $sponsor)
+=======
+                            @foreach ($sponsor as $sponsor)
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                                 <div class="my-3 bg-light p-3 rounded border">
                                     <div class="row">
                                         <div class="col">
@@ -250,8 +258,13 @@
         document.addEventListener("DOMContentLoaded", function() {
             const addSponsorButton = document.getElementById("addSponsor");
             const addedSponsorsContainer = document.getElementById("added_sponsor");
+<<<<<<< HEAD
             let sponsorCount =
                 {{ count($event->sponsor) }}; // Set sponsorCount berdasarkan jumlah sponsor yang sudah ada
+=======
+            let sponsorCount = 1
+            {{ $countSponsor }}; // Set sponsorCount berdasarkan jumlah sponsor yang sudah ada
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
 
             addSponsorButton.addEventListener("click", function() {

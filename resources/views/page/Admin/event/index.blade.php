@@ -20,7 +20,11 @@
                 <div class="col-md justify-content-end row gap-1">
                     <a href="{{ route('event.create') }}" class="btn btn-sm btn-success my-auto col-md-2">Add Event</a>
                     @if (Auth::user()->role == 'superadmin')
+<<<<<<< HEAD
                         <a href="{{ route('event.laporan') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+=======
+                        <a href="{{ route('be.laporan') }}" class="btn btn-sm btn-primary my-auto col-md-2">Cetak
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                             Laporan</a>
                     @endif
                 </div>
@@ -102,7 +106,11 @@
                         data: 'nama',
                         name: 'name',
                         render: function(data, type, full, meta) {
+<<<<<<< HEAD
                             link = "{{ route('event.show', ':id') }}";
+=======
+                            link = "{{ route('be.show', ':id') }}";
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                             return "<a class='align-baseline text-black fw-bold' href=\"" + link
                                 .replace(':id', full.id) +
                                 "\">" + data + "</a>";
@@ -113,9 +121,20 @@
                         name: 'date',
                         //    Format tanggal ke dalam format Indonesia
                         render: function(data, type, full, meta) {
+<<<<<<< HEAD
                             start_date = moment(full.start_date).format('DD MMMM YYYY')
                             end_date = moment(full.end_date).format('DD MMMM YYYY')
                             return start_date + " - " + end_date;
+=======
+                            if (full.start_date != null && full.end_date != null) {
+                                start_date = moment(full.start_date).format('DD MMMM YYYY')
+                                end_date = moment(full.end_date).format('DD MMMM YYYY')
+                                return start_date + " - " + end_date;
+                            }else{
+                                isDateNull = 'Tanggal belum di generate'
+                                return isDateNull;
+                            }
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                         }
                     },
                     {
@@ -216,6 +235,7 @@
             $('[data-bs-toggle="tooltip"]').tooltip();
 
             // Event delegation untuk tombol delete
+<<<<<<< HEAD
             $('#myTable').on('submit', '.delete-form', function(e) {
                 e.preventDefault();
 
@@ -239,6 +259,31 @@
                     });
                 }
             });
+=======
+            // $('#myTable').on('submit', '.delete-form', function(e) {
+            //     e.preventDefault();
+
+            //     var deleteUrl = $(this).attr('action');
+
+            //     // Lakukan konfirmasi penghapusan (optional)
+            //     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            //         // Lakukan proses penghapusan melalui AJAX
+            //         $.ajax({
+            //             url: deleteUrl,
+            //             method: 'POST',
+            //             data: $(this).serialize(),
+            //             success: function(response) {
+            //                 // Refresh atau manipulasi tabel setelah penghapusan berhasil
+            //                 // Misalnya, reload tabel
+            //                 $('#myTable').DataTable().ajax.reload();
+            //             },
+            //             error: function(error) {
+            //                 console.log(error);
+            //             }
+            //         });
+            //     }
+            // });
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
         });
     </script>
 @endsection

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BuatEvent extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
     protected $fillable = [
         'nama',
         'hari',
@@ -26,6 +27,9 @@ class BuatEvent extends Model
         'kuota',
         'level',
     ];
+=======
+    protected $guarded = [];
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
     // Relationship event dengan user
     public function user()

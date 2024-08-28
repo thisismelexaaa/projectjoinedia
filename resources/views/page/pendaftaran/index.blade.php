@@ -30,7 +30,11 @@
                         {{-- Jika event_id tidak cocok maka tampilkan teks kosong --}}
                         @foreach ($data as $item)
                             {{-- @dd($item) --}}
+<<<<<<< HEAD
                             @if ($item->event == null)
+=======
+                            @if ($item == null)
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                                 {{ $item->event }}
                                 @continue
                                 {{-- @break --}}
@@ -40,6 +44,7 @@
                                     </td>
                                     <td class="align-baseline">{{ ++$i }}</td>
                                     <td class="text-capitalize align-baseline fw-bold">
+<<<<<<< HEAD
                                         @if ($item->event->image == null)
                                             <span>No Image</span>
                                         @else
@@ -59,6 +64,27 @@
                                         <td class="align-baseline">Gratis</td>
                                     @else
                                         <td class="align-baseline">@currency($item->event->price)</td>
+=======
+                                        @if ($item->image == null)
+                                            <span>No Image</span>
+                                        @else
+                                            <img src="{{ asset('assets/images/eventimage/' . $item->image) }}"
+                                                height="125" alt="">
+                                        @endif
+                                    </td>
+                                    <td class="align-baseline"><a class="text-dark" href="event/{{ $item->id }}"><b>{{ $item->nama }}</b></a></td>
+                                    <td class="text-capitalize align-baseline">{{ $item->tiket }}</td>
+                                    <td class="align-baseline">
+                                        {{ \Carbon\Carbon::parse($item->start_date)->formatLocalized('%A, %d %B %Y') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($item->end_date)->formatLocalized('%A, %d %B %Y') }}
+                                    </td>
+                                    <td class="text-capitalize align-baseline">{{ $item->type }}</td>
+                                    @if ($item->type == 'gratis')
+                                        <td class="align-baseline">Gratis</td>
+                                    @else
+                                        <td class="align-baseline">@currency($item->price)</td>
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                                     @endif
 
                                     @if ($item->status == 'unpaid')

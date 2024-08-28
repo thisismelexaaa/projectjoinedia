@@ -46,7 +46,17 @@
                             <tr>
                                 <td><i class="bi bi-calendar"></i></td>
                                 <td>Tanggal Pelaksanaan</td>
+<<<<<<< HEAD
                                 <td>{{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%A, %d %B %Y') }}</td>
+=======
+                                <td>
+                                    @if ($event->start_date != null)
+                                        {{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%A, %d %B %Y') }}
+                                    @else
+                                        Tidak Ada Jadwal
+                                    @endif
+                                </td>
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                             </tr>
                             <tr>
                                 <td><i class="bi bi-geo-alt"></i></td>
@@ -87,11 +97,19 @@
                                 <td><i class="bi bi-badge-ad"></i></td>
                                 <td>Sponsored By</td>
                                 {{-- NULL SAFETY --}}
+<<<<<<< HEAD
                                 @if ($event->sponsor == null)
                                     <td class="text-capitalize">Tidak Ada Sponsor</td>
                                 @else
                                     <td class="align-baseline text-capitalize">
                                         @foreach ($event->sponsor as $sponsor)
+=======
+                                @if ($sponsor == null)
+                                    <td class="text-capitalize">Tidak Ada Sponsor</td>
+                                @else
+                                    <td class="align-baseline text-capitalize">
+                                        @foreach ($sponsor as $sponsor)
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                                             {{ $sponsor->name }},
                                         @endforeach
                                     </td>

@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('sponsors', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade')->nullable();
             $table->string('name');
             $table->string('logo')->nullable();
             $table->text('description');
             $table->Date('start_date');
             $table->Date('end_date');
+=======
+            $table->string('event_id');
+            $table->string('name');
+            $table->string('logo')->nullable();
+            $table->text('description');
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
             $table->timestamps();
         });
     }

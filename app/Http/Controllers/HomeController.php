@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
+=======
+use App\Models\BuatEvent;
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Pendaftaran;
@@ -43,8 +47,13 @@ class HomeController extends Controller
 
         // Count Event
         # Count all event
+<<<<<<< HEAD
         $event = Event::all(); // Mengambil semua data event
         $eventCounts = Event::selectRaw('status, count(*) as count')
+=======
+        $event = BuatEvent::all(); // Mengambil semua data event
+        $eventCounts = BuatEvent::selectRaw('status, count(*) as count')
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
             ->groupBy('status')
             ->pluck('count', 'status')
             ->take(5)

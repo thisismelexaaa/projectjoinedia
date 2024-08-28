@@ -68,6 +68,7 @@
                                         class="text-capitalize badge w-100 bg-danger">{{ $event->status }}</span>
                                 </td>
                             @endif
+<<<<<<< HEAD
                             <td class="align-baseline">
                                 <div class="gap-3 d-flex">
                                     <a href="event/{{ $event->id }}" class="btn btn-sm btn-primary"
@@ -79,6 +80,21 @@
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <form action="{{ route('event.destroy', $event->id) }}" method="post">
+=======
+
+                            @if (!empty($event->start_date && $event->end_date))
+                            <td class="align-baseline">
+                                <div class="gap-3 d-flex">
+                                    <a href="/show/{{ $event->id }}/event" class="btn btn-sm btn-primary"
+                                        data-bs-toggle="tooltip" data-bs-title="Show">
+                                    <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="/edit/{{ $event->id }}/event"
+                                        class="btn btn-sm btn-warning"data-bs-toggle="tooltip" data-bs-title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form action="{{ route('be.destroy', $event->id) }}" method="post">
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger"
@@ -89,6 +105,10 @@
                                     </form>
                                 </div>
                             </td>
+<<<<<<< HEAD
+=======
+                            @endif
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                         </tr>
                     @endforeach
                 </tbody>

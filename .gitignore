@@ -17,4 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+<<<<<<< HEAD
 /.config/credentials.json
+=======
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36

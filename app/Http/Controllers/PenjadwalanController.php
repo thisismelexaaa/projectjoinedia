@@ -10,10 +10,17 @@ class PenjadwalanController extends Controller
 {
     public function index()
     {
+<<<<<<< HEAD
         $jadwal = Penjadwalan::with('event')
             ->get()
             ->map(function ($item) {
                 $sponsorLevel = $item->event->level;
+=======
+        $jadwal = Penjadwalan::with('buat_events')
+            ->get()
+            ->map(function ($item) {
+                $sponsorLevel = $item->level;
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
                 if ($sponsorLevel === 'universitas') {
                     $color = '#0d6efd'; // Hijau
@@ -30,10 +37,17 @@ class PenjadwalanController extends Controller
                 }
                 return [
                     'id' => $item->id,
+<<<<<<< HEAD
                     'title' => $item->event->nama,
                     'start' => $item->event->start_date,
                     'end' => $item->event->end_date,
                     'url' => route('event.show', $item->event->id),
+=======
+                    'title' => $item->buat_events->nama,
+                    'start' => $item->buat_events->start_date,
+                    'end' => $item->buat_events->end_date,
+                    'url' => route('event.show', $item->buat_events->id),
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                     'backgroundColor' => $color,
                 ];
             })

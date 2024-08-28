@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use Google\Client;
 use Google\Service\Calendar;
 use Illuminate\Http\Request;
@@ -95,6 +96,25 @@ class GoogleCalendarController extends Controller
             Log::error('Failed to create Google Calendar event: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to create event in Google Calendar.');
         }
+=======
+use Carbon\Carbon;
+use Spatie\GoogleCalendar\Event;
+
+class GoogleCalendarController extends Controller
+{
+    
+    public function createEvent($event)
+    {
+        $calendarEvent = new Event;
+        $calendarEvent->name = $event->nama;
+        $calendarEvent->description = $event->description;
+        $calendarEvent->startDateTime = Carbon::parse($event->start_date);
+        $calendarEvent->endDateTime = Carbon::parse($event->end_date);
+
+        $calendarEvent->save();
+
+        return redirect()->back()->with('success', 'Event created and added to Google Calendar successfully!');
+>>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
     }
 
 }
