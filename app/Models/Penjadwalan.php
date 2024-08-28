@@ -17,4 +17,9 @@ class Penjadwalan extends Model
     {
         return $this->belongsTo(Event::class);
     }
+
+    public function buat_events()
+    {
+        return $this->belongsTo(BuatEvent::class, "event_id", "id");
+    }
 }
