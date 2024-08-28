@@ -9,12 +9,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EventFormRequest;
 use App\Models\BuatEvent;
-<<<<<<< HEAD
-=======
 use App\Models\Penjadwalan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 use Illuminate\Support\Facades\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -23,11 +20,7 @@ class EventController extends Controller
     public function index()
     {
         $dataEvent = BuatEvent::latest()
-<<<<<<< HEAD
-        ->get();
-=======
             ->get();
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
         if (Auth::user()->role == 'user') {
             return view('page.user.index', compact('dataEvent'))->with('i', (request()->input('page', 1) - 1) * 20);
@@ -47,11 +40,6 @@ class EventController extends Controller
                         }
                     )
                     ->addColumn('action', function ($event) {
-<<<<<<< HEAD
-                        $editUrl = route('event.edit', $event->id);
-                        $showUrl = route('event.show', $event->id);
-                        $deleteUrl = route('event.destroy', $event->id);
-=======
                         $editUrl = url('/event/' . $event->id . '/edit');
                         $showUrl = url('/event/' . $event->id);
                         $deleteUrl = url('/event/' . $event->id);
@@ -68,7 +56,6 @@ class EventController extends Controller
                     </form>
                 ';
                         }
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
                         return '
                         <div class="d-flex gap-2">
@@ -78,17 +65,7 @@ class EventController extends Controller
                             <a class="btn btn-sm btn-primary" href="' . $showUrl . '" data-bs-toggle="tooltip" title="Show">
                                 <i class="bi bi-eye"></i>
                             </a>
-<<<<<<< HEAD
-                            <form class="delete-form" action="' . $deleteUrl . '" method="post">
-                                ' . csrf_field() . '
-                                ' . method_field('DELETE') . '
-                                <button type="submit" class="btn btn-sm btn-danger delete-event" data-bs-toggle="tooltip" title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-=======
                             ' . $deleteButton . '
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                         </div>
                         ';
                     })
@@ -107,17 +84,6 @@ class EventController extends Controller
     {
         $data = $request->validated();
         $numberOfSponsors = $request->input('number_of_sponsors');
-<<<<<<< HEAD
-        $start_date = Carbon::parse($data['start_date']);
-        $end_date = Carbon::parse($data['end_date']);
-
-
-
-        if ($event->whereDate('start_date', [$start_date->toDateString(), $end_date->toDateString()])->exists()) {
-            return redirect()->back()->withInput()->with('message', 'Maaf, Tanggal Sudah Terdaftar');
-        }
-=======
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
         if ($request->hasFile('image')) {
             $imagePath = public_path('assets/images/eventimage');
@@ -156,11 +122,6 @@ class EventController extends Controller
                     'event_id' => $event->id,
                     'name' => $request->input('sponsor_name' . $i),
                     'logo' => $imagePath,
-<<<<<<< HEAD
-                    'start_date' => $start_date,
-                    'end_date' => $end_date,
-=======
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                     'description' => $request->input('deskripsiSponsor' . $i),
                 ]);
             } else {
@@ -168,20 +129,6 @@ class EventController extends Controller
             }
         }
 
-<<<<<<< HEAD
-        $event->penjadwalan()->create(['event_id' => $event->id]);
-
-        return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
-    }
-
-    public function show(Event $event)
-    {
-
-        $event = Event::where('id', $event->id)->first();
-
-        $eventexcept = Event::where('id', '!=', $event->id)->get()->take(5);
-
-=======
         return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
     }
 
@@ -190,33 +137,15 @@ class EventController extends Controller
         $event = BuatEvent::where('id', $id)->first();
         $eventexcept = BuatEvent::where('id', '!=', $event->id)->get()->take(5);
         $sponsor = Sponsor::where('event_id', $event->id)->get();
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
         $eventexcept = $eventexcept->shuffle();
 
 
-<<<<<<< HEAD
-        return view('page.admin.event.show', compact('event', 'eventexcept'));
-=======
         return view('page.admin.event.show', compact('event', 'eventexcept', 'sponsor'));
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
     }
 
     public function edit(Event $event)
     {
-<<<<<<< HEAD
-
-        $event = Event::where('id', $event->id)->first();
-        return view('page.admin.event.edit', compact('event'));
-    }
-
-    public function update(EventFormRequest $request, Event $event, Sponsor $sponsor)
-    {
-        $data = $request->validated();
-        $dataSponsor = $request['sponsors'];
-        $start_date = Carbon::parse($data['start_date']);
-        $end_date = Carbon::parse($data['end_date']);
-=======
         $event = BuatEvent::where('id', $event->id)->first();
         $sponsor = Sponsor::where('event_id', $event->id)->get();
         $countSponsor = $sponsor->count();
@@ -230,7 +159,6 @@ class EventController extends Controller
         $dataSponsor = $request['sponsors'];
         // $start_date = Carbon::parse($data['start_date']);
         // $end_date = Carbon::parse($data['end_date']);
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 
 
 
@@ -253,16 +181,8 @@ class EventController extends Controller
             $data['image'] = $imagePath;
         }
 
-<<<<<<< HEAD
-
-
         $event->update($data);
 
-
-=======
-        $event->update($data);
-
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
         if ($dataSponsor != null) {
 
             foreach ($dataSponsor as $sponsorData) {
@@ -299,11 +219,6 @@ class EventController extends Controller
                     $sponsor->create([
                         'event_id' => $event->id,
                         'name' => $sponsorData['name'],
-<<<<<<< HEAD
-                        'start_date' => $start_date,
-                        'end_date' => $end_date,
-=======
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
                         'description' => $sponsorData['description'],
                     ]);
                 } else {
@@ -315,33 +230,6 @@ class EventController extends Controller
         return redirect()->route('event.index')->with('message', 'Data Berhasil Diupdate');
     }
 
-<<<<<<< HEAD
-    public function destroy(Event $event, Sponsor $sponsor)
-    {
-
-        $publicPathEvent = public_path('assets/images/eventimage/') . $event->image;
-
-
-        $sponsor = $sponsor->where('event_id', $event->id)->get();
-
-
-        foreach ($sponsor as $s) {
-            $publicPathSponsor = public_path('assets/images/sponsorlogo/') . $s->logo;
-            if (file_exists($publicPathSponsor) && is_file($publicPathSponsor)) {
-                unlink($publicPathSponsor);
-            }
-        }
-
-
-        if (file_exists($publicPathEvent) && is_file($publicPathEvent)) {
-            unlink($publicPathEvent);
-        }
-
-        $event->penjadwalan()->delete();
-        $event->delete();
-
-        return redirect()->route('event.index')->with('message', 'Data Berhasil Dihapus');
-=======
     public function destroy(BuatEvent $event)
     {
         DB::beginTransaction();
@@ -380,7 +268,6 @@ class EventController extends Controller
                 File::delete($fullPath);
             }
         }
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
     }
 
     public function listpendaftar()
@@ -401,10 +288,5 @@ class EventController extends Controller
         $fileName = 'laporan_event_' . Carbon::now()->format('Y-m-d_H-i-s') . '.pdf';
 
         return $pdf->download($fileName);
-<<<<<<< HEAD
-
-
-=======
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
     }
 }

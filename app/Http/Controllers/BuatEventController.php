@@ -3,19 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-<<<<<<< HEAD
-use App\Models\BuatEvent;
-use Illuminate\Http\Request;
-
-class BuatEventController extends Controller
-{
-    public function buat(Request $request)
-    {
-        $buat_event = BuatEvent::create($request->all());
-
-        return redirect()->route('event.index')->with('message', 'Yes! Data Berhasil Disimpan');
-    }
-=======
 use App\Http\Requests\EventFormRequest;
 use App\Models\BuatEvent;
 use App\Models\Event;
@@ -230,5 +217,4 @@ class BuatEventController extends Controller
 
         return $pdf->download($fileName);
     }
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
 }

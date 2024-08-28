@@ -20,13 +20,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserWithRoleSeeder::class,
-<<<<<<< HEAD
-            EventsSeeder::class,
-            PenjadwalanSeeder::class,
-=======
             BuatEventSeeder::class,
             // PenjadwalanSeeder::class,
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
         ]);
     }
 }

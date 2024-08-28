@@ -16,11 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('nama');
             $table->integer('hari');
-<<<<<<< HEAD
-=======
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
->>>>>>> ff25e2c2b33b6b5ae78ea40065c447fe23859f36
             $table->string('type')->default('gratis');
             $table->string('organizer');
             $table->string('status');
