@@ -135,7 +135,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = BuatEvent::where('id', $id)->first();
-        $eventexcept = BuatEvent::where('id', '!=', $event->id)->get()->take(5);
+        $eventexcept = BuatEvent::where('id', '!=', $event->id)->take(5)->get();
         $sponsor = Sponsor::where('event_id', $event->id)->get();
 
         $eventexcept = $eventexcept->shuffle();

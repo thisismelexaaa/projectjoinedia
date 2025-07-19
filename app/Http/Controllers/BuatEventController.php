@@ -170,7 +170,7 @@ class BuatEventController extends Controller
     {
         $event = BuatEvent::where('id', $id)->first();
         $sponsor = Sponsor::where('event_id', $event->id)->get();
-        $eventexcept = BuatEvent::where('id', '!=', $event->id)->get()->take(5);
+        $eventexcept = BuatEvent::where('id', '!=', $event->id)->take(5)->get();
         $eventexcept = $eventexcept->shuffle();
         return view('page.admin.event.show', compact('event', 'eventexcept', 'sponsor'));
     }
