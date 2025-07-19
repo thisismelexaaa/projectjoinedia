@@ -105,23 +105,24 @@ class EventController extends Controller
         for ($i = 0; $i <= $numberOfSponsors; $i++) {
             if ($request->input('sponsor_name' . $i) != null) {
 
+                $sponsorLogo = null;
                 if ($request->hasFile('sponsor_logo' . $i)) {
-                    $imagePath = public_path('assets/images/sponsorlogo/');
-                    if (!file_exists($imagePath)) {
+                    $logoDirectory = public_path('assets/images/sponsorlogo/');
+                    if (!file_exists($logoDirectory)) {
 
-                        mkdir($imagePath, 0755, true);
+                        mkdir($logoDirectory, 0755, true);
                     }
 
 
                     $image = $request->file('sponsor_logo' . $i);
-                    $imagePath = time() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('assets/images/sponsorlogo'), $imagePath);
-                    $request['sponsor_logo' . $i] = $imagePath;
+                    $logoFilename = time() . '.' . $image->getClientOriginalExtension();
+                    $image->move($logoDirectory, $logoFilename);
+                    $sponsorLogo = $logoFilename;
                 }
                 $sponsor->create([
                     'event_id' => $event->id,
                     'name' => $request->input('sponsor_name' . $i),
-                    'logo' => $imagePath,
+                    'logo' => $sponsorLogo,
                     'description' => $request->input('deskripsiSponsor' . $i),
                 ]);
             } else {
