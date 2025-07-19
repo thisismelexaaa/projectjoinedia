@@ -83,7 +83,6 @@ class BuatEventController extends Controller
     public function edit(BuatEvent $event)
     {
         $event = BuatEvent::where('id', $event->id)->first();
-        dd($event);
         return view('page.admin.event.edit', compact('event'));
     }
 
@@ -178,7 +177,6 @@ class BuatEventController extends Controller
     public function destroy(BuatEvent $event, Sponsor $sponsor)
     {
 
-        dd($event);
         $publicPathEvent = public_path('assets/images/eventimage/') . $event->image;
 
 
