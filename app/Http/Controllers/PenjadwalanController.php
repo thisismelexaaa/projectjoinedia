@@ -57,7 +57,6 @@ class PenjadwalanController extends Controller
 
         // Inisialisasi populasi
         $population = $this->initializePopulation($populationSize, $jadwal);
-        dd($population);
 
         for ($i = 0; $i < $generations; $i++) {
             // Evaluasi populasi
